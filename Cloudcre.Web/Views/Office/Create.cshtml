@@ -1,0 +1,21 @@
+﻿@model Cloudcre.Service.ViewModels.OfficeViewModel
+
+@{
+    ViewBag.Title = "Cloud CRE - Create new office property";
+    Layout = "~/Views/Shared/Property/_Layout_Property_Create.cshtml";
+}
+
+@section scripts {
+    <script type="text/javascript">
+        window.cloudcre.routing.urls({
+            action: '@Url.Action("Create", "Office")',
+            model: '@Url.Action("Model", "Office")'
+        });
+    </script>
+    <script type="text/html" id="template">
+        @using (Html.BeginForm("Create", "Office", FormMethod.Post, new { id = "dialog-form", @class = "wufoo" }))
+        {
+            @Html.Partial("_Template")
+        }
+    </script>
+}

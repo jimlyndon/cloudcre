@@ -1,0 +1,104 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Infrastructure", "Cloudcre.Infrastructure\Cloudcre.Infrastructure.csproj", "{E691D74B-9C28-4528-AF43-E3A145C9105D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Model", "Cloudcre.Model\Cloudcre.Model.csproj", "{F910C9F7-7CD2-4CCE-9E65-191FED573ECF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Report", "Cloudcre.Report\Cloudcre.Report.csproj", "{6D7C7C3A-4B63-4524-854B-6F0F0CE807BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Repository.NHibernate", "Cloudcre.Repository.NHibernate\Cloudcre.Repository.NHibernate.csproj", "{0CEE7ECF-FF10-4768-AB42-CC2D70C6CA01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Service", "Cloudcre.Service\Cloudcre.Service.csproj", "{DC3715E8-39E8-4ECB-A82A-3BB1524DE4C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Utilities.DataLoader", "Cloudcre.Utilities.DataLoader\Cloudcre.Utilities.DataLoader.csproj", "{A174F8AE-3E29-4205-B887-C3B3A0F647D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Web", "Cloudcre.Web\Cloudcre.Web.csproj", "{7059319F-E9EB-4D87-86F5-E8794A0B7CF2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D5FC1B36-BD07-4B3D-8907-BCF331AFA6DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Report.Tests", "Cloudcre.Report.Tests\Cloudcre.Report.Tests.csproj", "{B738F660-13E4-4800-A4DA-1DB4A8B8C845}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{70606A29-9B1D-4A0D-8AC4-04382E7DB842}"
+	ProjectSection(SolutionItems) = preProject
+		Cloudcre.vsmdi = Cloudcre.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Service.Tests", "Cloudcre.Service.Tests\Cloudcre.Service.Tests.csproj", "{2A8DC746-163F-41DF-A70B-A4529AA71495}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Web.Tests", "Cloudcre.Web.Tests\Cloudcre.Web.Tests.csproj", "{A3B9EC88-DF3B-4E9F-9B1E-4D5757CB6B69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Utilities", "Cloudcre.Utilities\Cloudcre.Utilities.csproj", "{CBE25B26-C3E9-4BE6-A5E2-F48611C58CA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Utilities.LuceneIndexer", "Cloudcre.Utilities.LuceneIndexer\Cloudcre.Utilities.LuceneIndexer.csproj", "{492EB157-1161-483D-A0A2-8AFB1ADC19E4}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Cloudcre.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E691D74B-9C28-4528-AF43-E3A145C9105D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E691D74B-9C28-4528-AF43-E3A145C9105D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E691D74B-9C28-4528-AF43-E3A145C9105D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E691D74B-9C28-4528-AF43-E3A145C9105D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F910C9F7-7CD2-4CCE-9E65-191FED573ECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F910C9F7-7CD2-4CCE-9E65-191FED573ECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F910C9F7-7CD2-4CCE-9E65-191FED573ECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F910C9F7-7CD2-4CCE-9E65-191FED573ECF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D7C7C3A-4B63-4524-854B-6F0F0CE807BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D7C7C3A-4B63-4524-854B-6F0F0CE807BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D7C7C3A-4B63-4524-854B-6F0F0CE807BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D7C7C3A-4B63-4524-854B-6F0F0CE807BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CEE7ECF-FF10-4768-AB42-CC2D70C6CA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CEE7ECF-FF10-4768-AB42-CC2D70C6CA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CEE7ECF-FF10-4768-AB42-CC2D70C6CA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CEE7ECF-FF10-4768-AB42-CC2D70C6CA01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC3715E8-39E8-4ECB-A82A-3BB1524DE4C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC3715E8-39E8-4ECB-A82A-3BB1524DE4C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC3715E8-39E8-4ECB-A82A-3BB1524DE4C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC3715E8-39E8-4ECB-A82A-3BB1524DE4C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A174F8AE-3E29-4205-B887-C3B3A0F647D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A174F8AE-3E29-4205-B887-C3B3A0F647D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A174F8AE-3E29-4205-B887-C3B3A0F647D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A174F8AE-3E29-4205-B887-C3B3A0F647D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7059319F-E9EB-4D87-86F5-E8794A0B7CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7059319F-E9EB-4D87-86F5-E8794A0B7CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7059319F-E9EB-4D87-86F5-E8794A0B7CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7059319F-E9EB-4D87-86F5-E8794A0B7CF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B738F660-13E4-4800-A4DA-1DB4A8B8C845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B738F660-13E4-4800-A4DA-1DB4A8B8C845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B738F660-13E4-4800-A4DA-1DB4A8B8C845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B738F660-13E4-4800-A4DA-1DB4A8B8C845}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A8DC746-163F-41DF-A70B-A4529AA71495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A8DC746-163F-41DF-A70B-A4529AA71495}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A8DC746-163F-41DF-A70B-A4529AA71495}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A8DC746-163F-41DF-A70B-A4529AA71495}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3B9EC88-DF3B-4E9F-9B1E-4D5757CB6B69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3B9EC88-DF3B-4E9F-9B1E-4D5757CB6B69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3B9EC88-DF3B-4E9F-9B1E-4D5757CB6B69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B9EC88-DF3B-4E9F-9B1E-4D5757CB6B69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBE25B26-C3E9-4BE6-A5E2-F48611C58CA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBE25B26-C3E9-4BE6-A5E2-F48611C58CA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBE25B26-C3E9-4BE6-A5E2-F48611C58CA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBE25B26-C3E9-4BE6-A5E2-F48611C58CA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{492EB157-1161-483D-A0A2-8AFB1ADC19E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{492EB157-1161-483D-A0A2-8AFB1ADC19E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{492EB157-1161-483D-A0A2-8AFB1ADC19E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{492EB157-1161-483D-A0A2-8AFB1ADC19E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B738F660-13E4-4800-A4DA-1DB4A8B8C845} = {D5FC1B36-BD07-4B3D-8907-BCF331AFA6DE}
+		{70606A29-9B1D-4A0D-8AC4-04382E7DB842} = {D5FC1B36-BD07-4B3D-8907-BCF331AFA6DE}
+		{2A8DC746-163F-41DF-A70B-A4529AA71495} = {D5FC1B36-BD07-4B3D-8907-BCF331AFA6DE}
+		{A3B9EC88-DF3B-4E9F-9B1E-4D5757CB6B69} = {D5FC1B36-BD07-4B3D-8907-BCF331AFA6DE}
+	EndGlobalSection
+EndGlobal

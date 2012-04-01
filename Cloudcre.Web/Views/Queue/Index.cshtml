@@ -1,0 +1,174 @@
+﻿@model Cloudcre.Web.Models.QueueResultViewModel
+
+@{
+    ViewBag.Title = "Cloud CRE - Your Queued Comparables";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="leftside"></div>
+<div class="queue">
+    <table cellspacing="0" cellpadding="0" border="0" class="property-tbl">
+        <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Parcel Id
+            </th>
+            <th>
+                AddressLine
+            </th>
+            <th>
+                City
+            </th>
+            <th>
+                County
+            </th>
+            <th>
+                State/Province/Region
+            </th>
+            <th>
+                Zip
+            </th>
+            <th>
+                Building Total SqFt
+            </th>
+            <th>
+                Stories
+            </th>
+            <th>
+                Units
+            </th>
+            <th>
+                Zoning
+            </th>
+            <th>
+                Sale Date
+            </th>
+            <th>
+                Price
+            </th>
+            <th>                
+            </th>
+        </tr>
+        </thead>
+        <tbody id="map-side-bar">
+        @if (Model != null)
+        {
+            foreach (var item in Model.Properties)
+            {
+                <tr class="map-location">
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.ParcelId
+                    </td>
+                    <td>
+                        @item.Address.AddressLine1 @item.Address.AddressLine2
+                    </td>
+                    <td>
+                        @item.Address.City
+                    </td>
+                    <td>
+                        @item.Address.County
+                    </td>
+                    <td>
+                        @item.Address.StateProvinceRegion
+                    </td>
+                    <td>
+                        @item.Address.Zip
+                    </td>
+                    <td>
+                        @String.Format("{0:F}", item.BuildingTotalSquareFoot)
+                    </td>
+                    <td>
+                        @item.Stories
+                    </td>
+                    <td>
+                        @item.Units
+                    </td>
+                    <td>
+                        @item.Zoning
+                    </td>
+                    <td>
+                        @String.Format("{0:M/d/yyyy}", item.SaleDate)
+                    </td>
+                    <td>
+                        @String.Format("{0:F}", item.Price)
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("Delete", "Queue", new { parcelId = item.ParcelId }, FormMethod.Post, new { @class = "delete-form", data_bind = "submit: remove" }))
+                        {
+                            <input type="submit" value="Delete" />
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
+<div class="rightside">
+    @using (Html.BeginForm("Summary", "Report", FormMethod.Post))
+    {
+        <input type="submit" value="Summary" />
+    }
+</div>
+@section Scripts {
+    <script type="text/html" id="propertyItemTemplate">
+        {{each Properties}}
+            <tr class="map-location">
+                <td>
+                    ${Name}
+                </td>
+                <td>
+                    ${ParcelId}
+                </td>
+                <td>
+                    ${Address.AddressLine1} ${Address.AddressLine2}
+                </td>
+                <td>
+                    ${Address.City}
+                </td>
+                <td>
+                    ${Address.County}
+                </td>
+                <td>
+                    ${Address.StateProvinceRegion}
+                </td>
+                <td>
+                    ${Address.Zip}
+                </td>
+                <td>
+                    ${BuildingTotalSquareFoot}
+                </td>
+                <td>
+                    ${Stories}
+                </td>
+                <td>
+                    ${Units}
+                </td>
+                <td>
+                    ${Zoning}
+                </td>
+                <td>
+                    ${regExDate(SaleDate)}
+                </td>
+                <td>
+                    ${Price}
+                </td>
+                <td>
+                    <form action="@Url.Action("Delete", "Queue")?parcelId=${ParcelId}" class="delete-form" data_bind="submit: remove" method="post">
+                        <input type="submit" value="Delete" /> 
+                    </form>
+                </td>
+            </tr>
+        {{/each}}
+    </script>
+    <script type="text/javascript">
+        $.whitney.queue.urls({
+            remove: '@Url.Action("JsonDelete", "Queue")'
+        });
+    </script>
+}

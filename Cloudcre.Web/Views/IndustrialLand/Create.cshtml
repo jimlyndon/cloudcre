@@ -1,0 +1,21 @@
+﻿@model Cloudcre.Service.ViewModels.IndustrialLandViewModel
+
+@{
+    ViewBag.Title = "Cloud CRE - Create new industrial land property";
+    Layout = "~/Views/Shared/Property/_Layout_Property_Create.cshtml";
+}
+
+@section scripts {
+    <script type="text/javascript">
+        window.cloudcre.routing.urls({
+            action: '@Url.Action("Create", "IndustrialLand")',
+            model: '@Url.Action("Model", "IndustrialLand")'
+        });
+    </script>
+    <script type="text/html" id="template">
+        @using (Html.BeginForm("Create", "IndustrialLand", FormMethod.Post, new { id = "dialog-form", @class = "wufoo" }))
+        {
+            @Html.Partial("_Template")
+        }
+    </script>
+}

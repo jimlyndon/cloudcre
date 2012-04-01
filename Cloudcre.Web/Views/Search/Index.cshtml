@@ -1,0 +1,315 @@
+﻿@using SquishIt.Framework
+@using Cloudcre.Web.HtmlHelpers
+@model Cloudcre.Web.Models.PropertySearchResultViewModel
+
+@{
+    ViewBag.Title = "Cloud CRE - Search for Comparables";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="searchmap-tbl">
+    <tr>
+        <td>
+            <div id="map"></div>
+        </td>
+        <td>
+            <div class="search-options left">
+                <h2>
+                    Search Options
+                </h2>
+                <br />
+                @using (Html.BeginForm("Index", "Search", FormMethod.Post, new {Id = "search-form-top"}))
+                {
+                    <div>
+                        <div>
+                            Property Type @Html.DropDownListFor(model => model.PropertyType, Model.PropertyType)
+                        </div>
+                    </div>
+                    <br />
+                    <div>
+                        <div>
+                            Location (try typing 'county', 'city' or 'zip')
+                        </div>
+                            <div id="search_box_container"></div>
+@*                        <div class="ui-widget">
+                            @Html.DropDownList("location-search-box", Model.Locations, "", null)
+                        </div>*@
+                    </div>
+                    <br />
+                    <div>
+                        <div>
+                            Keyword(s)
+                        </div>
+                        <div>
+                            <input class="search-input" name="keywords-search-box" type="text" id="keywords-search-box" maxlength="255" />
+                        </div>
+                    </div>
+                    <br />
+                    decimal? sqftMin = (Model.SqftMin.HasValue) ? Math.Floor(Model.SqftMin.Value/100.00m)*100 : default(decimal);
+                    decimal? sqftMax = (Model.SqftMax.HasValue) ? Math.Ceiling(Model.SqftMax.Value/100.00m)*100 : default(decimal);
+                    <div>Building SqFt - 
+                        Min <input name="sqftmin" type="text" size="10" id="sqftmin-box" maxlength="20" value="@sqftMin" />
+                        Max <input name="sqftmax" type="text" size="10" id="sqftmax-box" maxlength="20" value="@sqftMax" />
+                    </div>
+                    <div>
+                        <div id="slider-range"></div>
+                    </div>
+                    <br />
+                    <div>
+                        <div>
+                            Sale Date Range (mm/dd/yyyy)
+                        </div>
+                        <div>
+                            From <input name="mindate-box" type="text" id="mindate-box" maxlength="255" />
+                                to <input name="maxdate-box" type="text" id="maxdate-box" maxlength="255" />
+                        </div>
+                    </div>
+                    <br />
+                    <div>
+                        @Html.CheckBox("mapsearch", false)Include current map location in search query
+                    </div>
+                    <br />
+                    <div>
+                        <input type='submit' class="search-button" value="Search" />
+                    </div>
+                }
+            </div>
+            <div class="search-options left">
+                <h2>Active Queue</h2>
+                <div id="queued" data-bind='template: { name: "peopleTemplate", foreach: queued}'> </div>
+            </div>
+        </td>
+    </tr>
+</table>
+<div style="clear: both;"></div>
+<div id="delete-dialog" title="Permanently remove a property">
+    <div id="delete-dialog-msg"></div>
+</div>
+<div id="dialog" title="Add a new property">
+    <div id="personList" data-bind="template: { name: 'personTemplate', afterRender: loaded }"></div>
+</div>
+<span class="item-displayoptions-pages">
+    <span id="pageLinksTop">
+        @Html.BuildPageLinksFrom(Model.CurrentPage, Model.TotalNumberOfPages, x => "JavaScript:displayPage("+ x +")") of @Model.TotalNumberOfPages pages, with @Model.NumberOfTitlesFound property record(s) in total
+    </span>
+</span>
+<table cellspacing="0" cellpadding="0" border="0" class="property-tbl">
+    <thead>
+    <tr>
+        <th>
+            <div>
+                <a tabindex="0" href="#search-engines" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="flat"><span class="ui-icon ui-icon-triangle-1-s"></span>Add a new property</a>
+                <div id="search-engines" class="hide">
+                    @Html.ToFormattedList(Model.PropertyType.ToList(), HtmlHelperExtensions.ListType.Unordered, @<a href="#">@item.Text</a>)  
+                </div>
+
+            </div>
+            @*<button id="create-property" class="search-button">Add a Property</button>*@
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Parcel Id
+        </th>
+        <th>
+            Address
+        </th>
+        <th>
+            City
+        </th>
+        <th>
+            County
+        </th>
+        <th>
+            State/Provinc/Region
+        </th>
+        <th>
+            Zip
+        </th>
+        <th>
+            Building Total SqFt
+        </th>
+        <th>
+            Stories
+        </th>
+        <th>
+            Units
+        </th>
+        <th>
+            Zoning
+        </th>
+        <th>
+            Sale Date
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+        </th>
+    </tr>
+    </thead>
+    <tbody id="map-side-bar">    
+    </tbody>
+</table>
+<div style="clear: both;"></div>
+<span class="item-displayoptions-pages">
+    <span id="pageLinksBottom">
+        @Html.BuildPageLinksFrom(Model.CurrentPage, Model.TotalNumberOfPages, x => "JavaScript:displayPage(" + x + ")") of @Model.TotalNumberOfPages page(s), with @Model.NumberOfTitlesFound property record(s) in total
+    </span>
+</span>
+@section scripts {
+    @MvcHtmlString.Create(Bundle.JavaScript().Add("~/Scripts/Views/Search/Index.js").Render("~/Scripts/whitney#.js"))
+
+    <script type="text/html" id="productItemTemplate">
+        {{each Properties}}
+        <tr class="map-location" data-id="${$index + 1}" data-point="{ lat: ${Latitude}, lng: ${Longitude} }" data-category="'apartment'">
+            <td>
+                <div>
+                    <button class="select-button" data-id="${Id}" data-name="${Name}" data-parcelid="${ParcelId}">Add to Queue</button>
+                </div>
+            </td>
+            <td>
+                <a href="#" class="map-link">${Name}</a>
+                <div class="info-box">
+                    <div class="info-box-name">${Name}</div>
+                    <div>
+                        <div class="info-box-price">Sold on ${regExDate(SaleDate)}</div> 
+                        Parcel Id: ${ParcelId}<br />
+                        Building SqFt: ${BuildingTotalSquareFoot}<br />
+                        ${Address.AddressLine1}<br />
+                        ${Address.City} ${Address.StateProvinceRegion} ${Address.Zip}
+                    </div>
+                </div>
+            </td>
+            <td>
+                ${ParcelId}
+            </td>
+            <td>
+                ${Address.AddressLine1} ${Address.AddressLine2}
+            </td>
+            <td>
+                ${Address.City}
+            </td>
+            <td>
+                ${Address.County}
+            </td>
+            <td>
+                ${Address.StateProvinceRegion}
+            </td>
+            <td>
+                ${Address.Zip}
+            </td>
+            <td>
+                ${BuildingTotalSquareFoot}
+            </td>
+            <td>
+                ${Stories}
+            </td>
+            <td>
+                ${Units}
+            </td>
+            <td>
+                ${Zoning}
+            </td>
+            <td>
+                ${regExDate(SaleDate)}
+            </td>
+            <td>
+                ${Price}
+            </td>
+            <td>
+                <div>
+                    <form action="/" method="post">
+                        <input type="submit" value="Edit" class="edit-button" data-id="${Id}" data-name="${Name}" data-type="${PropertyTypeDescription}"/>
+                    </form>
+                </div>
+                <div>
+                    <form action="/" method="post">
+                        <input type="submit" value="Delete" class="delete-button" data-id="${Id}" data-name="${Name}" data-type="${PropertyTypeDescription}"/>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        {{/each}}
+    </script>
+    <script type="text/html" id="peopleTemplate">
+        <ul>
+            <li>
+                <div>
+                    ${ Name }, parcel ${ ParcelId } <a href="#" data-bind="click: function() { viewModel.remove($data) }">Remove</a>
+                </div>
+            </li>
+        </ul>
+    </script>
+    <script type="text/javascript">
+        window.cloudcre.routing.urls({
+            MultipleFamily : {
+                search: '@Url.Action("Search", "MultipleFamily")',
+                create: '@Url.Action("Create", "MultipleFamily")',
+                edit: '@Url.Action("Edit", "MultipleFamily")',
+                remove: '@Url.Action("Delete", "MultipleFamily")'
+            },
+            Office : {
+                search: '@Url.Action("Search", "Office")',
+                create: '@Url.Action("Create", "Office")',
+                edit: '@Url.Action("Edit", "Office")',
+                remove: '@Url.Action("Delete", "Office")'
+            },
+            Retail : {
+                search: '@Url.Action("Search", "Retail")',
+                create: '@Url.Action("Create", "Retail")',
+                edit: '@Url.Action("Edit", "Retail")',
+                remove: '@Url.Action("Delete", "Retail")'
+            },
+            Industrial : {
+                search: '@Url.Action("Search", "Industrial")',
+                create: '@Url.Action("Create", "Industrial")',
+                edit: '@Url.Action("Edit", "Industrial")',
+                remove: '@Url.Action("Delete", "Industrial")'
+            },
+            IndustrialCondominium : {
+                search: '@Url.Action("Search", "IndustrialCondominium")',
+                create: '@Url.Action("Create", "IndustrialCondominium")',
+                edit: '@Url.Action("Edit", "IndustrialCondominium")',
+                remove: '@Url.Action("Delete", "IndustrialCondominium")'
+            },
+            CommercialCondominium : {
+                search: '@Url.Action("Search", "CommercialCondominium")',
+                create: '@Url.Action("Create", "CommercialCondominium")',
+                edit: '@Url.Action("Edit", "CommercialCondominium")',
+                remove: '@Url.Action("Delete", "CommercialCondominium")'
+            },
+            CommercialLand : {
+                search: '@Url.Action("Search", "CommercialLand")',
+                create: '@Url.Action("Create", "CommercialLand")',
+                edit: '@Url.Action("Edit", "CommercialLand")',
+                remove: '@Url.Action("Delete", "CommercialLand")'
+            },
+            IndustrialLand : {
+                search: '@Url.Action("Search", "IndustrialLand")',
+                create: '@Url.Action("Create", "IndustrialLand")',
+                edit: '@Url.Action("Edit", "IndustrialLand")',
+                remove: '@Url.Action("Delete", "IndustrialLand")'
+            },
+            ResidentialLand : {
+                search: '@Url.Action("Search", "ResidentialLand")',
+                create: '@Url.Action("Create", "ResidentialLand")',
+                edit: '@Url.Action("Edit", "ResidentialLand")',
+                remove: '@Url.Action("Delete", "ResidentialLand")'
+            },
+            locations: '@Url.Action("Locations", "Search")',
+            wizardBase: '@Url.ControllerForAction("StepOne", "ApartmentWizard")'
+        });
+
+        @{
+            decimal? sqftMin2 = (Model.SqftMin.HasValue) ? Math.Floor(Model.SqftMin.Value/100.00m)*100 : default(decimal);
+            decimal? sqftMax2 = (Model.SqftMax.HasValue) ? Math.Ceiling(Model.SqftMax.Value/100.00m)*100 : default(decimal);
+        }
+
+        $.whitney.property.managers.siteSqFtSlider.options({
+            sqftCeiling: @sqftMin2,
+            sqftFloor: @sqftMax2
+        });
+    </script>
+}

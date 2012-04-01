@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F910C9F7-7CD2-4CCE-9E65-191FED573ECF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cloudcre.Model</RootNamespace>
+    <AssemblyName>Cloudcre.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NHibernate.Search">
+      <HintPath>..\thirdpartylibs\NHibernate.Search.2.0.2.4000\lib\Net35\NHibernate.Search.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Address.cs" />
+    <Compile Include="BuildingProperty.cs" />
+    <Compile Include="Comment.cs" />
+    <Compile Include="CommercialCondominium.cs" />
+    <Compile Include="CommercialLand.cs" />
+    <Compile Include="Core\BusinessRule.cs" />
+    <Compile Include="Core\EntityBase.cs" />
+    <Compile Include="Core\IAggregateRoot.cs" />
+    <Compile Include="Core\Querying\ExpressionVisitor.cs" />
+    <Compile Include="Core\Querying\LuceneSearchQuery.cs" />
+    <Compile Include="Core\Querying\QueryProvider.cs" />
+    <Compile Include="Core\Querying\SeachQuery.cs" />
+    <Compile Include="Core\Querying\Specification.cs" />
+    <Compile Include="Core\UnitOfWork\IUnitOfWork.cs" />
+    <Compile Include="Core\UnitOfWork\IUnitOfWorkRepository.cs" />
+    <Compile Include="Core\UnitOfWork\UnitOfWork.cs" />
+    <Compile Include="Core\ValueObjectBase.cs" />
+    <Compile Include="Core\ValueObjectIsInvalidException.cs" />
+    <Compile Include="Industrial.cs" />
+    <Compile Include="IndustrialCondominium.cs" />
+    <Compile Include="IndustrialLand.cs" />
+    <Compile Include="IRepository.cs" />
+    <Compile Include="MultipleFamily.cs" />
+    <Compile Include="Office.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Property.cs" />
+    <Compile Include="Queue\IQueueRepository.cs" />
+    <Compile Include="Queue\Queue.cs" />
+    <Compile Include="Queue\QueueBusinessRules.cs" />
+    <Compile Include="Queue\QueuedItem.cs" />
+    <Compile Include="Queue\QueuedItemFactory.cs" />
+    <Compile Include="Queue\QueueItemBusinessRules.cs" />
+    <Compile Include="ResidentialLand.cs" />
+    <Compile Include="Retail.cs" />
+    <Compile Include="Specifications\MappingBoundaryRangeSpecification.cs" />
+    <Compile Include="Specifications\PropertySquareFootRangeSpecification.cs" />
+    <Compile Include="Specifications\UserByEmailSpecification.cs" />
+    <Compile Include="Specifications\UserByNameSpecification.cs" />
+    <Compile Include="User.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cloudcre.Infrastructure\Cloudcre.Infrastructure.csproj">
+      <Project>{E691D74B-9C28-4528-AF43-E3A145C9105D}</Project>
+      <Name>Cloudcre.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

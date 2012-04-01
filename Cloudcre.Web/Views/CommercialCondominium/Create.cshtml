@@ -1,0 +1,21 @@
+﻿@model Cloudcre.Service.ViewModels.CommercialCondominiumViewModel
+
+@{
+    ViewBag.Title = "Cloud CRE - Create new commercial condo property";
+    Layout = "~/Views/Shared/Property/_Layout_Property_Create.cshtml";
+}
+
+@section scripts {
+    <script type="text/javascript">
+        window.cloudcre.routing.urls({
+            action: '@Url.Action("Create", "CommercialCondominium")',
+            model: '@Url.Action("Model", "CommercialCondominium")'
+        });
+    </script>
+    <script type="text/html" id="template">
+        @using (Html.BeginForm("Create", "CommercialCondominium", FormMethod.Post, new { id = "dialog-form", @class = "wufoo" }))
+        {
+            @Html.Partial("_Template")
+        }
+    </script>
+}

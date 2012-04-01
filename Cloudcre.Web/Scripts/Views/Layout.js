@@ -1,0 +1,3 @@
+﻿$.extend({
+    whitney: {}
+});

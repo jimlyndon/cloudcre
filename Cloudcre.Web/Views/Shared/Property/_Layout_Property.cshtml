@@ -1,0 +1,42 @@
+﻿@using SquishIt.Framework
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section siteHeader {
+    <header>
+        <div id="top-bar">
+            <div class="center-header">
+                <div class="header-inner">
+                    <div id="actionbar">
+                        @Context.User.Identity.Name&nbsp;|
+                        @Html.ActionLink("Sign Out", "LogOff", "Account", null, new { rel = "nofollow" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="header-bar">
+        <div class="center-header">
+            <div class="header-inner">
+                <div id="top">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div id="bindingContainer" data-bind="template: { name: 'template' }"></div>
+
+@RenderBody()
+
+@section scripts {
+
+    @MvcHtmlString.Create(Bundle.JavaScript()
+        //    .Add(String.Format("~/Scripts/Views/{0}/{1}.js", @ViewContext.Controller.ValueProvider.GetValue("Controller").RawValue, @ViewContext.Controller.ValueProvider.GetValue("Action").RawValue))
+        .Add(String.Format("~/Scripts/Views/Shared/Property/{0}.js", @ViewContext.Controller.ValueProvider.GetValue("Action").RawValue))
+        .Add(String.Format("~/Scripts/Views/{0}/{1}.js", @ViewContext.Controller.ValueProvider.GetValue("Controller").RawValue, "_Template"))
+        .Render("~/Scripts/whitney#.js"))
+
+    @RenderSection("scripts", required: false)
+}

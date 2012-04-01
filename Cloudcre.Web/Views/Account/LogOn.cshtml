@@ -1,0 +1,217 @@
+﻿@model Cloudcre.Web.Models.LogOnModel
+
+@{
+    ViewBag.Title = "Cloud CRE - Log On";
+    Layout = "~/Views/Shared/_Layout_Account.cshtml";
+}
+@section siteHeader {
+    <header>
+        <div id="top-bar">
+            <div class="center-header">
+                <div class="header-inner">
+                    <div id="actionbar">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="header-bar">
+        <div class="center-header">
+            <div class="header-inner">
+                <div id="top">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
+
+@using (Html.BeginForm("LogOn", "Account", FormMethod.Post, new {Id = "search-form-top"}))
+{
+    <div class="container">
+        <div class="containerTitle">&nbsp;</div> 	 
+        <table class="containerBox" TextAlignment="Left" style="border-collapse: collapse;">
+            <tr>
+                <td class="containerBoxWrapper">
+                    <h1>Cloud CRE</h1>
+                    <div class="inputWrapper">
+                        @Html.LabelFor(m => m.UserName, "Email")
+                        @Html.TextBoxFor(m => m.UserName, new { autocomplete = "off" })
+                        @Html.ValidationMessageFor(m => m.UserName)
+                    </div>
+                        
+                    <div class="inputWrapper">
+                        @Html.LabelFor(m => m.Password, "Password")
+                        @Html.PasswordFor(m => m.Password, new { autocomplete = "off" })
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </div>
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    @Html.LabelFor(m => m.RememberMe)
+                    <input type="submit" value="Log On" class="containerButton" />
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+
+<style>
+.container 
+{
+	padding-top: 10px;
+    padding-bottom: 80px;
+}
+	
+.containerTitle 
+{
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 80px;
+	margin-bottom: 10px;
+}
+
+.containerBox 
+{
+	margin: 0px auto;
+}
+
+.containerBox td.containerBoxWrapper 
+{ 
+	-webkit-box-shadow: 1px 1px 4px 1px #e2e2e2;
+	-moz-box-shadow: 1px 1px 4px 1px #e2e2e2;
+	box-shadow: 1px 1px 4px 1px #e2e2e2;
+	background-color: #fff;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	min-width: 600px;
+	padding: 30px;
+}
+
+*:first-child+html .containerBox td.containerBoxWrapper 
+{
+	width: 310px;
+}
+
+.containerBox h1 
+{
+	font: bold 60px Lucida Bright, Helvetica, sans-serif;
+	color: #000;
+	margin-bottom: 25px;
+	text-transform: capitalize;
+}
+	
+.containerButton 
+{
+	background: #7bb931;
+	background: -moz-linear-gradient(top, #2D5C88 0%, #2D5C88 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2D5C88), color-stop(100%,#2D5C88));
+	background: -webkit-linear-gradient(top, #2D5C88 0%,#2D5C88 100%);
+	background: -o-linear-gradient(top, #2D5C88 0%,#2D5C88 100%);
+	background: -ms-linear-gradient(top, #2D5C88 0%,#2D5C88 100%);
+	background: linear-gradient(top, #2D5C88 0%,#2D5C88 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2D5C88', endColorstr='#2D5C88',GradientType=0 );
+	border: 1px solid #004990;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color: #fff;
+	font: bold 14px Tahoma;
+	float: right;
+	margin-top: 10px;
+	margin-right: 0px;
+	padding: 8px 18px;
+	text-transform:capitalize;
+}	
+	
+.containerButton:hover 
+{
+	background: #84B2D4;
+	background: -moz-linear-gradient(top, #84B2D4 0%, #84B2D4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#84B2D4), color-stop(100%,#84B2D4));
+	background: -webkit-linear-gradient(top, #84B2D4 0%,#84B2D4 100%);
+	background: -o-linear-gradient(top, #84B2D4 0%,#84B2D4 100%);
+	background: -ms-linear-gradient(top, #84B2D4 0%,#84B2D4 100%);
+	background: linear-gradient(top, #84B2D4 0%,#84B2D4 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#84B2D4', endColorstr='#84B2D4',GradientType=0 );
+	border: 1px solid #004990;
+}	
+	
+.containerButton:active 
+{
+	background: #2D5C88;
+	background: -moz-linear-gradient(top, #2D5C88 0%, #2D5C88 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2D5C88), color-stop(100%,#2D5C88));
+	background: -webkit-linear-gradient(top, #2D5C88 0%,#2D5C88 100%);
+	background: -o-linear-gradient(top, #2D5C88 0%,#2D5C88 100%);
+	background: -ms-linear-gradient(top, #2D5C88 0%,#2D5C88 100%);
+	background: linear-gradient(top, #2D5C88 0%,#2D5C88 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#558e1e', endColorstr='#60a521',GradientType=0 );
+	border: 1px solid #004990;
+}		
+	
+.inputWrapper 
+{
+	width: 100%;
+	height: 50px;
+	border-width: 0;
+	position: relative;
+}
+	
+.container .inputWrapper label 
+{
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	line-height: 35px;
+	padding: 9px;
+	color: #8e8e8e;
+	font: normal 16px Tahoma;
+}
+
+.inputWrapper input 
+{
+	border: 1px solid #b1b1b1;
+	color: #000;
+	font: 16px Tahoma;
+	padding: 8px;
+	cursor: pointer;
+	margin: 0;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	width: 95%;
+}	
+	
+.inputWrapper.blurred 
+{
+    background-position: left -136px;
+}
+
+.filled 
+{
+    display: block;
+}
+
+.inputWrapper.blurred input, .inputWrapper.filled input 
+{
+    color: #222;
+    cursor: text; 
+}
+
+.inputWrapper.filled label 
+{
+    display: none;
+}
+	
+.inputWrapper.blurred label 
+{
+    opacity: .4;
+    filter:alpha(opacity=40);
+}
+</style>

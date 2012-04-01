@@ -1,0 +1,302 @@
+﻿@model Cloudcre.Service.ViewModels.MultipleFamilyViewModel
+@using Cloudcre.Web.Controllers
+@using Cloudcre.Web.HtmlHelpers
+@using Cloudcre.Web.Mapping
+
+@{
+    Layout = null;
+}
+
+<div id="propertyWizardTemplateContainer">
+<script type="text/html" id="personTemplate">
+@using (Html.BeginForm("StepOne", "ApartmentWizard", FormMethod.Post, new { id = "dialog-form", @class = "wufoo" }))
+{
+    @Html.HiddenFor(model => model.serializedViewModel, new { data_bind = "value: serializedViewModel" })
+    <ul class="left">
+        <li class="complex">
+	        <fieldset>
+                <label class="desc" id="property">Property</label>
+                <div>
+                    <span class="left">
+		                @Html.LabelFor(model => model.Name) @Html.ValidationMessageFor(model => model.Name)
+                        @Html.TextBoxFor(model => model.Name, new { data_bind = "valueWithNullsAsEmpty: Name", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="right">
+		                @Html.LabelFor(model => model.PropertyType)
+                        @Html.DropDownListFor(model => model.PropertyType, Model.PropertyType.ToSelectList(), new { data_bind = "value: PropertyType", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="right">
+		                @Html.LabelFor(model => model.Address.AddressLine1) @Html.ValidationMessageFor(model => model.Address.AddressLine1)
+                        @Html.TextBoxFor(model => model.Address.AddressLine1, new { data_bind = "valueWithNullsAsEmpty: Address.AddressLine1", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="left">
+		                @Html.LabelFor(model => model.Address.AddressLine2) @Html.ValidationMessageFor(model => model.Address.AddressLine2)
+                        @Html.TextBoxFor(model => model.Address.AddressLine2, new { data_bind = "valueWithNullsAsEmpty: Address.AddressLine2", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="right">
+		                @Html.LabelFor(model => model.Address.City) @Html.ValidationMessageFor(model => model.Address.City)
+                        @Html.TextBoxFor(model => model.Address.City, new { data_bind = "valueWithNullsAsEmpty: Address.City", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="left">
+		                @Html.LabelFor(model => model.Address.County) @Html.ValidationMessageFor(model => model.Address.County)
+                        @Html.TextBoxFor(model => model.Address.County, new { data_bind = "valueWithNullsAsEmpty: Address.County", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="right">
+		                @Html.LabelFor(model => model.Address.StateProvinceRegion) @Html.ValidationMessageFor(model => model.Address.StateProvinceRegion)
+                        @Html.TextBoxFor(model => model.Address.StateProvinceRegion, new { data_bind = "valueWithNullsAsEmpty: Address.StateProvinceRegion", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="left">
+		                @Html.LabelFor(model => model.Address.Zip) @Html.ValidationMessageFor(model => model.Address.Zip)
+                        @Html.TextBoxFor(model => model.Address.Zip, new { data_bind = "valueWithNullsAsEmpty: Address.Zip", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="right">
+		                @Html.LabelFor(model => model.Address.MetropolitanStatisticalArea) @Html.ValidationMessageFor(model => model.Address.MetropolitanStatisticalArea)
+                        @Html.TextBoxFor(model => model.Address.MetropolitanStatisticalArea, new { data_bind = "valueWithNullsAsEmpty: Address.MetropolitanStatisticalArea", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="left">
+		                @Html.LabelFor(model => model.Latitude) @Html.ValidationMessageFor(model => model.Latitude)
+                        @Html.TextBoxFor(model => model.Latitude, new { data_bind = "valueWithNullsAsEmpty: Latitude", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="left">
+		                @Html.LabelFor(model => model.Longitude) @Html.ValidationMessageFor(model => model.Longitude)
+                        @Html.TextBoxFor(model => model.Longitude, new { data_bind = "valueWithNullsAsEmpty: Longitude", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                </div>
+	        </fieldset>
+        </li>
+    </ul>
+    <ul class="left">
+        <li class="complex">
+	        <div id ="location-map-canvas"></div>
+            <div>                
+                <button id="reset-location">Reset map location to address</button>
+            </div>
+        </li>
+    </ul>
+}
+</script>
+<script type="text/javascript">
+
+    (function ($) {
+
+        // gmap api v3 extensions
+        google.maps.Map.prototype.markers = [];
+
+        google.maps.Map.prototype.addMarker = function (marker) {
+            this.markers[this.markers.length] = marker;
+        };
+
+        google.maps.Map.prototype.getMarkers = function () {
+            return this.markers;
+        };
+
+        google.maps.Map.prototype.clearMarkers = function () {
+            for (var i = 0; i < this.markers.length; i++) {
+                this.markers[i].setMap(null);
+            }
+            this.markers = [];
+        };
+
+
+        $(function () {
+            ko.bindingHandlers.valueWithInitializationFromDOMUnlessEmpty = {
+                init: function (element, valueAccessor, allBindingsAccessor) {
+                    var value = valueAccessor();
+                    if (ko.isObservable(value) && element.value !== "") {
+                        value(element.value);
+                    }
+                    ko.bindingHandlers.value.init(element, valueAccessor, allBindingsAccessor);
+                },
+                update: function (element, valueAccessor) {
+                    ko.bindingHandlers.value.update(element, valueAccessor);
+                }
+            };
+
+            ko.bindingHandlers.valueWithInitializationFromDOM = {
+                init: function (element, valueAccessor, allBindingsAccessor) {
+                    var value = valueAccessor();
+                    if (ko.isObservable(value)) {
+                        value(element.value);
+                    }
+                    ko.bindingHandlers.value.init(element, valueAccessor, allBindingsAccessor);
+                },
+                update: function (element, valueAccessor) {
+                    ko.bindingHandlers.value.update(element, valueAccessor);
+                }
+            };
+        });
+
+        $(function () {
+            var geocoder = new google.maps.Geocoder();
+            window.dialogViewModel.centerOnMap = true;
+            window.dialogViewModel.trigger = ko.observable(1);
+
+            function setAddressModelLngLat(location, centerOnMap) {
+                window.dialogViewModel.centerOnMap = centerOnMap;
+                window.dialogViewModel.Latitude(location.lat());
+                window.dialogViewModel.centerOnMap = centerOnMap;
+                window.dialogViewModel.Longitude(location.lng());
+            }
+
+            window.dialogViewModel.query = ko.dependentObservable(function () {
+                return [this.Address.AddressLine1(), this.Address.AddressLine2(), this.Address.City(), this.Address.County(), this.Address.StateProvinceRegion(), this.Address.MetropolitanStatisticalArea(), this.Address.Zip()].join(" ");
+            }, window.dialogViewModel);
+
+            window.dialogViewModel.OriginalLatitude = window.dialogViewModel.Latitude();
+            window.dialogViewModel.OriginalLongitude = window.dialogViewModel.Longitude();
+            window.dialogViewModel.OriginalQuery = window.dialogViewModel.query();
+            window.dialogViewModel.OriginalTrigger = window.dialogViewModel.trigger();
+            window.dialogViewModel.geoCodeAddress = ko.dependentObservable({
+                read: function () {
+                    // only used to fire dependentObservable manually
+                    this.trigger();
+
+                    if (this.query() != this.OriginalQuery || this.OriginalTrigger != this.trigger()) {
+                        this.OriginalTrigger = this.trigger();
+                        // setup settings
+                        var settings = {
+                            query: this.query(),
+                            centerOnMap: false
+                        };
+
+                        //ko.isObservable(value) ? value()
+
+                        if (!!$.trim(settings.query)) {
+                            geocoder.geocode({ 'address': settings.query }, function (results, status) {
+                                if (status == window.google.maps.GeocoderStatus.OK) {
+                                    setAddressModelLngLat(results[0].geometry.location, true);
+                                    if (!($("#location-map-canvas").data('map'))) {
+                                        window.TemplateDataService.CreateMap();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                },
+                owner: window.dialogViewModel//,
+                //deferEvaluation: true  //do not evaluate immediately when created
+            });
+
+            window.TemplateDataService.CreateMap = function () {
+                // create map
+                var vm = window.dialogViewModel;
+                if (!($("#location-map-canvas").data('map'))) {
+                    if (vm.Longitude() && vm.Latitude()) {
+                        var $map = $("#location-map-canvas"),
+                            parentDialogSpace = $map.closest(".ui-dialog-content").height(),
+                            siblingsSpace = $map.siblings().height(),
+                            remainingSpace = parentDialogSpace - siblingsSpace;
+
+                        $map.height(remainingSpace - (remainingSpace * 0.2));
+
+                        if ($map.length > 0) {
+                            var myOptions = {
+                                zoom: 18,
+                                center: new google.maps.LatLng(vm.Latitude(), vm.Longitude()),
+                                mapTypeId: google.maps.MapTypeId.HYBRID
+                            },
+                                mapCanvas = new google.maps.Map(document.getElementById("location-map-canvas"), myOptions);
+
+                            $map.data('map', mapCanvas);
+
+                            google.maps.event.addListener(mapCanvas, 'click', function (event) {
+                                setAddressModelLngLat(event.latLng, false);
+                            });
+                        }
+                        window.dialogViewModel.CreateMarker(vm.Latitude(), vm.Longitude());
+                    }
+                }
+
+                $("#reset-location").button().click(function (e) {
+                    e.preventDefault();
+                    // trigger flips a flag that causes dependentObservables to fire
+                    window.dialogViewModel.trigger(window.dialogViewModel.trigger() * -1);
+                });
+            };
+
+            window.dialogViewModel.CreateMarker = function (latitude, longitude) {
+                var vm = window.dialogViewModel;
+
+                // set marker
+                var location = new google.maps.LatLng(latitude, longitude);
+                var map = $("#location-map-canvas").data('map');
+                if (map) {
+                    map.clearMarkers();
+                    var marker = new google.maps.Marker({
+                        position: location,
+                        map: map
+                    });
+
+                    map.addMarker(marker);
+
+                    if (this.centerOnMap) {
+                        map.setCenter(location);
+                    }
+                    this.centerOnMap = true;
+                }
+            };
+
+            window.dialogViewModel.geoCodeCoordinates = ko.dependentObservable({
+                read: function () {
+                    // set marker
+                    window.dialogViewModel.CreateMarker(this.Latitude(), this.Longitude());
+                },
+                owner: window.dialogViewModel//,
+                //deferEvaluation: true  //do not evaluate immediately when created
+            });
+
+            window.TemplateDataService.loaded = function () {
+                window.TemplateDataService.CreateMap();
+            };
+
+            function DisableButton(button) {
+                if ($.isArray(button)) {
+                    $.each(button, function (idx, item) {
+                        $(".ui-dialog-buttonpane button:contains('" + item + "')").attr("disabled", true).addClass("ui-state-disabled");
+                    });
+                }
+                if (Object.prototype.toString.call(button) == '[object String]') {
+                    $(".ui-dialog-buttonpane button:contains('" + button + "')").attr("disabled", true).addClass("ui-state-disabled");
+                }
+            }
+
+            function EnableButton(button) {
+                if ($.isArray(button)) {
+                    $.each(button, function (idx, item) {
+                        $(".ui-dialog-buttonpane button:contains('" + item + "')").attr("disabled", false).removeClass("ui-state-disabled");
+                    });
+                }
+                if (Object.prototype.toString.call(button) == '[object String]') {
+                    $(".ui-dialog-buttonpane button:contains('" + button + "')").attr("disabled", false).removeClass("ui-state-disabled");
+                }
+            }
+
+            $("#dialog").dialog("option", "buttons", {
+                "Next": function () {
+                    DisableButton('Next');
+                    var options = {
+                        success: function (actionRoute, statusText, xhr, $form) {
+                            window.TemplateDataService.getProperty(null, actionRoute.route);
+                        },
+                        url: $("#dialog-form").attr('action') + "?nextbutton=next" + "&id=" + window.dialogViewModel.Id()
+                    };
+
+                    $.validator.unobtrusive.parse($("#dialog-form"));
+                    if ($("#dialog-form").valid()) {
+                        //TODO: use toJSON to make KO the owner of truth
+                        $("#dialog-form").ajaxSubmit(options);
+                    }
+                    else {
+                        EnableButton(['Next', 'Cancel']);
+                    }
+                },
+                Cancel: function () {
+                    DisableButton('Cancel');
+                    $(this).dialog("close");
+                }
+            });
+        });
+
+    })(jQuery);
+</script>
+</div>

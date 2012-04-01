@@ -1,0 +1,105 @@
+﻿@using SquishIt.Framework
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title</title>
+
+        @MvcHtmlString.Create(Bundle.Css()
+            .Add("~/Content/Site.css")
+            .Add("~/Content/Site2.css")
+            .Add("~/Content/Site3.css")
+            .Add("~/Content/fg.menu.css")
+            .Add("~/Content/css/reset.css")
+            .Add("~/Content/css/icons.css")
+            .Add("~/Content/css/workspace.css")
+            .AddRemote("~/Content/jquery-ui-1.8.18.css", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/redmond/jquery-ui.css")
+            .Render("~/Content/whitney#.css"))
+                    
+        <script src="http://maps.google.com/maps/api/js?v=3.3&sensor=false" type="text/javascript"></script>
+    </head>
+    <body>
+        @if (TempData["message"] != null)
+        {
+            <div class="Message">@TempData["message"]</div>
+        }
+        
+        @if (IsSectionDefined("siteHeader"))
+        {
+            @RenderSection("siteHeader")
+        }
+        else 
+        {
+            <header>
+                <div id="top-bar">
+                    <div class="center-header">
+                        <div class="header-inner">
+                            <div id="actionbar">
+                                @Context.User.Identity.Name&nbsp;|
+                                @Html.ActionLink("Sign Out", "LogOff", "Account", null, new { rel = "nofollow" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div id="header-bar">
+                <div class="center-header">
+                    <div class="header-inner">
+                        <div id="top">
+                        <div class="top-search left">@Html.ActionLink("Search", "Index", "Search", null, new { Id = "top-search-search" })</div>
+                        <div class="top-queue right">@Html.ActionLink("Queue", "Index", "Queue", null, new { Id = "top-search-queue" })</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <section id="main">
+            @RenderBody()
+        </section>
+        <footer></footer>
+    
+        @MvcHtmlString.Create(Bundle.JavaScript()
+            .Add("~/Scripts/modernizr-2.5.3.js")
+            .AddRemote("~/Scripts/jquery-1.7.1.min.js", "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+            .AddRemote("~/Scripts/jquery-ui-1.8.17.min.js", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js")
+            .Add("~/Scripts/Libs/JqueryTemplates/jquery.tmpl.js")
+            .Add("~/Scripts/Libs/JqueryCookie/jquery.cookie.js")
+            .Add("~/Scripts/jquery.validate.js")
+            .Add("~/Scripts/jquery.validate.unobtrusive.js")
+            .Add("~/Scripts/Libs/DigitalBushMaskedInput/jquery.maskedinput-1.2.2.min.js")
+            .Add("~/Scripts/Libs/NumberFormatter/jshashtable-2.1.js")
+            .Add("~/Scripts/Libs/NumberFormatter/jquery.numberformatter-1.2.2.min.js")
+            .Add("~/Scripts/Libs/CrockfordJson2/json2.js")
+            .Add("~/Scripts/Libs/Jmapping/markermanager.js")
+            .Add("~/Scripts/Libs/Jmapping/StyledMarker.js")
+            .Add("~/Scripts/Libs/Jmapping/jquery.metadata.js")
+            .Add("~/Scripts/Libs/Jmapping/jquery.jmapping.js")
+            .Add("~/Scripts/Libs/Knockout/knockout-1.3.0beta.debug.js")
+            .Add("~/Scripts/Libs/Knockout/knockout.mapping-latest.debug.js")
+            .Add("~/Scripts/Libs/JqueryForm/jquery.form.js")
+            .Add("~/Scripts/Libs/JqueryMenu/fg.menu.js")
+            .Add("~/Scripts/Libs/DataTables/jquery.dataTables.min.js")
+            .Add("~/Scripts/Libs/Underscore/underscore-1.1.5.js")
+            .Add("~/Scripts/Libs/Backbone/backbone-0.5.0.js")
+            .Add("~/Scripts/Libs/VisualSearch/visualsearch.js")
+            .Add("~/Scripts/Libs/VisualSearch/views/search_box.js")
+            .Add("~/Scripts/Libs/VisualSearch/views/search_facet.js")
+            .Add("~/Scripts/Libs/VisualSearch/views/search_input.js")
+            .Add("~/Scripts/Libs/VisualSearch/models/search_facets.js")
+            .Add("~/Scripts/Libs/VisualSearch/models/search_query.js")
+            .Add("~/Scripts/Libs/VisualSearch/utils/backbone_extensions.js")
+            .Add("~/Scripts/Libs/VisualSearch/utils/hotkeys.js")
+            .Add("~/Scripts/Libs/VisualSearch/utils/jquery_extensions.js")
+            .Add("~/Scripts/Libs/VisualSearch/utils/search_parser.js")
+            .Add("~/Scripts/Libs/VisualSearch/utils/inflector.js")
+            .Add("~/Scripts/Libs/VisualSearch/templates/templates.js")
+            .Add("~/Scripts/Views/Layout.js")
+            //.Add(String.Format("~/Scripts/Views/{0}/{1}.js", @ViewContext.Controller.ValueProvider.GetValue("Controller").RawValue, @ViewContext.Controller.ValueProvider.GetValue("Action").RawValue))
+            .Render("~/Scripts/whitney#.js"))
+
+        @if (IsSectionDefined("scripts"))
+        {
+            @RenderSection("scripts")
+        }
+    </body>
+</html>

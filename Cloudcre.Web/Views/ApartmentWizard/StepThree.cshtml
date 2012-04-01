@@ -1,0 +1,96 @@
+﻿@model Cloudcre.Service.ViewModels.MultipleFamilyViewModel
+
+@{
+    Layout = null;
+}
+
+<div id="propertyWizardTemplateContainer">
+<script type="text/html" id="personTemplate">       
+@using (Html.BeginForm("StepThree", "ApartmentWizard", FormMethod.Post, new { id = "dialog-form", @class = "wufoo" }))
+{
+    @Html.HiddenFor(model => model.serializedViewModel, new { data_bind = "value: serializedViewModel" })
+    <ul class="left">
+        <li class="complex">
+	        <fieldset>
+                <label class="desc" id="property">Property</label>
+                <div>
+                    <span class="left">
+		                Add file/images (currently not implemented)
+                    </span>
+                </div>
+	        </fieldset>
+        </li>            
+    </ul>
+}
+</script>
+<script type="text/javascript">
+    (function ($) {
+
+        function DisableButton(button) {
+            if ($.isArray(button)) {
+                $.each(button, function (idx, item) {
+                    $(".ui-dialog-buttonpane button:contains('" + item + "')").attr("disabled", true).addClass("ui-state-disabled");
+                });
+            }
+            if (Object.prototype.toString.call(button) == '[object String]') {
+                $(".ui-dialog-buttonpane button:contains('" + button + "')").attr("disabled", true).addClass("ui-state-disabled");
+            }
+        }
+
+        function EnableButton(button) {
+            if ($.isArray(button)) {
+                $.each(button, function (idx, item) {
+                    $(".ui-dialog-buttonpane button:contains('" + item + "')").attr("disabled", false).removeClass("ui-state-disabled");
+                });
+            }
+            if (Object.prototype.toString.call(button) == '[object String]') {
+                $(".ui-dialog-buttonpane button:contains('" + button + "')").attr("disabled", false).removeClass("ui-state-disabled");
+            }
+        }
+        
+        $(function () {
+            $("#dialog").dialog("option", "buttons", {
+                "Back": function () {
+                    DisableButton('Back');
+                    var options = {
+                        success: function (actionRoute) {
+                            window.TemplateDataService.getProperty(null, actionRoute.route);
+                        },
+                        url: $("#dialog-form").attr('action') + "?backButton=back"
+                    };
+
+                    $("#dialog-form").ajaxSubmit(options);
+                },
+                "Finish": function () {
+                    DisableButton('Finish');
+                    var self = this,
+                        options = {
+                            success: function (actionRoute) {
+                                window.TemplateDataService.getProperty(null, actionRoute.route, nullCallback);
+                            },
+                            url: $("#dialog-form").attr('action') + "?nextbutton=next"
+                        },
+                        nullCallback = function () {
+                            $(self).dialog("close");
+                            // TODO - add success/fail banner msg
+                            fireDisplay();
+                        };
+
+                    $.validator.unobtrusive.parse($("#dialog-form"));
+                    if ($("#dialog-form").valid()) {
+                        $("#dialog-form").ajaxSubmit(options);
+                    }
+                    else {
+                        EnableButton(['Back', 'Finish', 'Cancel']);
+                    }
+                },
+                Cancel: function () {
+                    DisableButton('Cancel');
+                    $(this).dialog("close");
+                }
+            });
+        });
+
+    })(jQuery);
+</script>
+</div>

@@ -1,0 +1,306 @@
+﻿@model Cloudcre.Service.ViewModels.IndustrialViewModel
+<ul class="left">
+    <li class="complex">
+        <fieldset>
+            <label class="desc" id="property">Property</label>
+            <div>
+                <span class="left">
+	                @Html.LabelFor(model => model.Name) @Html.ValidationMessageFor(model => model.Name)
+                    @Html.TextBoxFor(model => model.Name, new { data_bind = "valueWithNullsAsEmpty: Name", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.Address.AddressLine1) @Html.ValidationMessageFor(model => model.Address.AddressLine1)
+                    @Html.TextBoxFor(model => model.Address.AddressLine1, new { data_bind = "valueWithNullsAsEmpty: Address.AddressLine1", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+	                @Html.LabelFor(model => model.Address.AddressLine2) @Html.ValidationMessageFor(model => model.Address.AddressLine2)
+                    @Html.TextBoxFor(model => model.Address.AddressLine2, new { data_bind = "valueWithNullsAsEmpty: Address.AddressLine2", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.Address.City) @Html.ValidationMessageFor(model => model.Address.City)
+                    @Html.TextBoxFor(model => model.Address.City, new { data_bind = "valueWithNullsAsEmpty: Address.City", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+	                @Html.LabelFor(model => model.Address.County) @Html.ValidationMessageFor(model => model.Address.County)
+                    @Html.TextBoxFor(model => model.Address.County, new { data_bind = "valueWithNullsAsEmpty: Address.County", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.Address.StateProvinceRegion) @Html.ValidationMessageFor(model => model.Address.StateProvinceRegion)
+                    @Html.TextBoxFor(model => model.Address.StateProvinceRegion, new { data_bind = "valueWithNullsAsEmpty: Address.StateProvinceRegion", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+	                @Html.LabelFor(model => model.Address.Zip) @Html.ValidationMessageFor(model => model.Address.Zip)
+                    @Html.TextBoxFor(model => model.Address.Zip, new { data_bind = "valueWithNullsAsEmpty: Address.Zip", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.Address.MetropolitanStatisticalArea) @Html.ValidationMessageFor(model => model.Address.MetropolitanStatisticalArea)
+                    @Html.TextBoxFor(model => model.Address.MetropolitanStatisticalArea, new { data_bind = "valueWithNullsAsEmpty: Address.MetropolitanStatisticalArea", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+	                @Html.LabelFor(model => model.Latitude) @Html.ValidationMessageFor(model => model.Latitude)
+                    @Html.TextBoxFor(model => model.Latitude, new { data_bind = "valueWithNullsAsEmpty: Latitude", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.Longitude) @Html.ValidationMessageFor(model => model.Longitude)
+                    @Html.TextBoxFor(model => model.Longitude, new { data_bind = "valueWithNullsAsEmpty: Longitude", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+            </div>
+	    </fieldset>
+    </li>
+</ul>
+<ul class="left">
+    <li class="complex">
+        <div id ="location-map-canvas"></div>
+        <div>                
+            <button id="reset-location">Reset map location to address</button>
+        </div>
+    </li>
+</ul>
+<ul class="left">
+    <li class="complex">
+        <fieldset>
+            <label class="desc" id="site">Site</label>
+            <div>
+                <span class="left">
+                    @Html.LabelFor(model => model.SiteTotalSquareFoot) @Html.ValidationMessageFor(model => model.SiteTotalSquareFoot)
+                    @Html.TextBoxFor(model => model.SiteTotalSquareFoot, new { data_bind = "valueWithNullsAsEmpty: SiteTotalSquareFoot", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.Parking) @Html.ValidationMessageFor(model => model.Parking)
+                    @Html.TextBoxFor(model => model.Parking, new { data_bind = "valueWithNullsAsEmpty: Parking", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+	                @Html.LabelFor(model => model.BuildingAreaRatio) @Html.ValidationMessageFor(model => model.BuildingAreaRatio)
+                    @Html.TextBoxFor(model => model.BuildingAreaRatio, new { data_bind = "valueWithNullsAsEmpty: BuildingAreaRatio", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.FloorToAreaRatio) @Html.ValidationMessageFor(model => model.FloorToAreaRatio)
+                    @Html.TextBoxFor(model => model.FloorToAreaRatio, new { data_bind = "valueWithNullsAsEmpty: FloorToAreaRatio", @readonly = "readonly", @class = "text ui-widget-content ui-corner-all readonly" })
+                </span>
+                <span class="left">
+	                @Html.LabelFor(model => model.Zoning) @Html.ValidationMessageFor(model => model.Zoning)
+                    @Html.TextBoxFor(model => model.Zoning, new { data_bind = "valueWithNullsAsEmpty: Zoning", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.ParcelId) @Html.ValidationMessageFor(model => model.ParcelId)
+                    @Html.TextBoxFor(model => model.ParcelId, new { data_bind = "valueWithNullsAsEmpty: ParcelId", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+	                @Html.LabelFor(model => model.LegalDescription) @Html.ValidationMessageFor(model => model.LegalDescription)
+                    @Html.TextBoxFor(model => model.LegalDescription, new { data_bind = "valueWithNullsAsEmpty: LegalDescription", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.FloodZone) @Html.ValidationMessageFor(model => model.FloodZone)
+                    @Html.TextBoxFor(model => model.FloodZone, new { data_bind = "valueWithNullsAsEmpty: FloodZone", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+	                @Html.LabelFor(model => model.CensusTract) @Html.ValidationMessageFor(model => model.CensusTract)
+                    @Html.TextBoxFor(model => model.CensusTract, new { data_bind = "valueWithNullsAsEmpty: CensusTract", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+            </div>
+        </fieldset>
+    </li>        
+    <li class="complex">
+        <fieldset>
+            <label class="desc" id="building">Building</label>
+            <div>
+                <span class="left">
+	                @Html.LabelFor(model => model.BuildingTotalSquareFoot) @Html.ValidationMessageFor(model => model.BuildingTotalSquareFoot)
+                    @Html.TextBoxFor(model => model.BuildingTotalSquareFoot, new { data_bind = "valueWithNullsAsEmpty: BuildingTotalSquareFoot", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.BuiltTimePeriod) @Html.ValidationMessageFor(model => model.BuiltTimePeriod)
+                    @Html.TextBoxFor(model => model.BuiltTimePeriod, new { data_bind = "valueWithNullsAsEmpty: BuiltTimePeriod", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+	                @Html.LabelFor(model => model.Condition) @Html.ValidationMessageFor(model => model.Condition)
+                    @Html.TextBoxFor(model => model.Condition, new { data_bind = "valueWithNullsAsEmpty: Condition", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.Class) @Html.ValidationMessageFor(model => model.Class)
+                    @Html.TextBoxFor(model => model.Class, new { data_bind = "valueWithNullsAsEmpty: Class", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+                    @Html.LabelFor(model => model.Quality) @Html.ValidationMessageFor(model => model.Quality)
+                    @Html.TextBoxFor(model => model.Quality, new { data_bind = "valueWithNullsAsEmpty: Quality", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.ConstructionMaterial) @Html.ValidationMessageFor(model => model.ConstructionMaterial)
+                    @Html.TextBoxFor(model => model.ConstructionMaterial, new { data_bind = "valueWithNullsAsEmpty: ConstructionMaterial", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+	                @Html.LabelFor(model => model.Stories) @Html.ValidationMessageFor(model => model.Stories)
+                    @Html.TextBoxFor(model => model.Stories, new { data_bind = "valueWithNullsAsEmpty: Stories", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+		            @Html.LabelFor(model => model.Use) @Html.ValidationMessageFor(model => model.Use)
+                    @Html.TextBoxFor(model => model.Use, new { data_bind = "valueWithNullsAsEmpty: Use", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+                    @Html.LabelFor(model => model.PercentOfBuildingFinished) @Html.ValidationMessageFor(model => model.PercentOfBuildingFinished)
+                    @Html.TextBoxFor(model => model.PercentOfBuildingFinished, new { data_bind = "valueWithNullsAsEmpty: PercentOfBuildingFinished", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+	                @Html.LabelFor(model => model.WareHouseAccess) @Html.ValidationMessageFor(model => model.WareHouseAccess)
+                    @Html.TextBoxFor(model => model.WareHouseAccess, new { data_bind = "valueWithNullsAsEmpty: WareHouseAccess", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+	                @Html.LabelFor(model => model.WareHouseClearHeight) @Html.ValidationMessageFor(model => model.WareHouseClearHeight)
+                    @Html.TextBoxFor(model => model.WareHouseClearHeight, new { data_bind = "valueWithNullsAsEmpty: WareHouseClearHeight", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+            </div>
+	    </fieldset>
+    </li>
+</ul>
+<ul class="left">
+    <li class="complex">
+        <fieldset>
+            <label class="desc" id="sale">Sale</label>
+            <div>
+                <div class="thirds">
+                    <span class="third">
+                        @Html.LabelFor(model => model.ListingDate) @Html.ValidationMessageFor(model => model.ListingDate)
+                        @Html.TextBoxFor(model => model.ListingDate, new { data_bind = "value: ListingDate", @class = "text ui-widget-content ui-corner-all date-pick" })
+                    </span>
+                    <span class="third">
+                        @Html.LabelFor(model => model.ContractDate) @Html.ValidationMessageFor(model => model.ContractDate)
+                        @Html.TextBoxFor(model => model.ContractDate, new { data_bind = "value: ContractDate", @class = "text ui-widget-content ui-corner-all date-pick" })
+                    </span>
+                    <span class="third">
+                        @Html.LabelFor(model => model.SaleDate) @Html.ValidationMessageFor(model => model.SaleDate)
+                        @Html.TextBoxFor(model => model.SaleDate, new { data_bind = "value: SaleDate", @class = "text ui-widget-content ui-corner-all date-pick" })
+                    </span>
+                </div>
+                <span class="left">
+                    @Html.LabelFor(model => model.MarketingPeriod) @Html.ValidationMessageFor(model => model.MarketingPeriod)
+                    @Html.TextBoxFor(model => model.MarketingPeriod, new { data_bind = "valueWithNullsAsEmpty: MarketingPeriod", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+                    @Html.LabelFor(model => model.Price) @Html.ValidationMessageFor(model => model.Price)
+                    @Html.TextBoxFor(model => model.Price, new { data_bind = "valueWithNullsAsEmpty: Price", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+                    @Html.LabelFor(model => model.CostPerBuildingSquareFoot) @Html.ValidationMessageFor(model => model.CostPerBuildingSquareFoot)
+                    @Html.TextBoxFor(model => model.CostPerBuildingSquareFoot, new { data_bind = "valueWithNullsAsEmpty: CostPerBuildingSquareFoot", @readonly = "readonly", @class = "text ui-widget-content ui-corner-all readonly" })
+                </span>
+                <span class="right">
+                    @Html.LabelFor(model => model.CostPerSiteSquareFoot) @Html.ValidationMessageFor(model => model.CostPerSiteSquareFoot)
+                    @Html.TextBoxFor(model => model.CostPerSiteSquareFoot, new { data_bind = "valueWithNullsAsEmpty: CostPerSiteSquareFoot", @readonly = "readonly", @class = "text ui-widget-content ui-corner-all readonly" })
+                </span>
+                <span class="left">
+                    @Html.LabelFor(model => model.OfficialRecordBookAndPage) @Html.ValidationMessageFor(model => model.OfficialRecordBookAndPage)
+                    @Html.TextBoxFor(model => model.OfficialRecordBookAndPage, new { data_bind = "valueWithNullsAsEmpty: OfficialRecordBookAndPage", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+                    @Html.LabelFor(model => model.Grantor) @Html.ValidationMessageFor(model => model.Grantor)
+                    @Html.TextBoxFor(model => model.Grantor, new { data_bind = "valueWithNullsAsEmpty: Grantor", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+                    @Html.LabelFor(model => model.Grantee) @Html.ValidationMessageFor(model => model.Grantee)
+                    @Html.TextBoxFor(model => model.Grantee, new { data_bind = "valueWithNullsAsEmpty: Grantee", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+                    @Html.LabelFor(model => model.PropertyRights) @Html.ValidationMessageFor(model => model.PropertyRights)
+                    @Html.TextBoxFor(model => model.PropertyRights, new { data_bind = "valueWithNullsAsEmpty: PropertyRights", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+                    @Html.LabelFor(model => model.Financing) @Html.ValidationMessageFor(model => model.Financing)
+                    @Html.TextBoxFor(model => model.Financing, new { data_bind = "valueWithNullsAsEmpty: Financing", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+                    @Html.LabelFor(model => model.ListedPriceAtSale) @Html.ValidationMessageFor(model => model.ListedPriceAtSale)
+                    @Html.TextBoxFor(model => model.ListedPriceAtSale, new { data_bind = "valueWithNullsAsEmpty: ListedPriceAtSale", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+                    @Html.LabelFor(model => model.ContractPeriod) @Html.ValidationMessageFor(model => model.ContractPeriod)
+                    @Html.TextBoxFor(model => model.ContractPeriod, new { data_bind = "valueWithNullsAsEmpty: ContractPeriod", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="right">
+                    @Html.LabelFor(model => model.Verification) @Html.ValidationMessageFor(model => model.Verification)
+                    @Html.TextBoxFor(model => model.Verification, new { data_bind = "valueWithNullsAsEmpty: Verification", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <span class="left">
+                    @Html.LabelFor(model => model.PriorSales) @Html.ValidationMessageFor(model => model.PriorSales)
+                    @Html.TextBoxFor(model => model.PriorSales, new { data_bind = "valueWithNullsAsEmpty: PriorSales", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+            </div>
+        </fieldset>
+    </li>
+    <li class="complex">
+        <fieldset>
+            <label class="desc" id="economic">Economic</label>
+            <div>
+                <span style="float:left; width:80%;">
+                    @Html.LabelFor(model => model.Occupancy) @Html.ValidationMessageFor(model => model.Occupancy)
+                    @Html.TextBoxFor(model => model.Occupancy, new { data_bind = "valueWithNullsAsEmpty: Occupancy", @class = "text ui-widget-content ui-corner-all" })
+                </span>
+                <div class="thirds">
+                    <span class="third">
+                        @Html.LabelFor(model => model.PotentialGrossIncome) @Html.ValidationMessageFor(model => model.PotentialGrossIncome)
+                        @Html.TextBoxFor(model => model.PotentialGrossIncome, new { data_bind = "valueWithNullsAsEmpty: PotentialGrossIncome", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="third">
+                        <label>$/SF</label>
+                        <input type="text" name="potentialGrossIncomePerSqFt" id="potentialGrossIncomePerSqFt" data-bind = "valueWithNullsAsEmpty: PotentialGrossIncomePerSqFt" readonly = "readonly" class="text ui-widget-content ui-corner-all readonly" />
+                    </span>
+                </div>                
+                <div class="thirds">
+                    <span class="third">
+                        @Html.LabelFor(model => model.EffectiveGrossIncome) @Html.ValidationMessageFor(model => model.EffectiveGrossIncome)
+                        @Html.TextBoxFor(model => model.EffectiveGrossIncome, new { data_bind = "valueWithNullsAsEmpty: EffectiveGrossIncome", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="third">
+                        <label>$/SF</label>
+                        <input type="text" name="effectiveGrossIncomePerSqFt" id="effectiveGrossIncomePerSqFt" data-bind = "valueWithNullsAsEmpty: EffectiveGrossIncomePerSqFt" readonly = "readonly" class="text ui-widget-content ui-corner-all readonly" />
+                    </span>
+                </div>                
+                <div class="thirds">
+                    <span class="third">
+                        @Html.LabelFor(model => model.OperatingExpense) @Html.ValidationMessageFor(model => model.OperatingExpense)
+                        @Html.TextBoxFor(model => model.OperatingExpense, new { data_bind = "valueWithNullsAsEmpty: OperatingExpense", @class = "text ui-widget-content ui-corner-all" })
+                    </span>
+                    <span class="third">
+                        <label>$/SF</label>
+                        <input type="text" name="operatingExpensePerSqFt" id="operatingExpensePerSqFt" data-bind = "valueWithNullsAsEmpty: OperatingExpensePerSqFt" readonly = "readonly" class="text ui-widget-content ui-corner-all readonly" />
+                    </span>
+                </div>                
+                <div class="thirds">
+                    <span class="third">
+                        <span class="two">
+                            @Html.LabelFor(model => model.NetOperatingIncome) @Html.ValidationMessageFor(model => model.NetOperatingIncome)
+                            @Html.TextBoxFor(model => model.NetOperatingIncome, new { data_bind = "valueWithNullsAsEmpty: NetOperatingIncomeDerived, css: { readonly: NetOperatingIncomeCkb() }, attr: { readonly: NetOperatingIncomeCkb() }", @class = "text ui-widget-content ui-corner-all" })
+                        </span>
+                        <span class="two">
+                            @Html.Label("Auto Calculate NOI")
+                            @Html.CheckBox("NetOperatingIncomeCkbId", true, new { data_bind = "checked: NetOperatingIncomeCkb" })
+                        </span>
+                    </span>
+                    <span class="third">
+                        <label>$/SF</label>
+                        <input type="text" name="netOperatingIncomePerSqFt" id="netOperatingIncomePerSqFt" data-bind = "valueWithNullsAsEmpty: NetOperatingIncomePerSqFt" readonly = "readonly" class="text ui-widget-content ui-corner-all readonly" />
+                    </span>
+                    <span class="left">
+                        @Html.LabelFor(model => model.OverallRate) @Html.ValidationMessageFor(model => model.OverallRate)
+                        @Html.TextBoxFor(model => model.OverallRate, new { data_bind = "valueWithNullsAsEmpty: OverallRate", @readonly = "readonly", @class = "text ui-widget-content ui-corner-all readonly" })
+                    </span>
+                    <span class="right">
+                        @Html.LabelFor(model => model.GrossRentMultiplier) @Html.ValidationMessageFor(model => model.GrossRentMultiplier)
+                        @Html.TextBoxFor(model => model.GrossRentMultiplier, new { data_bind = "valueWithNullsAsEmpty: GrossRentMultiplier", @class = "text ui-widget-content ui-corner-all" })
+                    </span> 
+                </div>
+            </div>
+        </fieldset>
+    </li>
+    <li class="complex">
+        <fieldset>
+            <label class="desc" id="comments">Comments</label>
+            <div>
+                @Html.ValidationMessageFor(model => model.Comments)
+                @Html.TextAreaFor(model => model.Comments, new { data_bind = "valueWithNullsAsEmpty: Comments", @class = "text ui-widget-content ui-corner-all" })
+            </div>
+            <div>
+                <input class="submit-button" type="submit" value="Save">
+            </div>
+	    </fieldset>
+    </li>
+</ul>          

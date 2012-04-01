@@ -1,0 +1,22 @@
+﻿@model Cloudcre.Service.ViewModels.ResidentialLandViewModel
+
+@{
+    ViewBag.Title = "Cloud CRE - Edit residential land property";
+    Layout = "~/Views/Shared/Property/_Layout_Property_Edit.cshtml";
+}
+
+@section scripts {
+    <script type="text/javascript">
+        window.cloudcre.routing.urls({
+            action: '@Url.Action("Edit", "ResidentialLand")',
+            model: '@Url.Action("Model", "ResidentialLand", new { Model.Id })'
+        });
+    </script>
+    <script type="text/html" id="template">
+        @using (Html.BeginForm("Edit", "ResidentialLand", FormMethod.Post, new { id = "dialog-form", @class = "wufoo" }))
+        {
+            @Html.HiddenFor(model => model.Id)
+            @Html.Partial("_Template")
+        }
+    </script>
+}

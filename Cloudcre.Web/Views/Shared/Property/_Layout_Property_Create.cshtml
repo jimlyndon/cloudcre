@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/Property/_Layout_Property.cshtml";
+}
+
+<div id="submit-dialog" title="Create new property - Status">
+    <div id="submit-dialog-msg"></div>
+</div>
+
+@RenderBody()
+
+@section scripts {
+  @RenderSection("scripts", required: false)
+}
