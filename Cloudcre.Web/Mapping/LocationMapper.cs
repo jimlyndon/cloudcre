@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using AutoMapper;
-using Cloudcre.Service.Messages;
-using Cloudcre.Service.ViewModels;
+using Cloudcre.Service.Property.Messages;
+using Cloudcre.Service.Property.ViewModels;
 
 namespace Cloudcre.Web.Mapping
 {

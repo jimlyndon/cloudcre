@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Cloudcre.Model;
-using Cloudcre.Service.Messages;
+using Cloudcre.Service.Property.Messages;
 
 namespace Cloudcre.Web.Models
 {

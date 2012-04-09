@@ -1,6 +1,6 @@
 ﻿using System;
-using NHibernate.Search.Attributes;
 using Cloudcre.Model.Core;
+using NHibernate.Search.Attributes;
 
 namespace Cloudcre.Model
 {

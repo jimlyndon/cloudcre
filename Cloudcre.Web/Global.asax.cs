@@ -1,8 +1,9 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
-using LowercaseRoutesMVC;
-using Cloudcre.Web.Models;
+using Cloudcre.Service.Property.Mapping;
 using Cloudcre.Web.Filters;
+using Cloudcre.Web.Models;
+using LowercaseRoutesMVC;
 
 namespace Cloudcre.Web
 {
@@ -35,6 +36,8 @@ namespace Cloudcre.Web
                 new { controller = "Queue", action = "Index" }
             );
 
+            //routes.MapRouteLowercase("Report", "{controller}/Report/{action}");
+
             routes.MapRouteLowercase(
                 "SlugsAfterId",
                 "{controller}/{action}/{id}/{slug}",
@@ -52,8 +55,7 @@ namespace Cloudcre.Web
             RegisterRoutes(RouteTable.Routes);
 
             Mapping.BootStrapper.ConfigureAutoMapper();
-            Service.Mapping.BootStrapper.ConfigureAutoMapper();
-            Report.Summary.AutoMapperBootStrapper.ConfigureAutoMapper();
+            BootStrapper.ConfigureAutoMapper();
 
             ModelBinders.Binders.Add(typeof(PropertySearchRequestViewModel), new JsonModelBinder());
             //ModelBinders.Binders.Add(typeof(Model.Queue.Queue), new QueueModelBinder());

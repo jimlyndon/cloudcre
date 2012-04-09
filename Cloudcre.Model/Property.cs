@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using NHibernate.Search.Attributes;
 using Cloudcre.Model.Core;
+using NHibernate.Search.Attributes;
 
 namespace Cloudcre.Model
 {
@@ -43,7 +42,16 @@ namespace Cloudcre.Model
         //    None = 4
         //}
 
-        public virtual decimal? Acres { get; set; }
+        public virtual decimal? Acres
+        {
+            get
+            {
+                if (SiteTotalSquareFoot.HasValue)
+                    return (SiteTotalSquareFoot / 43560M);
+                
+                return null;
+            }
+        }
 
         [IndexedEmbedded(Depth = 1)]
         public virtual Address Address { get; set; }

@@ -1,10 +1,5 @@
 ﻿using System.Configuration;
 using System.Web.Security;
-using NHibernate;
-using NHibernate.Search;
-using Ninject;
-using Ninject.Modules;
-using Ninject.Web.Common;
 using Cloudcre.Infrastructure.Configuration;
 using Cloudcre.Infrastructure.CookieStorage;
 using Cloudcre.Infrastructure.Logging;
@@ -13,6 +8,11 @@ using Cloudcre.Model.Core.UnitOfWork;
 using Cloudcre.Repository.NHibernate;
 using Cloudcre.Repository.NHibernate.Repositories;
 using Cloudcre.Web.UserManagement.Membership;
+using NHibernate;
+using NHibernate.Search;
+using Ninject;
+using Ninject.Modules;
+using Ninject.Web.Common;
 
 namespace Cloudcre.Web.Configuration
 {

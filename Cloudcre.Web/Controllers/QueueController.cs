@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Web.Mvc;
 using Cloudcre.Infrastructure.CookieStorage;
-using Cloudcre.Service;
-using Cloudcre.Service.Messages;
-using Cloudcre.Service.ViewModels;
+using Cloudcre.Service.Property;
+using Cloudcre.Service.Property.Messages;
+using Cloudcre.Service.Property.ViewModels;
 using Cloudcre.Web.Models;
 
 namespace Cloudcre.Web.Controllers

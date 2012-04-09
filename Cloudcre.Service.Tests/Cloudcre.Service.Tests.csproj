@@ -51,16 +51,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReportingServiceTest.cs" />
+    <Compile Include="Report\Summary\Office\ReportingServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cloudcre.Model\Cloudcre.Model.csproj">
       <Project>{F910C9F7-7CD2-4CCE-9E65-191FED573ECF}</Project>
       <Name>Cloudcre.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Cloudcre.Report\Cloudcre.Report.csproj">
-      <Project>{6D7C7C3A-4B63-4524-854B-6F0F0CE807BE}</Project>
-      <Name>Cloudcre.Report</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cloudcre.Service\Cloudcre.Service.csproj">
       <Project>{DC3715E8-39E8-4ECB-A82A-3BB1524DE4C1}</Project>

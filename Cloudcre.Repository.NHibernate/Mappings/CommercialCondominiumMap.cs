@@ -1,5 +1,5 @@
-﻿using FluentNHibernate.Mapping;
-using Cloudcre.Model;
+﻿using Cloudcre.Model;
+using FluentNHibernate.Mapping;
 
 namespace Cloudcre.Repository.NHibernate.Mappings
 {

@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Security.Principal;
 using System.Web.Mvc;
 using System.Web.Security;
-using Cloudcre.Service.Messages;
 using Cloudcre.Web.Filters;
 using Cloudcre.Web.Models;
 using Cloudcre.Web.UserManagement.Membership;

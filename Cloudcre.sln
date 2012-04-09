@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Infrastructure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Model", "Cloudcre.Model\Cloudcre.Model.csproj", "{F910C9F7-7CD2-4CCE-9E65-191FED573ECF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Report", "Cloudcre.Report\Cloudcre.Report.csproj", "{6D7C7C3A-4B63-4524-854B-6F0F0CE807BE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Repository.NHibernate", "Cloudcre.Repository.NHibernate\Cloudcre.Repository.NHibernate.csproj", "{0CEE7ECF-FF10-4768-AB42-CC2D70C6CA01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Service", "Cloudcre.Service\Cloudcre.Service.csproj", "{DC3715E8-39E8-4ECB-A82A-3BB1524DE4C1}"
@@ -16,8 +14,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Web", "Cloudcre.Web\Cloudcre.Web.csproj", "{7059319F-E9EB-4D87-86F5-E8794A0B7CF2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D5FC1B36-BD07-4B3D-8907-BCF331AFA6DE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudcre.Report.Tests", "Cloudcre.Report.Tests\Cloudcre.Report.Tests.csproj", "{B738F660-13E4-4800-A4DA-1DB4A8B8C845}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{70606A29-9B1D-4A0D-8AC4-04382E7DB842}"
 	ProjectSection(SolutionItems) = preProject
@@ -57,10 +53,6 @@ Global
 		{F910C9F7-7CD2-4CCE-9E65-191FED573ECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F910C9F7-7CD2-4CCE-9E65-191FED573ECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F910C9F7-7CD2-4CCE-9E65-191FED573ECF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D7C7C3A-4B63-4524-854B-6F0F0CE807BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D7C7C3A-4B63-4524-854B-6F0F0CE807BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D7C7C3A-4B63-4524-854B-6F0F0CE807BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D7C7C3A-4B63-4524-854B-6F0F0CE807BE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CEE7ECF-FF10-4768-AB42-CC2D70C6CA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CEE7ECF-FF10-4768-AB42-CC2D70C6CA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CEE7ECF-FF10-4768-AB42-CC2D70C6CA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,10 +69,6 @@ Global
 		{7059319F-E9EB-4D87-86F5-E8794A0B7CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7059319F-E9EB-4D87-86F5-E8794A0B7CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7059319F-E9EB-4D87-86F5-E8794A0B7CF2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B738F660-13E4-4800-A4DA-1DB4A8B8C845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B738F660-13E4-4800-A4DA-1DB4A8B8C845}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B738F660-13E4-4800-A4DA-1DB4A8B8C845}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B738F660-13E4-4800-A4DA-1DB4A8B8C845}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2A8DC746-163F-41DF-A70B-A4529AA71495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2A8DC746-163F-41DF-A70B-A4529AA71495}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A8DC746-163F-41DF-A70B-A4529AA71495}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -102,7 +90,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B738F660-13E4-4800-A4DA-1DB4A8B8C845} = {D5FC1B36-BD07-4B3D-8907-BCF331AFA6DE}
 		{70606A29-9B1D-4A0D-8AC4-04382E7DB842} = {D5FC1B36-BD07-4B3D-8907-BCF331AFA6DE}
 		{2A8DC746-163F-41DF-A70B-A4529AA71495} = {D5FC1B36-BD07-4B3D-8907-BCF331AFA6DE}
 		{A3B9EC88-DF3B-4E9F-9B1E-4D5757CB6B69} = {D5FC1B36-BD07-4B3D-8907-BCF331AFA6DE}

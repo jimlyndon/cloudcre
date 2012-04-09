@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using Cloudcre.Model.Core;
+using Cloudcre.Repository.NHibernate;
 using Cloudcre.Utilities.Console;
 using NHibernate.Search;
 using NHibernate.Search.Attributes;
-using Cloudcre.Model.Core;
-using Cloudcre.Repository.NHibernate;
 
 namespace Cloudcre.Utilities.LuceneIndexer.Indexers
 {

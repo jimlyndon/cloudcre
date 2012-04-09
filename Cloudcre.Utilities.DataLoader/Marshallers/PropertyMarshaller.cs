@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Data;
-using Cloudcre.Utilities.Console;
-using NHibernate.Search;
 using Cloudcre.Model;
 using Cloudcre.Model.Core.UnitOfWork;
 using Cloudcre.Repository.NHibernate;
 using Cloudcre.Repository.NHibernate.Repositories;
+using Cloudcre.Utilities.Console;
+using NHibernate.Search;
 
 namespace Cloudcre.Test.DataLoader.Marshallers
 {

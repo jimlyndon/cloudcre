@@ -1,5 +1,5 @@
-﻿using FluentNHibernate.Mapping;
-using Cloudcre.Model;
+﻿using Cloudcre.Model;
+using FluentNHibernate.Mapping;
 
 namespace Cloudcre.Repository.NHibernate.Mappings
 {
@@ -8,7 +8,6 @@ namespace Cloudcre.Repository.NHibernate.Mappings
         public PropertyMap()
         {
             Id(x => x.Id).GeneratedBy.GuidComb();
-            Map(x => x.Acres);
             Map(x => x.CensusTract);
             Map(x => x.Class);
             Map(x => x.Comments);

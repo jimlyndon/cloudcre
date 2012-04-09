@@ -1,8 +1,10 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Cloudcre.Infrastructure.CookieStorage;
-using Cloudcre.Service;
-using Cloudcre.Service.Messages;
 using Cloudcre.Model;
+using Cloudcre.Service.Property;
+using Cloudcre.Service.Property.Messages;
+using Cloudcre.Service.Report.Messages;
 using Cloudcre.Web.Configuration;
 using Cloudcre.Web.HtmlHelpers;
 using Cloudcre.Web.Mapping;
@@ -63,6 +65,27 @@ namespace Cloudcre.Web.Controllers
 
             //return new HttpStatusCodeResult(200);
             return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult Summary(Guid? id)
+        {
+            if (ModelState.IsValid && id.HasValue)
+            {
+                var request = new GetReportRequest { Ids = new[] { id.Value } };
+
+                var response = _service.SummaryReport(request);
+                if (!response.Success)
+                {
+                    TempData["message"] = response.Message;
+                    return null;
+                }
+
+                return File(response.Report, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            "SummaryReport.xlsx");
+            }
+
+            return new HttpNotFoundResult();
         }
 
         [HttpPost]

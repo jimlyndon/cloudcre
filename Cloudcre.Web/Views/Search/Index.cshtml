@@ -22,7 +22,8 @@
                 {
                     <div>
                         <div>
-                            Property Type @Html.DropDownListFor(model => model.PropertyType, Model.PropertyType)
+                            @*Property Type @Html.DropDownListFor(model => model.PropertyType, Model.PropertyType)*@
+                            Property Type <select data-bind="options: propertyTypeOptionValues, value: propertyTypeSelected"></select>
                         </div>
                     </div>
                     <br />
@@ -76,7 +77,7 @@
             </div>
             <div class="search-options left">
                 <h2>Active Queue</h2>
-                <div id="queued" data-bind='template: { name: "peopleTemplate", foreach: queued}'> </div>
+                <div id="queued" data-bind='template: { name: "queueTemplate", foreach: getQueue}'> </div>
             </div>
         </td>
     </tr>
@@ -85,9 +86,9 @@
 <div id="delete-dialog" title="Permanently remove a property">
     <div id="delete-dialog-msg"></div>
 </div>
-<div id="dialog" title="Add a new property">
+@*<div id="dialog" title="Add a new property">
     <div id="personList" data-bind="template: { name: 'personTemplate', afterRender: loaded }"></div>
-</div>
+</div>*@
 <span class="item-displayoptions-pages">
     <span id="pageLinksTop">
         @Html.BuildPageLinksFrom(Model.CurrentPage, Model.TotalNumberOfPages, x => "JavaScript:displayPage("+ x +")") of @Model.TotalNumberOfPages pages, with @Model.NumberOfTitlesFound property record(s) in total
@@ -166,7 +167,7 @@
         <tr class="map-location" data-id="${$index + 1}" data-point="{ lat: ${Latitude}, lng: ${Longitude} }" data-category="'apartment'">
             <td>
                 <div>
-                    <button class="select-button" data-id="${Id}" data-name="${Name}" data-parcelid="${ParcelId}">Add to Queue</button>
+                    <button class="select-button" data-bind="click: select" data-id="${Id}" data-name="${Name}" data-parcelid="${ParcelId}">Add to Queue</button>
                 </div>
             </td>
             <td>
@@ -233,11 +234,11 @@
         </tr>
         {{/each}}
     </script>
-    <script type="text/html" id="peopleTemplate">
+    <script type="text/html" id="queueTemplate">
         <ul>
             <li>
                 <div>
-                    ${ Name }, parcel ${ ParcelId } <a href="#" data-bind="click: function() { viewModel.remove($data) }">Remove</a>
+                    ${ Name }, parcel ${ id } <a href="#" data-bind="click: function() { viewModel.remove($data) }">Remove</a> 
                 </div>
             </li>
         </ul>

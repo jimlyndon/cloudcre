@@ -2,8 +2,8 @@
 using System.Web.Mvc;
 using Cloudcre.Infrastructure.CookieStorage;
 using Cloudcre.Model;
-using Cloudcre.Service;
-using Cloudcre.Service.Messages;
+using Cloudcre.Service.Property;
+using Cloudcre.Service.Property.Messages;
 using Cloudcre.Web.Configuration;
 using Cloudcre.Web.HtmlHelpers;
 using Cloudcre.Web.Models;

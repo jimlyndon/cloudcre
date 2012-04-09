@@ -367,10 +367,6 @@
       <Project>{F910C9F7-7CD2-4CCE-9E65-191FED573ECF}</Project>
       <Name>Cloudcre.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cloudcre.Report\Cloudcre.Report.csproj">
-      <Project>{6D7C7C3A-4B63-4524-854B-6F0F0CE807BE}</Project>
-      <Name>Cloudcre.Report</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cloudcre.Repository.NHibernate\Cloudcre.Repository.NHibernate.csproj">
       <Project>{0CEE7ECF-FF10-4768-AB42-CC2D70C6CA01}</Project>
       <Name>Cloudcre.Repository.NHibernate</Name>

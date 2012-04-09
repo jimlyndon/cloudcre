@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Cloudcre.Service.ViewModels;
+using Cloudcre.Service.Property.ViewModels;
 
 namespace Cloudcre.Web.Models
 {

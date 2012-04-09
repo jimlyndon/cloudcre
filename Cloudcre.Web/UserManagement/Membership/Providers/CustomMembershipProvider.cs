@@ -2,11 +2,11 @@
 using System.Collections.Specialized;
 using System.Security.Cryptography;
 using System.Web.Security;
-using Ninject;
 using Cloudcre.Model;
 using Cloudcre.Model.Core.UnitOfWork;
 using Cloudcre.Model.Specifications;
 using Cloudcre.Web.App_Start;
+using Ninject;
 
 namespace Cloudcre.Web.UserManagement.Membership.Providers
 {

@@ -166,89 +166,9 @@ $(function () {
         }
     });
 
-    ko.applyBindings(viewModel, $("#queued")[0]);
-    viewModel.updateSearchResults();
-
-
-//    // Encapsulates data calls to server (AJAX calls)
-//    window.TemplateDataService = new function () {
-//        var serviceBase = $.whitney.property.url.wizardBase, // "/ApartmentWizard/",
-//            bind = function (json, templateName) {
-//                var name = templateName || "StepOne";
-
-//                $.get(serviceBase + "/" + name, function (templates) {
-//                    $("#propertyWizardTemplateContainer", "body").remove();
-//                    $("#personList", "body").html("");
-//                    $("#personTemplate", "body").remove();
-
-//                    var mapping = {
-//                        'SaleDate': {
-//                            create: function (options) {
-//                                return new ko.jsonDateObservable(options.data);
-//                            }
-//                        }
-////                        'Sale': {
-////                            create: function (options) {
-////                                //ko.mapping.fromJS(options.data, {}, this);
-////                                return ko.mapping.fromJS(options.data, {
-////                                    'Date': {
-////                                        create: function (options) {
-////                                            return new ko.jsonDateObservable(options.data);
-////                                        }
-////                                    }
-////                                }, this);
-////                            }
-////                        }
-//                    };
-
-//                    window.dialogViewModel = ko.mapping.fromJS(json, mapping);
-
-//                    // executed after every template refresh, after any observable change
-//                    window.dialogViewModel.loaded = function () { };
-
-//                    $("body").append(templates);
-
-//                    ko.applyBindings(window.dialogViewModel, $("#dialog")[0]);
-
-//                    // executed after wizard step loaded
-//                    window.TemplateDataService.loaded();
-//                    window.TemplateDataService.loaded = function() { };
-//                });
-//            },
-
-//            getProperty = function (data, action, callback) {
-//                var route = action || "StepOne" + "?cancelbutton=cancel";
-
-//                $.ajax({
-//                    url: serviceBase + "/" + route,
-//                    type: 'POST',
-//                    dataType: 'json',
-//                    data: data || {},
-//                    contentType: 'application/json; charset=utf-8',
-//                    success: function (json) {
-//                        if (!!callback) callback(json, action);
-//                        else bind(json, action);
-//                    },
-//                    error: function (a, b, c) {
-//                        disallowUpdates = false;
-//                    }
-//                });
-
-////                $.post(serviceBase + "/" + route, data || {}, function (json) {
-////                    if (!!callback) callback(json, action);
-////                    else bind(json, action);
-////                });
-//            },
-
-//            loaded = function () { };
-
-//        return {
-//            getProperty: getProperty,
-//            bind: bind,
-//            loaded: loaded
-//        };
-//    } ();
-
+    //ko.applyBindings(viewModel, $("#queued")[0]);
+    //viewModel.updateSearchResults();
+    
     $("#dialog").dialog({
         autoOpen: false,
         height: $(window).height() * 0.8,
@@ -287,107 +207,165 @@ $(function () {
 
 });
 
-// The view model is an abstract description of the state of the UI, but without any knowledge of the UI technology (HTML)
-var cookieQueued = jQuery.parseJSON($.cookie('ws')) ? jQuery.parseJSON($.cookie('ws')).QueuedItems : [];
-var viewModel = {
-    queued: ko.observableArray(cookieQueued),
-    remove: function (item) {
-        this.queued.remove(item);
-        $('.select-button').each(function () {
-            var $this = $(this),
-                id = $this.data("id");
-            if (id === item.Id) {
-                $this.removeClass("ui-selected");
-                $this.text("Add to queue");
-            }
-        });
-    },
-    updateSearchResults: function () {
-        $("button.select-button").click(function (e, ui) {
-            var $this = $(this),
-                array = viewModel.queued(),
-                id = $this.data("id"),
-                name = $this.data("name"),
-                parcelid = $this.data("parcelid");
 
-            // unselect
-            if ($this.hasClass("ui-selected")) {
-                $this.removeClass("ui-selected");
-                $(array).each(function (index, item) {
-                    if (item.Id === id) {
-                        array.splice(index, 1);
-                        $this.text("Add to Queue");
-                    }
-                });
-                viewModel.queued.remove({ "Id": id, "Name": name, "ParcelId": parcelid });
-            }
-            // select
-            else {
-                var add = true;
-                $(array).each(function (index, item) {
-                    if (item.Id === id) {
-                        add = false;
-                    }
-                });
-                if (add) {
-                    $this.addClass("ui-selected");
-                    viewModel.queued.push({ "Id": id, "Name": name, "ParcelId": parcelid });
-                    $this.text("Remove from Queue");
-                }
-            }
-        });
+// declare app/router
+window.cloudcre = {};
 
-        // set inital state for each property based on what's in the queue
-        $('.select-button').each(function () {
-            var $this = $(this),
-                id = $this.data("id"),
-                array = viewModel.queued();
-            $(array).each(function (index, item) {
-                if (item.Id === id) {
-                    $this.addClass("ui-selected");
-                    $this.text("Remove From queue");
-                }
-            });
-        });
-
-        $("input.edit-button").click(function (e) {
-            e.preventDefault();
-            //$("#dialog").dialog("open");
-            var id = $(this).data("id");
-            var name = $(this).data("name");
-            var type = $(this).data("type");
-            window.open(window.cloudcre.routing.url[type].edit + "/" + id + "/" + convertToSlug(name));
-            //window.TemplateDataService.getProperty(null, "StepOne" + "?id=" + id);
-        });
-
-        $("input.delete-button").click(function (e) {
-            e.preventDefault();
-            var id = $(this).data("id");
-            var name = $(this).data("name");
-            var type = $(this).data("type");
-            $("#delete-dialog-msg").text("Are you sure you want to delete the property, \"" + name + "\" ?");
-            $("#delete-dialog").dialog("option", "buttons", {
-                Ok: function () {
-                    DisableButton('Ok');
-                    DisableButton('Cancel');
-                    var data = { Id: id };
-                    $.post(window.cloudcre.routing.url[type].remove, data || {}, function () {
-                        $("#delete-dialog-msg").text("Property, \"" + name + "\", successfully removed");
-                    });
-                    fireDisplay();
-                    var $that = $(this);
-                    window.setTimeout(function () {
-                        $that.dialog("close");
-                    }, 3000);
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
-                }
-            });
-            $("#delete-dialog").dialog("open");
-        });
+$.extend(window.cloudcre, {
+    routing: {
+        url: {},
+        urls: function (a) {
+            $.extend(window.cloudcre.routing.url, a);
+        }
     }
-};
+});
+$.extend(window.cloudcre, {
+    locations: { },
+    viewModel: { },
+    queuedViewModel: {
+        propertyTypeOptionValues: ko.observableArray(function() {
+            var values = [];
+            $.each($("li", "#search-engines"), function(idx, obj) {
+                values.push($(obj).text());
+            });
+            return values;
+        }()),
+        propertyTypeSelected: ko.observable("Multiple Family"),
+        queued: {},
+//        enqueue: function(a) {
+//            $.extend(window.cloudcre.queuedViewModel.queued, a);
+//        },
+        select: function(a, b, c) {
+            var propertyType = window.cloudcre.queuedViewModel.queued[this.propertyTypeSelected().split(' ').join('')];
+            var propertyRecord = $(a.currentTarget);
+            if (propertyType.indexOf(propertyRecord) > -1)
+                propertyType.remove(propertyRecord);
+            else {
+                propertyType.push(propertyRecord);
+            }
+        }
+    }
+});
+
+
+$.extend(window.cloudcre.queuedViewModel.queued, {
+    MultipleFamily: ko.observableArray([]),
+    Office: ko.observableArray([]),
+    Retail: ko.observableArray([]),
+    Industrial: ko.observableArray([]),
+    IndustrialCondominium: ko.observableArray([]),
+    CommercialCondominium: ko.observableArray([]),
+    CommercialLand: ko.observableArray([]),
+    IndustrialLand: ko.observableArray([]),
+    ResidentialLand: ko.observableArray([])
+});
+
+window.cloudcre.queuedViewModel.getQueue = ko.dependentObservable(function () {
+    return this.queued[this.propertyTypeSelected().split(' ').join('')]();
+}, window.cloudcre.queuedViewModel);
+
+
+// The view model is an abstract description of the state of the UI, but without any knowledge of the UI technology (HTML)
+//var cookieQueued = jQuery.parseJSON($.cookie('ws')) ? jQuery.parseJSON($.cookie('ws')).QueuedItems : [];
+//var viewModel = {
+//    //queued: ko.observableArray(cookieQueued),
+//    remove: function (item) {
+//        this.queued.remove(item);
+//        $('.select-button').each(function () {
+//            var $this = $(this),
+//                id = $this.data("id");
+//            if (id === item.Id) {
+//                $this.removeClass("ui-selected");
+//                $this.text("Add to queue");
+//            }
+//        });
+//    },
+//    updateSearchResults: function () {
+//        $("button.select-button").click(function (e, ui) {
+//            var $this = $(this),
+//                array = viewModel.queued(),
+//                id = $this.data("id"),
+//                name = $this.data("name"),
+//                parcelid = $this.data("parcelid");
+
+//             unselect
+//            if ($this.hasClass("ui-selected")) {
+//                $this.removeClass("ui-selected");
+//                $(array).each(function (index, item) {
+//                    if (item.Id === id) {
+//                        array.splice(index, 1);
+//                        $this.text("Add to Queue");
+//                    }
+//                });
+//                viewModel.queued.remove({ "Id": id, "Name": name, "ParcelId": parcelid });
+//            }
+//             select
+//            else {
+//                var add = true;
+//                $(array).each(function (index, item) {
+//                    if (item.Id === id) {
+//                        add = false;
+//                    }
+//                });
+//                if (add) {
+//                    $this.addClass("ui-selected");
+//                    viewModel.queued.push({ "Id": id, "Name": name, "ParcelId": parcelid });
+//                    $this.text("Remove from Queue");
+//                }
+//            }
+//        });
+
+//         set inital state for each property based on what's in the queue
+//        $('.select-button').each(function () {
+//            var $this = $(this),
+//                id = $this.data("id"),
+//                array = viewModel.queued();
+//            $(array).each(function (index, item) {
+//                if (item.Id === id) {
+//                    $this.addClass("ui-selected");
+//                    $this.text("Remove From queue");
+//                }
+//            });
+//        });
+
+//        $("input.edit-button").click(function (e) {
+//            e.preventDefault();
+//            $("#dialog").dialog("open");
+//            var id = $(this).data("id");
+//            var name = $(this).data("name");
+//            var type = $(this).data("type");
+//            window.open(window.cloudcre.routing.url[type].edit + "/" + id + "/" + convertToSlug(name));
+//            window.TemplateDataService.getProperty(null, "StepOne" + "?id=" + id);
+//        });
+
+//        $("input.delete-button").click(function (e) {
+//            e.preventDefault();
+//            var id = $(this).data("id");
+//            var name = $(this).data("name");
+//            var type = $(this).data("type");
+//            $("#delete-dialog-msg").text("Are you sure you want to delete the property, \"" + name + "\" ?");
+//            $("#delete-dialog").dialog("option", "buttons", {
+//                Ok: function () {
+//                    DisableButton('Ok');
+//                    DisableButton('Cancel');
+//                    var data = { Id: id };
+//                    $.post(window.cloudcre.routing.url[type].remove, data || {}, function () {
+//                        $("#delete-dialog-msg").text("Property, \"" + name + "\", successfully removed");
+//                    });
+//                    fireDisplay();
+//                    var $that = $(this);
+//                    window.setTimeout(function () {
+//                        $that.dialog("close");
+//                    }, 3000);
+//                },
+//                Cancel: function () {
+//                    $(this).dialog("close");
+//                }
+//            });
+//            $("#delete-dialog").dialog("open");
+//        });
+//    }
+//};
 
 // dialog helpers
 function DisableButton(button) {
@@ -420,20 +398,6 @@ function extractLast(term) {
     return split(term).pop();
 }
 
-// declare app/router
-window.cloudcre = {};
-
-$.extend(window.cloudcre, {
-    routing: {
-        url: {},
-        urls: function (a) {
-            $.extend(window.cloudcre.routing.url, a);
-        }
-    },
-    locations: {},
-    viewModel: {}
-});
-
 // model helpers
 $.extend($.whitney, {
     property: {
@@ -452,14 +416,20 @@ $.extend($.whitney, {
             if (disallowUpdates == false) {
                 disallowUpdates = true;
                 $.ajax({
-                    url: window.cloudcre.routing.url[$("#PropertyType option:selected").text().split(' ').join('')].search,
+                    url: window.cloudcre.routing.url[window.cloudcre.queuedViewModel.propertyTypeSelected().split(' ').join('')].search,
                     type: 'POST',
                     dataType: 'json',
                     data: searchCriteria,
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         $.whitney.property.clearResults();
+                        
+                        // bind template with resulting property records
                         $("#productItemTemplate").tmpl(data).appendTo($("#map-side-bar"));
+                        
+                        // bind view model for queue
+                        //ko.applyBindings(window.cloudcre.queuedViewModel, $("#map-side-bar")[0]);
+                        ko.applyBindings(window.cloudcre.queuedViewModel);
 
                         // create map if first time
                         if (!$('#map').data('jMapping'))
@@ -518,7 +488,7 @@ $.extend($.whitney, {
                         $("#pageLinksBottom").html($.whitney.property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
 
                         // foreach map-location parcelid that maps to view model add .ui-selected
-                        viewModel.updateSearchResults();
+                        //viewModel.updateSearchResults();
 
                         disallowUpdates = false;
 

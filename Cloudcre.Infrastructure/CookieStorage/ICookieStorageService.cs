@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Cloudcre.Infrastructure.CookieStorage
 {
     public interface ICookieStorageService

@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using Cloudcre.Model.Core;
+using Cloudcre.Model.Core.Querying;
+using Cloudcre.Model.Core.UnitOfWork;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.QueryParsers;
-using Lucene.Net.Search;
 using NHibernate;
-using NHibernate.Linq;
 using NHibernate.Search;
-using Cloudcre.Model.Core;
-using Cloudcre.Model.Core.UnitOfWork;
-using CoreQuerying = Cloudcre.Model.Core.Querying;
-using Cloudcre.Model.Core.Querying;
-using System.Text;
 
 namespace Cloudcre.Repository.NHibernate.Repositories
 {

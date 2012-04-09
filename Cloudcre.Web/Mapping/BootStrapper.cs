@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using AutoMapper;
-using Cloudcre.Model;
-using Cloudcre.Service.Messages;
-using Cloudcre.Service.ViewModels;
+using Cloudcre.Service.Property.Messages;
+using Cloudcre.Service.Property.ViewModels;
 using Cloudcre.Web.Models;
 
 namespace Cloudcre.Web.Mapping

@@ -1,5 +1,5 @@
-﻿using Cloudcre.Utilities.Console;
-using Cloudcre.Test.DataLoader.Marshallers;
+﻿using Cloudcre.Test.DataLoader.Marshallers;
+using Cloudcre.Utilities.Console;
 
 namespace Cloudcre.Test.DataLoader.Commands
 {

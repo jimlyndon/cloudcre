@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Cloudcre.Model.Core.Querying;
 using System.Linq.Expressions;
+using Cloudcre.Model.Core.Querying;
 
 namespace Cloudcre.Model.Specifications
 {

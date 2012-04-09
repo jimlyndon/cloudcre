@@ -1,7 +1,7 @@
 ﻿using System;
-using NHibernate.Search;
 using Cloudcre.Model;
 using Cloudcre.Model.Core.UnitOfWork;
+using NHibernate.Search;
 
 namespace Cloudcre.Repository.NHibernate.Repositories
 {

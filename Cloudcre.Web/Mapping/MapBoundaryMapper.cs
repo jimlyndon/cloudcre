@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Cloudcre.Service.Messages;
+using Cloudcre.Service.Property.Messages;
 using Cloudcre.Web.Models;
 
 namespace Cloudcre.Web.Mapping
