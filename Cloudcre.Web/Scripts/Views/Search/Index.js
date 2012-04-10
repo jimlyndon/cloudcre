@@ -79,21 +79,21 @@ $(function () {
 
             dates.not(this).datepicker("option", option, date);
 
-            if ($.whitney.property.managers.saleDateRange.IsValid()) {
+            if ($.whitney.Property.managers.saleDateRange.IsValid()) {
                 fireDisplay(to);
             }
         }
     });
 
     $('#maxdate-box').keyup(function () {
-        if ($.whitney.property.managers.saleDateRange.IsValid()) {
+        if ($.whitney.Property.managers.saleDateRange.IsValid()) {
             fireDisplay(to);
             $('#maxdate-box, #mindate-box').datepicker("refresh");
         }
     });
 
     $('#mindate-box').keyup(function () {
-        if ($.whitney.property.managers.saleDateRange.IsValid()) {
+        if ($.whitney.Property.managers.saleDateRange.IsValid()) {
             fireDisplay(to);
             $('#maxdate-box, #mindate-box').datepicker("refresh");
         }
@@ -104,12 +104,12 @@ $(function () {
     });
 
     $('#sqftmin-box').keyup(function () {
-        $("#slider-range").slider("values", 0, $.whitney.property.managers.siteSqFtSlider.SqftMin());
+        $("#slider-range").slider("values", 0, $.whitney.Property.managers.siteSqFtSlider.SqftMin());
         fireDisplay(to);
     });
 
     $('#sqftmax-box').keyup(function () {
-        $("#slider-range").slider("values", 1, $.whitney.property.managers.siteSqFtSlider.SqftMax());
+        $("#slider-range").slider("values", 1, $.whitney.Property.managers.siteSqFtSlider.SqftMax());
         fireDisplay(to);
     });
 
@@ -126,29 +126,29 @@ $(function () {
         return false;
     });
 
-    $('#top-search-queue').click(function () {
-        var queued =
-        {
-            QueuedItems: viewModel.queued()
-        };
-        $.cookie('ws', JSON.stringify(queued));
-    });
+//    $('#top-search-queue').click(function () {
+//        var queued =
+//        {
+//            QueuedItems: viewModel.queued()
+//        };
+//        $.cookie('ws', JSON.stringify(queued));
+//    });
 
-    $('#top-search-search').click(function () {
-        var queued =
-        {
-            QueuedItems: viewModel.queued()
-        };
-        $.cookie('ws', JSON.stringify(queued));
-    });
+//    $('#top-search-search').click(function () {
+//        var queued =
+//        {
+//            QueuedItems: viewModel.queued()
+//        };
+//        $.cookie('ws', JSON.stringify(queued));
+//    });
 
     
     // building area range slider
     $("#slider-range").slider({
         range: true,
-        min: $.whitney.property.managers.siteSqFtSlider.SliderSqftFloor(),
-        max: $.whitney.property.managers.siteSqFtSlider.SliderSqftCeiling(),
-        values: [$.whitney.property.managers.siteSqFtSlider.SqftMin(), $.whitney.property.managers.siteSqFtSlider.SqftMax()],
+        min: $.whitney.Property.managers.siteSqFtSlider.SliderSqftFloor(),
+        max: $.whitney.Property.managers.siteSqFtSlider.SliderSqftCeiling(),
+        values: [$.whitney.Property.managers.siteSqFtSlider.SqftMin(), $.whitney.Property.managers.siteSqFtSlider.SqftMax()],
         step: 100,
         slide: function (event, ui) {
             var min = $.formatNumber(ui.values[0], {
@@ -159,8 +159,8 @@ $(function () {
                 format: "0",
                 locale: "us"
             });
-            $.whitney.property.managers.siteSqFtSlider.SqftMin(min);
-            $.whitney.property.managers.siteSqFtSlider.SqftMax(max);
+            $.whitney.Property.managers.siteSqFtSlider.SqftMin(min);
+            $.whitney.Property.managers.siteSqFtSlider.SqftMax(max);
             var to = null;
             fireDisplay(to);
         }
@@ -220,49 +220,57 @@ $.extend(window.cloudcre, {
     }
 });
 $.extend(window.cloudcre, {
-    locations: { },
-    viewModel: { },
-    queuedViewModel: {
-        propertyTypeOptionValues: ko.observableArray(function() {
+    locations: {},
+    //viewModel: {},
+    viewModel: (function () {
+        var self = this;
+        var _queued = {
+            MultipleFamily: ko.observableArray([]),
+            Office: ko.observableArray([]),
+            Retail: ko.observableArray([]),
+            Industrial: ko.observableArray([]),
+            IndustrialCondominium: ko.observableArray([]),
+            CommercialCondominium: ko.observableArray([]),
+            CommercialLand: ko.observableArray([]),
+            IndustrialLand: ko.observableArray([]),
+            ResidentialLand: ko.observableArray([])
+        };
+        
+        propertySearchResults = ko.observable(),
+        propertyTypeOptionValues = ko.observableArray(function () {
             var values = [];
-            $.each($("li", "#search-engines"), function(idx, obj) {
+            $.each($("li", "#search-engines"), function (idx, obj) {
                 values.push($(obj).text());
             });
             return values;
-        }()),
-        propertyTypeSelected: ko.observable("Multiple Family"),
-        queued: {},
-//        enqueue: function(a) {
-//            $.extend(window.cloudcre.queuedViewModel.queued, a);
-//        },
-        select: function(a, b, c) {
-            var propertyType = window.cloudcre.queuedViewModel.queued[this.propertyTypeSelected().split(' ').join('')];
-            var propertyRecord = $(a.currentTarget);
-            if (propertyType.indexOf(propertyRecord) > -1)
-                propertyType.remove(propertyRecord);
+        } ()),
+        propertyTypeSelected = ko.observable("Multiple Family"),
+        queuedProperties = function () {
+            return _queued[self.propertyTypeSelected().split(' ').join('')];
+        },
+        selectProperty = function (item) {
+            var properties = self.queuedProperties();
+            if (properties.indexOf(item) > -1)
+                properties.remove(item);
             else {
-                propertyType.push(propertyRecord);
+                properties.push(item);
             }
-        }
-    }
+        },
+        Property = function (id, name, parcelId) {
+            this.id = id;
+            this.name = name;
+            this.parcelId = parcelId;
+        };
+
+        return {
+            propertySearchResults: propertySearchResults,
+            propertyTypeOptionValues: propertyTypeOptionValues,
+            propertyTypeSelected: propertyTypeSelected,
+            queuedProperties: queuedProperties,
+            selectProperty: selectProperty
+        };
+    })()
 });
-
-
-$.extend(window.cloudcre.queuedViewModel.queued, {
-    MultipleFamily: ko.observableArray([]),
-    Office: ko.observableArray([]),
-    Retail: ko.observableArray([]),
-    Industrial: ko.observableArray([]),
-    IndustrialCondominium: ko.observableArray([]),
-    CommercialCondominium: ko.observableArray([]),
-    CommercialLand: ko.observableArray([]),
-    IndustrialLand: ko.observableArray([]),
-    ResidentialLand: ko.observableArray([])
-});
-
-window.cloudcre.queuedViewModel.getQueue = ko.dependentObservable(function () {
-    return this.queued[this.propertyTypeSelected().split(' ').join('')]();
-}, window.cloudcre.queuedViewModel);
 
 
 // The view model is an abstract description of the state of the UI, but without any knowledge of the UI technology (HTML)
@@ -400,10 +408,10 @@ function extractLast(term) {
 
 // model helpers
 $.extend($.whitney, {
-    property: {
+    Property: {
         url: {},
         urls: function (a) {
-            $.extend($.whitney.property.url, a);
+            $.extend($.whitney.Property.url, a);
         },
         managers: {},
         clearResults: function (callback) {
@@ -416,24 +424,24 @@ $.extend($.whitney, {
             if (disallowUpdates == false) {
                 disallowUpdates = true;
                 $.ajax({
-                    url: window.cloudcre.routing.url[window.cloudcre.queuedViewModel.propertyTypeSelected().split(' ').join('')].search,
+                    url: window.cloudcre.routing.url[window.cloudcre.viewModel.propertyTypeSelected().split(' ').join('')].search,
                     type: 'POST',
                     dataType: 'json',
                     data: searchCriteria,
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
-                        $.whitney.property.clearResults();
-                        
+                        $.whitney.Property.clearResults();
+
                         // bind template with resulting property records
-                        $("#productItemTemplate").tmpl(data).appendTo($("#map-side-bar"));
-                        
+                        //$("#productItemTemplate").tmpl(data).appendTo($("#map-side-bar"));
+
                         // bind view model for queue
-                        //ko.applyBindings(window.cloudcre.queuedViewModel, $("#map-side-bar")[0]);
-                        ko.applyBindings(window.cloudcre.queuedViewModel);
+                        //ko.applyBindings(window.cloudcre.viewModel, $("#map-side-bar")[0]);
+                        window.cloudcre.viewModel.propertySearchResults(data);
+                        ko.applyBindings(window.cloudcre.viewModel);
 
                         // create map if first time
-                        if (!$('#map').data('jMapping'))
-                        {
+                        if (!$('#map').data('jMapping')) {
                             $('#map').jMapping({
                                 category_icon_options: {
                                     'apartment': { color: '#E8413A' },
@@ -483,9 +491,9 @@ $.extend($.whitney, {
                             $('#map').data('jMapping').settings.auto_fit_bounds = ($('#mapsearch').is(':checked') ? false : true);
                             $('#map').jMapping('update');
                         }
-                        
-                        $("#pageLinksTop").html($.whitney.property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
-                        $("#pageLinksBottom").html($.whitney.property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
+
+                        $("#pageLinksTop").html($.whitney.Property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
+                        $("#pageLinksBottom").html($.whitney.Property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
 
                         // foreach map-location parcelid that maps to view model add .ui-selected
                         //viewModel.updateSearchResults();
@@ -515,7 +523,7 @@ $.extend($.whitney, {
 });
 
 // date range manager
-$.extend($.whitney.property.managers, {
+$.extend($.whitney.Property.managers, {
     saleDateRange: {
         MaximumDateFilter: function (val) {
             if (val != undefined) {
@@ -557,11 +565,11 @@ $.extend($.whitney.property.managers, {
 
 
 // building area slider manager
-$.extend($.whitney.property.managers, {
+$.extend($.whitney.Property.managers, {
     siteSqFtSlider: {
         option: {},
         options: function (a) {
-            $.extend($.whitney.property.managers.siteSqFtSlider.option, a);
+            $.extend($.whitney.Property.managers.siteSqFtSlider.option, a);
         },
         SqftMin: function (val) {
             if (val != undefined) {
@@ -633,8 +641,8 @@ function displayPage(i) {
             Query: $('#keywords-search-box').val(),
             SortBy: 1,
             PropertyTypeFilter: 1,
-            SqftMaxFilter: $.whitney.property.managers.siteSqFtSlider.SqftMax(),
-            SqftMinFilter: $.whitney.property.managers.siteSqFtSlider.SqftMin(),
+            SqftMaxFilter: $.whitney.Property.managers.siteSqFtSlider.SqftMax(),
+            SqftMinFilter: $.whitney.Property.managers.siteSqFtSlider.SqftMin(),
             MapBoundary: null
         };
 
@@ -688,18 +696,18 @@ function displayPage(i) {
         }
                 
         // Add date range to query if exists.
-        if($.whitney.property.managers.saleDateRange.IsValid())
+        if($.whitney.Property.managers.saleDateRange.IsValid())
         {
             var saleDateRangeCriteria =
             {                        
-                MaximumDateFilter: $.whitney.property.managers.saleDateRange.ParseDate($.whitney.property.managers.saleDateRange.MaximumDateFilter()).toMSJSON(),
-                MinimumDateFilter: $.whitney.property.managers.saleDateRange.ParseDate($.whitney.property.managers.saleDateRange.MinimumDateFilter()).toMSJSON()
+                MaximumDateFilter: $.whitney.Property.managers.saleDateRange.ParseDate($.whitney.Property.managers.saleDateRange.MaximumDateFilter()).toMSJSON(),
+                MinimumDateFilter: $.whitney.Property.managers.saleDateRange.ParseDate($.whitney.Property.managers.saleDateRange.MinimumDateFilter()).toMSJSON()
             };
                 
             $.extend(true, searchCriteria, saleDateRangeCriteria);
         }
                 
-        $.whitney.property.search(JSON.stringify(searchCriteria));
+        $.whitney.Property.search(JSON.stringify(searchCriteria));
     }
 }
                
