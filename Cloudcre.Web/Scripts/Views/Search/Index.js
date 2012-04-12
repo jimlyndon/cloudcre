@@ -1,4 +1,147 @@
-﻿// create location visual search widget
+﻿// namespace
+window.cloudcre = window.cloudcre || {};
+
+$.extend(window.cloudcre, {
+    routing: {
+        url: {},
+        urls: function (a) {
+            $.extend(window.cloudcre.routing.url, a);
+        }
+    }
+});
+$.extend(window.cloudcre, {
+    locations: {},
+    viewModel: (function () {
+        // multiple queues for each property-type
+        var _queued = {
+            MultipleFamily: ko.observableArray([]),
+            Office: ko.observableArray([]),
+            Retail: ko.observableArray([]),
+            Industrial: ko.observableArray([]),
+            IndustrialCondominium: ko.observableArray([]),
+            CommercialCondominium: ko.observableArray([]),
+            CommercialLand: ko.observableArray([]),
+            IndustrialLand: ko.observableArray([]),
+            ResidentialLand: ko.observableArray([])
+        },
+        // select list option values
+        propertyTypeOptionValues = ko.observableArray(function () {
+            var values = [];
+            $.each($("li", "#search-engines"), function (idx, obj) {
+                values.push($(obj).text());
+            });
+            return values;
+        } ()),
+        // current property-type that has been selected
+        propertyTypeSelected = ko.observable("Multiple Family"),
+        // property records from most recent search request
+        propertySearchResults = ko.observable(),
+        // property records that have been queued for current selected property-type
+        queuedProperties = function () {
+            return _queued[this.propertyTypeSelected().split(' ').join('')];
+        },
+        // removes property if in queue, otherwise adds property to queue
+        addOrRemovePropertyFromQueue = function (sProp) {
+            var properties = this.queuedProperties();
+            // array of removed values
+            var removed = properties.remove(function (qProp) {
+                return sProp.Id == qProp.Id;
+            });
+
+            // if no removed values
+            if (!(removed.length > 0))
+                properties.push(sProp);
+        },
+        // is the property currently queued?
+        isQueued = function (sProp) {
+            // truthy or falsy
+            return ko.utils.arrayFirst(this.queuedProperties()(), function (qProp) {
+                return sProp.Id == qProp.Id;
+            });
+        },
+        // edit a property
+        editProperty = function (sProp) {
+
+            var id = sProp.Id;
+            var name = sProp.Name;
+            var type = sProp.PropertyTypeDescription.split(' ').join('');
+            window.open(window.cloudcre.routing.url[type].edit + "/" + id + "/" + convertToSlug(name));
+        },
+        // remvoe a property from the system
+        deleteProperty = function (sProp) {
+            var id = sProp.Id;
+            var name = sProp.Name;
+            var type = sProp.PropertyTypeDescription.split(' ').join('');
+
+            $("#delete-dialog-msg").text("Are you sure you want to delete the property, \"" + name + "\" ?");
+            $("#delete-dialog").dialog("option", "buttons", {
+                Ok: function () {
+                    DisableButton('Ok');
+                    DisableButton('Cancel');
+                    var data = { Id: id };
+                    $.post(window.cloudcre.routing.url[type].remove, data || {}, function () {
+                        $("#delete-dialog-msg").text("Property, \"" + name + "\", successfully removed");
+                    });
+                    fireDisplay();
+                    var $that = $(this);
+                    window.setTimeout(function () {
+                        $that.dialog("close");
+                    }, 3000);
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            });
+            $("#delete-dialog").dialog("open");
+        };
+
+        // send search request when the selected property-type is changed
+        propertyTypeSelected.subscribe(function (type) {
+            fireDisplay();
+        });
+
+        // when search results are updated, the cooresponding properties 
+        // in the queue may have stale data and must also updated
+        propertySearchResults.subscribe(function (results) {
+            var array = [];
+            // save queued property ids and order to use during queue rebuilding
+            var qArrayObs = _queued[window.cloudcre.viewModel.propertyTypeSelected().split(' ').join('')];
+            var qArray = qArrayObs();
+            for (i = 0; i < qArray.length; i++) {
+                array[i] = qArray[i].Id;
+            }
+
+            // rebuild queue from fresh search results in case property data has staled
+            qArrayObs([]);
+            for (i = 0; i < array.length; i++) {
+                $.each(results.Properties, function (idx, property) {
+                    if (property.Id == array[i]) {
+                        qArrayObs.push(property);
+                    }
+                });
+            }
+        });
+
+        return {
+            propertySearchResults: propertySearchResults,
+            propertyTypeOptionValues: propertyTypeOptionValues,
+            propertyTypeSelected: propertyTypeSelected,
+            queuedProperties: queuedProperties,
+            addOrRemovePropertyFromQueue: addOrRemovePropertyFromQueue,
+            isQueued: isQueued,
+            editProperty: editProperty,
+            deleteProperty: deleteProperty
+        };
+    })()
+});
+
+
+$(function () {
+    ko.applyBindings(window.cloudcre.viewModel);
+});
+
+
+// create location visual search widget
 $(function () {
     $.post(window.cloudcre.routing.url.locations, {}, function (data) {
         window.cloudcre.locations.city = [];
@@ -113,9 +256,6 @@ $(function () {
         fireDisplay(to);
     });
 
-    $('#PropertyType').change(function () {
-        fireDisplay(to);
-    });
 
     $('#mapsearch').click(function () {
         fireDisplay(to);
@@ -125,23 +265,6 @@ $(function () {
         displayPage();
         return false;
     });
-
-//    $('#top-search-queue').click(function () {
-//        var queued =
-//        {
-//            QueuedItems: viewModel.queued()
-//        };
-//        $.cookie('ws', JSON.stringify(queued));
-//    });
-
-//    $('#top-search-search').click(function () {
-//        var queued =
-//        {
-//            QueuedItems: viewModel.queued()
-//        };
-//        $.cookie('ws', JSON.stringify(queued));
-//    });
-
     
     // building area range slider
     $("#slider-range").slider({
@@ -166,9 +289,7 @@ $(function () {
         }
     });
 
-    //ko.applyBindings(viewModel, $("#queued")[0]);
-    //viewModel.updateSearchResults();
-    
+   
     $("#dialog").dialog({
         autoOpen: false,
         height: $(window).height() * 0.8,
@@ -205,71 +326,6 @@ $(function () {
         showSpeed: 400
     });
 
-});
-
-
-// declare app/router
-window.cloudcre = {};
-
-$.extend(window.cloudcre, {
-    routing: {
-        url: {},
-        urls: function (a) {
-            $.extend(window.cloudcre.routing.url, a);
-        }
-    }
-});
-$.extend(window.cloudcre, {
-    locations: {},
-    //viewModel: {},
-    viewModel: (function () {
-        var self = this;
-        var _queued = {
-            MultipleFamily: ko.observableArray([]),
-            Office: ko.observableArray([]),
-            Retail: ko.observableArray([]),
-            Industrial: ko.observableArray([]),
-            IndustrialCondominium: ko.observableArray([]),
-            CommercialCondominium: ko.observableArray([]),
-            CommercialLand: ko.observableArray([]),
-            IndustrialLand: ko.observableArray([]),
-            ResidentialLand: ko.observableArray([])
-        };
-        
-        propertySearchResults = ko.observable(),
-        propertyTypeOptionValues = ko.observableArray(function () {
-            var values = [];
-            $.each($("li", "#search-engines"), function (idx, obj) {
-                values.push($(obj).text());
-            });
-            return values;
-        } ()),
-        propertyTypeSelected = ko.observable("Multiple Family"),
-        queuedProperties = function () {
-            return _queued[self.propertyTypeSelected().split(' ').join('')];
-        },
-        selectProperty = function (item) {
-            var properties = self.queuedProperties();
-            if (properties.indexOf(item) > -1)
-                properties.remove(item);
-            else {
-                properties.push(item);
-            }
-        },
-        Property = function (id, name, parcelId) {
-            this.id = id;
-            this.name = name;
-            this.parcelId = parcelId;
-        };
-
-        return {
-            propertySearchResults: propertySearchResults,
-            propertyTypeOptionValues: propertyTypeOptionValues,
-            propertyTypeSelected: propertyTypeSelected,
-            queuedProperties: queuedProperties,
-            selectProperty: selectProperty
-        };
-    })()
 });
 
 
@@ -338,12 +394,12 @@ $.extend(window.cloudcre, {
 
 //        $("input.edit-button").click(function (e) {
 //            e.preventDefault();
-//            $("#dialog").dialog("open");
+//            //$("#dialog").dialog("open");
 //            var id = $(this).data("id");
 //            var name = $(this).data("name");
 //            var type = $(this).data("type");
 //            window.open(window.cloudcre.routing.url[type].edit + "/" + id + "/" + convertToSlug(name));
-//            window.TemplateDataService.getProperty(null, "StepOne" + "?id=" + id);
+//            //window.TemplateDataService.getProperty(null, "StepOne" + "?id=" + id);
 //        });
 
 //        $("input.delete-button").click(function (e) {
@@ -438,7 +494,7 @@ $.extend($.whitney, {
                         // bind view model for queue
                         //ko.applyBindings(window.cloudcre.viewModel, $("#map-side-bar")[0]);
                         window.cloudcre.viewModel.propertySearchResults(data);
-                        ko.applyBindings(window.cloudcre.viewModel);
+                        //ko.applyBindings(window.cloudcre.viewModel);
 
                         // create map if first time
                         if (!$('#map').data('jMapping')) {
@@ -744,10 +800,3 @@ function formatDate(d)
     var currYear = d.getFullYear();
     return (currMonth + "/" + currDate + "/" + currYear);
 }
-
-
-$(function () {
-    // init map and recrods on pageloaded
-    displayPage();
-
-});

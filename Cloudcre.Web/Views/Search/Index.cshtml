@@ -23,7 +23,7 @@
                     <div>
                         <div>
                             @*Property Type @Html.DropDownListFor(model => model.PropertyType, Model.PropertyType)*@
-                            Property Type <select id="PropertyType" data-bind="options: propertyTypeOptionValues, value: propertyTypeSelected"></select>
+                            Property Type <select id="PropertyType" data-bind="options: propertyTypeOptionValues, value: propertyTypeSelected, valueUpdate: 'change'"></select>
                         </div>
                     </div>
                     <br />
@@ -166,7 +166,7 @@
         <tr class="map-location" data-id="${$index + 1}" data-point="{ lat: ${Latitude}, lng: ${Longitude} }" data-category="'apartment'">
             <td>
                 <div>
-                    <button class="select-button" data-bind="click: function() { $parent.selectProperty($value) }" data-id="${Id}" data-name="${Name}" data-parcelid="${ParcelId}">Add to Queue</button>
+                    <button class="select-button" data-bind="click: function() { $parent.addOrRemovePropertyFromQueue($value) }, text: $parent.isQueued($value) ? 'Remove from Queue' : 'Add to queue'" data-id="${Id}" data-name="${Name}" data-parcelid="${ParcelId}"></button>
                 </div>
             </td>
             <td>
@@ -221,12 +221,12 @@
             <td>
                 <div>
                     <form action="/" method="post">
-                        <input type="submit" value="Edit" class="edit-button" data-id="${Id}" data-name="${Name}" data-type="${PropertyTypeDescription}"/>
+                        <input type="submit" value="Edit" class="edit-button" data-bind="click: function() { $parent.editProperty($value) }" />
                     </form>
                 </div>
                 <div>
                     <form action="/" method="post">
-                        <input type="submit" value="Delete" class="delete-button" data-id="${Id}" data-name="${Name}" data-type="${PropertyTypeDescription}"/>
+                        <input type="submit" value="Delete" class="delete-button" data-bind="click: function() { $parent.deleteProperty($value) }"/>
                     </form>
                 </div>
             </td>
@@ -237,7 +237,7 @@
         <ul>
             <li>
                 <div>
-                    ${ Name }, parcel ${ ParcelId } <a href="#" data-bind="click: function() { $parent.selectProperty($data) }">Remove</a> 
+                    ${ Name }, parcel ${ ParcelId } <a href="#" data-bind="click: function() { $parent.addOrRemovePropertyFromQueue($data) }">Remove</a> 
                 </div>
             </li>
         </ul>
