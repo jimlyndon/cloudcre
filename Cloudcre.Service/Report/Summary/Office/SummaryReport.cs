@@ -1144,7 +1144,7 @@ namespace Cloudcre.Service.Report.Summary.Office
 
                 // $/SF Bldg
                 var cell15 = new Cell { CellReference = "O" + rowIndex, StyleIndex = 17U };
-                cell15.Append(new CellFormula { Text = viewModel.CostPerBuildingSquareFoot.ToString() });
+                cell15.Append(new CellValue { Text = viewModel.CostPerBuildingSquareFoot.ToString() });
 
                 // Comments
                 var cell17 = new Cell { CellReference = "Q" + rowIndex, StyleIndex = 80U, DataType = CellValues.SharedString };
@@ -1175,7 +1175,7 @@ namespace Cloudcre.Service.Report.Summary.Office
 
                 // Acres
                 var cell23 = new Cell { CellReference = "E" + rowIndex, StyleIndex = 13U };
-                cell23.Append(new CellFormula { Text = viewModel.Acres.ToString() });
+                cell23.Append(new CellValue { Text = viewModel.Acres.ToString() });
 
                 // Zoning
                 var cell24 = new Cell { CellReference = "F" + rowIndex, StyleIndex = 8U, DataType = CellValues.SharedString };
@@ -6845,7 +6845,7 @@ namespace Cloudcre.Service.Report.Summary.Office
 
         internal static string FormatNoiSf(decimal? netOperatingIncome)
         {
-            return netOperatingIncome == null ? "N/A" : netOperatingIncome.ToString();
+            return netOperatingIncome == null ? "" : netOperatingIncome.ToString();
         }
     }
 }

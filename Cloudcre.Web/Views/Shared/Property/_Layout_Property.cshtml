@@ -36,7 +36,7 @@
         //    .Add(String.Format("~/Scripts/Views/{0}/{1}.js", @ViewContext.Controller.ValueProvider.GetValue("Controller").RawValue, @ViewContext.Controller.ValueProvider.GetValue("Action").RawValue))
         .Add(String.Format("~/Scripts/Views/Shared/Property/{0}.js", @ViewContext.Controller.ValueProvider.GetValue("Action").RawValue))
         .Add(String.Format("~/Scripts/Views/{0}/{1}.js", @ViewContext.Controller.ValueProvider.GetValue("Controller").RawValue, "_Template"))
-        .Render("~/Scripts/whitney#.js"))
+        .Render("~/Scripts/ccre_layout_property#.js"))
 
     @RenderSection("scripts", required: false)
 }

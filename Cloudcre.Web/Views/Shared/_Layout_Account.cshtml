@@ -59,7 +59,7 @@
         @MvcHtmlString.Create(Bundle.JavaScript()
             .Add("~/Scripts/Views/Layout.js")
             .Add(String.Format("~/Scripts/Views/{0}/{1}.js", @ViewContext.Controller.ValueProvider.GetValue("Controller").RawValue, @ViewContext.Controller.ValueProvider.GetValue("Action").RawValue))
-            .Render("~/Scripts/whitney#.js"))
+            .Render("~/Scripts/ccre_layout_account#.js"))
         
         @if (IsSectionDefined("scripts"))
         {

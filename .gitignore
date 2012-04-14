@@ -40,6 +40,7 @@ _ReSharper*/
 
 #Project files
 [Bb]uild/
+*.Publish.xml
 
 #Subversion files
 .svn

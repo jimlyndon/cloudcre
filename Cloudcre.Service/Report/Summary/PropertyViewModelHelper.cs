@@ -18,7 +18,8 @@ namespace Cloudcre.Service.Report.Summary
                     return PropertySaleStatus.Sold;
                 if (viewModel.ContractDate.HasValue)
                     return PropertySaleStatus.UnderContract;
-                return viewModel.ListingDate.HasValue ? PropertySaleStatus.Listed : PropertySaleStatus.None;
+                //return viewModel.ListingDate.HasValue ? PropertySaleStatus.Listed : PropertySaleStatus.None;
+            return PropertySaleStatus.Listed;
         }
 
         public static decimal? Occupancy(this PropertyViewModel viewModel)
