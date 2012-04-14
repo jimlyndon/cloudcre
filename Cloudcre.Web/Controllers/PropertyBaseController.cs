@@ -68,16 +68,8 @@ namespace Cloudcre.Web.Controllers
             return new EmptyResult();
         }
 
-        //[HttpGet]
-        //public ActionResult Summary(Guid id)
-        //{
-        //    return Summary(new[] { id });
-        //}
-
         [HttpPost]
         public ActionResult Summary(IEnumerable<Guid> ids)
-
-        //private ActionResult Summary(IEnumerable<Guid> ids)
         {
             if (ModelState.IsValid)
             {
@@ -90,8 +82,7 @@ namespace Cloudcre.Web.Controllers
                     return null;
                 }
 
-                return File(response.Report, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                            "SummaryReport.xlsx");
+                return File(response.Report, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", response.ReportName);
             }
 
             return new HttpNotFoundResult();

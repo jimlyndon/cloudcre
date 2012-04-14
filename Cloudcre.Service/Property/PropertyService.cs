@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Cloudcre.Model;
@@ -116,6 +117,9 @@ namespace Cloudcre.Service.Property
             stream.Seek(0, SeekOrigin.Begin);
 
             response.Report = stream;
+            DateTime currentTime = DateTime.Now;
+            response.ReportName = string.Format("{0}-{1}.xlsx", "Office Bldg Sales",
+                                                string.Format("{0:yyyyMMdd}", currentTime));
             response.Success = true;
 
             return response;
