@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Cloudcre.Infrastructure.CookieStorage;
 using Cloudcre.Model;
@@ -67,12 +68,20 @@ namespace Cloudcre.Web.Controllers
             return new EmptyResult();
         }
 
+        //[HttpGet]
+        //public ActionResult Summary(Guid id)
+        //{
+        //    return Summary(new[] { id });
+        //}
+
         [HttpPost]
-        public ActionResult Summary(Guid? id)
+        public ActionResult Summary(IEnumerable<Guid> ids)
+
+        //private ActionResult Summary(IEnumerable<Guid> ids)
         {
-            if (ModelState.IsValid && id.HasValue)
+            if (ModelState.IsValid)
             {
-                var request = new GetReportRequest { Ids = new[] { id.Value } };
+                var request = new GetReportRequest { Ids = ids };
 
                 var response = _service.SummaryReport(request);
                 if (!response.Success)

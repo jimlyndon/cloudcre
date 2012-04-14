@@ -35,18 +35,24 @@ namespace Cloudcre.Service.Property.Mapping
         {
             var propertySearchResultView = new SearchPropertyResponse<TVm>();
             propertySearchResultView.NumberOfTitlesFound = propertiesMatchingQuery.Count();
-            propertySearchResultView.TotalNumberOfPages = NumberOfResultPagesGiven(request.NumberOfResultsPerPage,
-                                                                                   propertySearchResultView.
-                                                                                       NumberOfTitlesFound);
-            propertySearchResultView.Properties = PropertyListBasedOnPageIndex<T, TVm>(request.Index,
-                                                                               request.NumberOfResultsPerPage,
-                                                                               propertiesMatchingQuery);
+
+            // TODO: permanently remove paging?
+            //propertySearchResultView.TotalNumberOfPages = NumberOfResultPagesGiven(request.NumberOfResultsPerPage,
+            //                                                                       propertySearchResultView.
+            //                                                                           NumberOfTitlesFound);
+            //propertySearchResultView.Properties = PropertyListBasedOnPageIndex<T, TVm>(request.Index,
+            //                                                                   request.NumberOfResultsPerPage,
+            //                                                                   propertiesMatchingQuery);
+            //propertySearchResultView.CurrentPage = request.Index;
+            propertySearchResultView.Properties = propertiesMatchingQuery.ConvertToViewModels<T, TVm>();
+
+
             propertySearchResultView.SqftMaxFilter = request.SqftMaxFilter;
             propertySearchResultView.SqftMinFilter = request.SqftMinFilter;
             //propertySearchResultView.SqftMax = propertiesMatchingQuery.Max(x => x.BuildingTotalSquareFoot);
             //propertySearchResultView.SqftMin = propertiesMatchingQuery.Min(x => x.BuildingTotalSquareFoot);
 
-            propertySearchResultView.CurrentPage = request.Index;
+            
 
             return propertySearchResultView;
         }

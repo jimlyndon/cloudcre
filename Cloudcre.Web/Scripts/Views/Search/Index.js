@@ -1,6 +1,7 @@
 ﻿// namespace
 window.cloudcre = window.cloudcre || {};
 
+// routing
 $.extend(window.cloudcre, {
     routing: {
         url: {},
@@ -9,6 +10,8 @@ $.extend(window.cloudcre, {
         }
     }
 });
+
+// view model and search
 $.extend(window.cloudcre, {
     locations: {},
     viewModel: (function () {
@@ -25,75 +28,104 @@ $.extend(window.cloudcre, {
             ResidentialLand: ko.observableArray([])
         },
         // select list option values
-        propertyTypeOptionValues = ko.observableArray(function () {
-            var values = [];
-            $.each($("li", "#search-engines"), function (idx, obj) {
-                values.push($(obj).text());
-            });
-            return values;
-        } ()),
+            propertyTypeOptionValues = ko.observableArray(function () {
+                var values = [];
+                $.each($("li", "#AddProperties"), function (idx, obj) {
+                    values.push($(obj).text());
+                });
+                return values;
+            } ()),
         // current property-type that has been selected
-        propertyTypeSelected = ko.observable("Multiple Family"),
+            propertyTypeSelected = ko.observable("Multiple Family"),
         // property records from most recent search request
-        propertySearchResults = ko.observable(),
+            propertySearchResults = ko.observable(),
         // property records that have been queued for current selected property-type
-        queuedProperties = function () {
-            return _queued[this.propertyTypeSelected().split(' ').join('')];
-        },
+            queuedProperties = function () {
+                return _queued[this.propertyTypeSelected().split(' ').join('')];
+            },
         // removes property if in queue, otherwise adds property to queue
-        addOrRemovePropertyFromQueue = function (sProp) {
-            var properties = this.queuedProperties();
-            // array of removed values
-            var removed = properties.remove(function (qProp) {
-                return sProp.Id == qProp.Id;
-            });
+            addOrRemovePropertyFromQueue = function (sProp) {
+                var properties = this.queuedProperties();
+                // array of removed values
+                var removed = properties.remove(function (qProp) {
+                    return sProp.Id == qProp.Id;
+                });
 
-            // if no removed values
-            if (!(removed.length > 0))
-                properties.push(sProp);
-        },
+                // if no removed values
+                if (!(removed.length > 0))
+                    properties.push(sProp);
+            },
         // is the property currently queued?
-        isQueued = function (sProp) {
-            // truthy or falsy
-            return ko.utils.arrayFirst(this.queuedProperties()(), function (qProp) {
-                return sProp.Id == qProp.Id;
-            });
-        },
+            isQueued = function (sProp) {
+                // truthy or falsy
+                return ko.utils.arrayFirst(this.queuedProperties()(), function (qProp) {
+                    return sProp.Id == qProp.Id;
+                });
+            },
         // edit a property
-        editProperty = function (sProp) {
+            editProperty = function (sProp) {
 
-            var id = sProp.Id;
-            var name = sProp.Name;
-            var type = sProp.PropertyTypeDescription.split(' ').join('');
-            window.open(window.cloudcre.routing.url[type].edit + "/" + id + "/" + convertToSlug(name));
-        },
+                var id = sProp.Id;
+                var name = sProp.Name;
+                var type = sProp.PropertyTypeDescription.split(' ').join('');
+                window.open(window.cloudcre.routing.url[type].edit + "/" + id + "/" + convertToSlug(name));
+            },
         // remvoe a property from the system
-        deleteProperty = function (sProp) {
-            var id = sProp.Id;
-            var name = sProp.Name;
-            var type = sProp.PropertyTypeDescription.split(' ').join('');
+            deleteProperty = function (sProp) {
+                var id = sProp.Id;
+                var name = sProp.Name;
+                var type = sProp.PropertyTypeDescription.split(' ').join('');
 
-            $("#delete-dialog-msg").text("Are you sure you want to delete the property, \"" + name + "\" ?");
-            $("#delete-dialog").dialog("option", "buttons", {
-                Ok: function () {
-                    DisableButton('Ok');
-                    DisableButton('Cancel');
-                    var data = { Id: id };
-                    $.post(window.cloudcre.routing.url[type].remove, data || {}, function () {
-                        $("#delete-dialog-msg").text("Property, \"" + name + "\", successfully removed");
-                    });
-                    fireDisplay();
-                    var $that = $(this);
-                    window.setTimeout(function () {
-                        $that.dialog("close");
-                    }, 3000);
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
-                }
-            });
-            $("#delete-dialog").dialog("open");
-        };
+                $("#delete-dialog-msg").text("Are you sure you want to delete the property, \"" + name + "\" ?");
+                $("#delete-dialog").dialog("option", "buttons", {
+                    Ok: function () {
+                        DisableButton('Ok');
+                        DisableButton('Cancel');
+                        var data = { Id: id };
+                        $.post(window.cloudcre.routing.url[type].remove, data || {}, function () {
+                            $("#delete-dialog-msg").text("Property, \"" + name + "\", successfully removed");
+                        });
+                        fireDisplay();
+                        var $that = $(this);
+                        window.setTimeout(function () {
+                            $that.dialog("close");
+                        }, 3000);
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                });
+                $("#delete-dialog").dialog("open");
+            },
+            summaryReport = function () {
+                // get iframe with form for post that generates a report
+                var frmWindow = getIFrameWindow();
+                // reset form input values
+                var fileName = $(frmWindow.document.getElementById("fileForm"));
+                fileName.html("");
+
+                // get queued property ids and create input values for form
+                var type = this.propertyTypeSelected().split(' ').join(''),
+                    qProps = this.queuedProperties()(),
+                    inputs = '';
+
+                fileName.attr("action", window.cloudcre.routing.url[type].summary);
+                $.each(qProps, function (idx, prop) {
+                    inputs += '<input type="text" name="ids" value = "' + prop.Id + '" />';
+                });
+                fileName.append(inputs);
+
+                // submit form to server
+                var frm = frmWindow.document.getElementById("fileForm");
+                frm.submit();
+            },
+        // TODO: remove this function after report available for all properties
+            tempCond = function () {
+                if (this.propertyTypeSelected().split(' ').join('').toLowerCase() != "office")
+                    return false;
+                
+                return this.queuedProperties()().length > 0
+            }
 
         // send search request when the selected property-type is changed
         propertyTypeSelected.subscribe(function (type) {
@@ -130,11 +162,53 @@ $.extend(window.cloudcre, {
             addOrRemovePropertyFromQueue: addOrRemovePropertyFromQueue,
             isQueued: isQueued,
             editProperty: editProperty,
-            deleteProperty: deleteProperty
+            deleteProperty: deleteProperty,
+            summaryReport: summaryReport,
+            tempCond: tempCond
         };
     })()
 });
 
+var getIFrameWindow = function() {
+    var ifr = document.getElementById("fileIframe");
+    if (!ifr) {
+        createFrame();
+    }
+    var wnd = window.frames["fileIframe"];
+    return wnd;
+};
+var createFrame = function() {
+    var frame = document.createElement("iframe");
+    frame.name = "fileIframe";
+    frame.id = "fileIframe";
+
+    document.body.appendChild(frame);
+    generateIFrameContent();
+    frame.style.width = "0px";
+    frame.style.height = "0px";
+    frame.style.border = "0px";
+};
+var generateIFrameContent = function() {
+    var frameWindow = window.frames["fileIframe"];
+    var content = "<form id='fileForm' method='post' enctype='application/data' action=''></form>";
+    frameWindow.document.open();
+    frameWindow.document.write(content);
+    frameWindow.document.close();
+};
+
+// total results found
+window.cloudcre.viewModel.numberOfPropertyResults = ko.dependentObservable({
+    read: function () {
+        if (this.propertySearchResults() != undefined) {
+            var count = this.propertySearchResults().Properties.length;
+            return count + (count != 1 ? " results found" : " result found");
+        }
+        return "";
+    },
+    owner: window.cloudcre.viewModel,
+    //TODO: defer doesnt seem to work
+    deferEvaluation: true  //do not evaluate immediately when created
+});
 
 $(function () {
     ko.applyBindings(window.cloudcre.viewModel);
@@ -548,11 +622,9 @@ $.extend($.whitney, {
                             $('#map').jMapping('update');
                         }
 
-                        $("#pageLinksTop").html($.whitney.Property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
-                        $("#pageLinksBottom").html($.whitney.Property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
-
-                        // foreach map-location parcelid that maps to view model add .ui-selected
-                        //viewModel.updateSearchResults();
+                        // TODO: permanently remove paging?
+//                        $("#pageLinksTop").html($.whitney.Property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
+//                        $("#pageLinksBottom").html($.whitney.Property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
 
                         disallowUpdates = false;
 

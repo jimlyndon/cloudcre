@@ -22,7 +22,6 @@
                 {
                     <div>
                         <div>
-                            @*Property Type @Html.DropDownListFor(model => model.PropertyType, Model.PropertyType)*@
                             Property Type <select id="PropertyType" data-bind="options: propertyTypeOptionValues, value: propertyTypeSelected, valueUpdate: 'change'"></select>
                         </div>
                     </div>
@@ -31,10 +30,7 @@
                         <div>
                             Location (try typing 'county', 'city' or 'zip')
                         </div>
-                            <div id="search_box_container"></div>
-@*                        <div class="ui-widget">
-                            @Html.DropDownList("location-search-box", Model.Locations, "", null)
-                        </div>*@
+                        <div id="search_box_container"></div>
                     </div>
                     <br />
                     <div>
@@ -77,6 +73,7 @@
             </div>
             <div class="search-options left">
                 <h2>Active Queue</h2>
+                <a href="/" style="display: none" data-bind="click: summaryReport, visible: tempCond()">Download Sumary Report</a>
                 <div id="queued" data-bind='template: { name: "queueTemplate", foreach: queuedProperties()}'> </div>
             </div>
         </td>
@@ -90,8 +87,8 @@
     <div id="personList" data-bind="template: { name: 'personTemplate', afterRender: loaded }"></div>
 </div>*@
 <span class="item-displayoptions-pages">
-    <span id="pageLinksTop">
-        @Html.BuildPageLinksFrom(Model.CurrentPage, Model.TotalNumberOfPages, x => "JavaScript:displayPage("+ x +")") of @Model.TotalNumberOfPages pages, with @Model.NumberOfTitlesFound property record(s) in total
+    <span id="pageLinksTop" data-bind="text: numberOfPropertyResults">        
+        @*@Html.BuildPageLinksFrom(Model.CurrentPage, Model.TotalNumberOfPages, x => "JavaScript:displayPage("+ x +")") of @Model.TotalNumberOfPages pages, with @Model.NumberOfTitlesFound property record(s) in total*@
     </span>
 </span>
 <table cellspacing="0" cellpadding="0" border="0" class="property-tbl">
@@ -99,13 +96,12 @@
     <tr>
         <th>
             <div>
-                <a tabindex="0" href="#search-engines" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="flat"><span class="ui-icon ui-icon-triangle-1-s"></span>Add a new property</a>
-                <div id="search-engines" class="hide">
+                <a tabindex="0" href="#AddProperties" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="flat"><span class="ui-icon ui-icon-triangle-1-s"></span>Add a new property</a>
+                <div id="AddProperties" class="hide">
                     @Html.ToFormattedList(Model.PropertyType.ToList(), HtmlHelperExtensions.ListType.Unordered, @<a href="#">@item.Text</a>)  
                 </div>
 
             </div>
-            @*<button id="create-property" class="search-button">Add a Property</button>*@
         </th>
         <th>
             Name
@@ -153,11 +149,11 @@
     <tbody id="map-side-bar" data-bind='template: { name: "productItemTemplate", data: propertySearchResults }' />
 </table>
 <div style="clear: both;"></div>
-<span class="item-displayoptions-pages">
+@*<span class="item-displayoptions-pages">
     <span id="pageLinksBottom">
         @Html.BuildPageLinksFrom(Model.CurrentPage, Model.TotalNumberOfPages, x => "JavaScript:displayPage(" + x + ")") of @Model.TotalNumberOfPages page(s), with @Model.NumberOfTitlesFound property record(s) in total
     </span>
-</span>
+</span>*@
 @section scripts {
     @MvcHtmlString.Create(Bundle.JavaScript().Add("~/Scripts/Views/Search/Index.js").Render("~/Scripts/whitney#.js"))
 
@@ -248,25 +244,29 @@
                 search: '@Url.Action("Search", "MultipleFamily")',
                 create: '@Url.Action("Create", "MultipleFamily")',
                 edit: '@Url.Action("Edit", "MultipleFamily")',
-                remove: '@Url.Action("Delete", "MultipleFamily")'
+                remove: '@Url.Action("Delete", "MultipleFamily")',
+                summary: '@Url.Action("Summary", "MultipleFamily")'
             },
             Office : {
                 search: '@Url.Action("Search", "Office")',
                 create: '@Url.Action("Create", "Office")',
                 edit: '@Url.Action("Edit", "Office")',
-                remove: '@Url.Action("Delete", "Office")'
+                remove: '@Url.Action("Delete", "Office")',
+                summary: '@Url.Action("Summary", "Office")'
             },
             Retail : {
                 search: '@Url.Action("Search", "Retail")',
                 create: '@Url.Action("Create", "Retail")',
                 edit: '@Url.Action("Edit", "Retail")',
-                remove: '@Url.Action("Delete", "Retail")'
+                remove: '@Url.Action("Delete", "Retail")',
+                summary: '@Url.Action("Summary", "Retail")'
             },
             Industrial : {
                 search: '@Url.Action("Search", "Industrial")',
                 create: '@Url.Action("Create", "Industrial")',
                 edit: '@Url.Action("Edit", "Industrial")',
-                remove: '@Url.Action("Delete", "Industrial")'
+                remove: '@Url.Action("Delete", "Industrial")',
+                summary: '@Url.Action("Summary", "Industrial")'
             },
             IndustrialCondominium : {
                 search: '@Url.Action("Search", "IndustrialCondominium")',
