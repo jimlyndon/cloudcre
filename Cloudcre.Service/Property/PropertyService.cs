@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using Cloudcre.Model;
 using Cloudcre.Model.Core.UnitOfWork;
+using Cloudcre.Service.Property.Mapping;
 using Cloudcre.Service.Property.Messages;
 using Cloudcre.Service.Property.ViewModels;
 using Cloudcre.Service.Report.Messages;
-using Cloudcre.Service.Property.Mapping;
-using Cloudcre.Service.Report.Summary.Office;
+using Cloudcre.Service.Report.Summary;
 
 namespace Cloudcre.Service.Property
 {
@@ -112,7 +111,7 @@ namespace Cloudcre.Service.Property
             var propertViewModels = properties.ConvertToViewModels<Office, OfficeViewModel>();
 
             var stream = new MemoryStream();
-            var workbook = new SummaryReport();
+            var workbook = new OfficeSummaryReport();
             workbook.CreatePackage(stream, propertViewModels);
             stream.Seek(0, SeekOrigin.Begin);
 
@@ -128,14 +127,42 @@ namespace Cloudcre.Service.Property
 
     public class RetailService : BuildingPropertyService<Retail, Guid, RetailViewModel>, IRetailService
     {
+        private readonly IRetailRepository _repository;
+
         public RetailService(IRetailRepository repository, IUnitOfWork unitOfWork)
             : base(repository, unitOfWork)
         {
+            _repository = repository;
         }
 
         public override GetReportResponse SummaryReport(GetReportRequest request)
         {
-            throw new NotImplementedException();
+            var response = new GetReportResponse();
+
+            if (request.Ids == null)
+            {
+                response.Success = false;
+                return response;
+            }
+
+            var properties = from propertyRepo in _repository.FindAll()
+                             join ids in request.Ids on propertyRepo.Id equals ids
+                             select propertyRepo;
+
+            var propertViewModels = properties.ConvertToViewModels<Retail, RetailViewModel>();
+
+            var stream = new MemoryStream();
+            var workbook = new RetailSummaryReport();
+            workbook.CreatePackage(stream, propertViewModels);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            response.Report = stream;
+            DateTime currentTime = DateTime.Now;
+            response.ReportName = string.Format("{0}-{1}.xlsx", "Retail Bldg Sales",
+                                                string.Format("{0:yyyyMMdd}", currentTime));
+            response.Success = true;
+
+            return response;
         }
     }
 

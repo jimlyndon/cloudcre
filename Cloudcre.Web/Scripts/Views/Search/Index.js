@@ -121,11 +121,12 @@ $.extend(window.cloudcre, {
             },
         // TODO: remove this function after report available for all properties
             tempCond = function () {
-                if (this.propertyTypeSelected().split(' ').join('').toLowerCase() != "office")
-                    return false;
-                
-                return this.queuedProperties()().length > 0
-            }
+                var prop = this.propertyTypeSelected().split(' ').join('').toLowerCase();
+                if (prop == "office" || prop == "retail")
+                    return this.queuedProperties()().length > 0;
+
+                return false;
+            };
 
         // send search request when the selected property-type is changed
         propertyTypeSelected.subscribe(function (type) {
