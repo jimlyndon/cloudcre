@@ -8,7 +8,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Cloudcre.Service.Report.Summary
 {
-    public class RetailSummaryReport : SummaryReport<RetailViewModel>
+    public class MultipleFamilySummaryReport : SummaryReport<MultipleFamilyViewModel>
     {
         protected override IEnumerable<MergeCell> BuildHeaderPrimary(SheetData sheetData, SharedStringTablePart sharedStringTablePart)
         {
@@ -35,7 +35,7 @@ namespace Cloudcre.Service.Report.Summary
             };
 
             var cell19 = new Cell { CellReference = "B2", StyleIndex = 84U, DataType = CellValues.SharedString };
-            cell19.Append(new CellValue {Text = sharedStringTablePart.SharedString("COMPARABLE RETAIL PROPERTY SALES")});
+            cell19.Append(new CellValue {Text = sharedStringTablePart.SharedString("COMPARABLE MULTIPLE-FAMILY SALES")});
       
             row2.Append(cell19);
 
@@ -94,24 +94,25 @@ namespace Cloudcre.Service.Report.Summary
             cell77.Append(new CellValue {Text = sharedStringTablePart.SharedString("BUILDING")});
 
             var cell78 = new Cell { CellReference = "I5", StyleIndex = 86U };
-            var cell79 = new Cell { CellReference = "J5", StyleIndex = 2U };
+            var cell781 = new Cell { CellReference = "J5", StyleIndex = 86U };
+            var cell79 = new Cell { CellReference = "K5", StyleIndex = 2U };
 
-            var cell80 = new Cell { CellReference = "K5", StyleIndex = 6U, DataType = CellValues.SharedString };
+            var cell80 = new Cell { CellReference = "L5", StyleIndex = 6U, DataType = CellValues.SharedString };
             cell80.Append(new CellValue {Text = sharedStringTablePart.SharedString("ECONOMICS")});
 
-            var cell81 = new Cell { CellReference = "L5", StyleIndex = 2U };
+            var cell81 = new Cell { CellReference = "M5", StyleIndex = 2U };
 
-            var cell82 = new Cell { CellReference = "M5", StyleIndex = 86U, DataType = CellValues.SharedString };
+            var cell82 = new Cell { CellReference = "N5", StyleIndex = 86U, DataType = CellValues.SharedString };
             cell82.Append(new CellValue {Text = sharedStringTablePart.SharedString("SALE")});
 
-            var cell83 = new Cell { CellReference = "N5", StyleIndex = 86U };
-            var cell84 = new Cell { CellReference = "O5", StyleIndex = 86U };
-            var cell85 = new Cell { CellReference = "P5", StyleIndex = 2U };
+            var cell83 = new Cell { CellReference = "O5", StyleIndex = 86U };
+            var cell84 = new Cell { CellReference = "P5", StyleIndex = 86U };
+            var cell85 = new Cell { CellReference = "Q5", StyleIndex = 2U };
 
-            var cell86 = new Cell { CellReference = "Q5", StyleIndex = 5U, DataType = CellValues.SharedString };
+            var cell86 = new Cell { CellReference = "R5", StyleIndex = 5U, DataType = CellValues.SharedString };
             cell86.Append(new CellValue {Text = sharedStringTablePart.SharedString("COMMENTS")});
 
-            row5.Append(cell70, cell71, cell72, cell73, cell74, cell75, cell76, cell77, cell78, cell79, cell80, cell81,
+            row5.Append(cell70, cell71, cell72, cell73, cell74, cell75, cell76, cell77, cell78, cell781, cell79, cell80, cell81,
                         cell82, cell83, cell84, cell85, cell86);
 
             var row6 = new Row
@@ -151,7 +152,7 @@ namespace Cloudcre.Service.Report.Summary
             cell111.Append(new CellValue {Text = sharedStringTablePart.SharedString("SF")});
 
             var cell112 = new Cell { CellReference = "I7", StyleIndex = 9U, DataType = CellValues.SharedString };
-            cell112.Append(new CellValue {Text = sharedStringTablePart.SharedString("Quality")});
+            cell112.Append(new CellValue {Text = sharedStringTablePart.SharedString("Class / Qual")});
 
             var cell113 = new Cell { CellReference = "J7", StyleIndex = 9U };
 
@@ -204,7 +205,7 @@ namespace Cloudcre.Service.Report.Summary
             var cell130 = new Cell { CellReference = "J8", StyleIndex = 9U };
 
             var cell131 = new Cell { CellReference = "K8", StyleIndex = 9U, DataType = CellValues.SharedString };
-            cell131.Append(new CellValue { Text = sharedStringTablePart.SharedString("NOI/SF") });
+            cell131.Append(new CellValue { Text = sharedStringTablePart.SharedString("NOI/Unit-SF") });
 
             var cell132 = new Cell { CellReference = "L8", StyleIndex = 9U };
 
@@ -214,8 +215,8 @@ namespace Cloudcre.Service.Report.Summary
             var cell134 = new Cell { CellReference = "N8", StyleIndex = 9U, DataType = CellValues.SharedString };
             cell134.Append(new CellValue { Text = sharedStringTablePart.SharedString("Grantee") });
 
-            var cell135 = new Cell { CellReference = "O8", StyleIndex = 87U, DataType = CellValues.SharedString };
-            cell135.Append(new CellValue { Text = sharedStringTablePart.SharedString("$/SF Land") });
+            var cell135 = new Cell { CellReference = "O8", StyleIndex = 9U, DataType = CellValues.SharedString };
+            cell135.Append(new CellValue { Text = sharedStringTablePart.SharedString("$/Unit") });
 
             var cell136 = new Cell { CellReference = "P8", StyleIndex = 9U };
             var cell137 = new Cell { CellReference = "Q8", StyleIndex = 8U };
@@ -236,9 +237,6 @@ namespace Cloudcre.Service.Report.Summary
             var cell139 = new Cell { CellReference = "C9", StyleIndex = 7U, DataType = CellValues.SharedString };
             cell139.Append(new CellValue { Text = sharedStringTablePart.SharedString("Verification") });
             
-            var cell140 = new Cell { CellReference = "E9", StyleIndex = 7U, DataType = CellValues.SharedString };
-            cell140.Append(new CellValue { Text = sharedStringTablePart.SharedString("AADT") });
-
             var cell141 = new Cell { CellReference = "F9", StyleIndex = 7U, DataType = CellValues.SharedString };
             cell141.Append(new CellValue { Text = sharedStringTablePart.SharedString("Parking") });
 
@@ -246,9 +244,6 @@ namespace Cloudcre.Service.Report.Summary
 
             var cell143 = new Cell { CellReference = "H9", StyleIndex = 9U, DataType = CellValues.SharedString };
             cell143.Append(new CellValue { Text = sharedStringTablePart.SharedString("Condition") });
-
-            var cell144 = new Cell { CellReference = "I9", StyleIndex = 9U, DataType = CellValues.SharedString };
-            cell144.Append(new CellValue { Text = sharedStringTablePart.SharedString("Use") });
 
             var cell145 = new Cell { CellReference = "J9", StyleIndex = 9U };
 
@@ -263,7 +258,7 @@ namespace Cloudcre.Service.Report.Summary
             var cell149 = new Cell { CellReference = "P9", StyleIndex = 9U };
             var cell150 = new Cell { CellReference = "Q9", StyleIndex = 8U };
 
-            row9.Append(cell139, cell140, cell141, cell142, cell143, cell144, cell145, cell146, cell147,
+            row9.Append(cell139, cell141, cell142, cell143, cell145, cell146, cell147,
                         cell148, cell149, cell150);
 
             var row10 = new Row
@@ -286,22 +281,22 @@ namespace Cloudcre.Service.Report.Summary
                                      new MergeCell {Reference = "B2:Q2"},
                                      new MergeCell {Reference = "B3:Q3"},
                                      new MergeCell {Reference = "E5:F5"},
-                                     new MergeCell {Reference = "H5:I5"},
-                                     new MergeCell {Reference = "M5:O5"}
+                                     new MergeCell {Reference = "H5:J5"},
+                                     new MergeCell {Reference = "N5:P5"}
                                  };
 
             //mergeCells.Append(mergeCell1, mergeCell2, mergeCell3, mergeCell4, mergeCell5);
             return mergeCells;
         }
 
-        protected override MergeCells BuildProperties(SheetData sheetData, SharedStringTablePart sstb, IEnumerable<RetailViewModel> viewModels)
+        protected override MergeCells BuildProperties(SheetData sheetData, SharedStringTablePart sstb, IEnumerable<MultipleFamilyViewModel> viewModels)
         {
             #region rows
 
             int rowIndex = sheetData.Count() + 1;
             var mergeCells1 = new MergeCells();
 
-            foreach (RetailViewModel viewModel in viewModels)
+            foreach (MultipleFamilyViewModel viewModel in viewModels)
             {
                 var mergeCell1 = new MergeCell { Reference = String.Format("Q{0}:Q{1}", rowIndex, rowIndex + 4) };
                 mergeCells1.Append(mergeCell1);
@@ -332,9 +327,10 @@ namespace Cloudcre.Service.Report.Summary
                 var cell8 = new Cell { CellReference = "H" + rowIndex, StyleIndex = 12U };
                 cell8.Append(new CellValue { Text = viewModel.BuildingTotalSquareFoot.ToString() });
 
-                // Quality
+                // Class / Qual
                 var cell9 = new Cell { CellReference = "I" + rowIndex, StyleIndex = 8U, DataType = CellValues.SharedString };
-                cell9.Append(new CellValue { Text = sstb.SharedString(viewModel.Quality) });
+                string classquality = SummaryReportHelpers.FormatBuildingClassQuality(viewModel.Class, viewModel.Quality);
+                cell9.Append(new CellValue { Text = sstb.SharedString(classquality) });
 
                 // Occupancy
                 var cell11 = new Cell { CellReference = "K" + rowIndex, StyleIndex = 14U };
@@ -395,8 +391,8 @@ namespace Cloudcre.Service.Report.Summary
                 var cell27 = new Cell { CellReference = "I" + rowIndex, StyleIndex = 8U };
                 cell27.Append(new CellValue { Text = viewModel.Stories.ToString() });
 
-                // NOI/SF
-                string noiSf = SummaryReportHelpers.FormatNoiSf(viewModel.NetOperatingIncome);
+                // NOI/Unit-SF
+                string noiSf = SummaryReportHelpers.FormatNoiSf(viewModel.NetOperatingIncomePerUnitAverageSquareFoot());
                 var cell29 = new Cell { CellReference = "K" + rowIndex, StyleIndex = 20U };
                 cell29.Append(new CellValue { Text = noiSf });
 
@@ -418,9 +414,9 @@ namespace Cloudcre.Service.Report.Summary
                 var cell32 = new Cell { CellReference = "N" + rowIndex, StyleIndex = 16U, DataType = CellValues.SharedString };
                 cell32.Append(new CellValue { Text = sstb.SharedString(viewModel.Grantee) });
 
-                // $/SF Land
-                var cell33 = new Cell { CellReference = "O" + rowIndex, StyleIndex = 88U };
-                cell33.Append(new CellValue { Text = viewModel.CostPerSiteSquareFoot.ToString() });
+                // $/Unit
+                var cell33 = new Cell { CellReference = "O" + rowIndex, StyleIndex = 17U };
+                cell33.Append(new CellValue { Text = viewModel.CostPerUnit.ToString() });
                 
                 row2.Append(cell20, cell23, cell24, cell26, cell27, cell29, cell31, cell32, cell33);
 
@@ -438,10 +434,6 @@ namespace Cloudcre.Service.Report.Summary
                 var cell38 = new Cell { CellReference = "C" + rowIndex, StyleIndex = 19U, DataType = CellValues.SharedString };
                 cell38.Append(new CellValue { Text = sstb.SharedString(viewModel.Address.City) });
 
-                // AADT
-                var cell40 = new Cell { CellReference = "E" + rowIndex, StyleIndex = 12U};
-                cell40.Append(new CellValue { Text = viewModel.AverageAnnualDailyTraffic.ToString() });
-
                 // Parking
                 var cell41 = new Cell { CellReference = "F" + rowIndex, StyleIndex = 8U, DataType = CellValues.SharedString };
                 cell41.Append(new CellValue { Text = sstb.SharedString(viewModel.Parking) });
@@ -450,10 +442,6 @@ namespace Cloudcre.Service.Report.Summary
                 var cell43 = new Cell { CellReference = "H" + rowIndex, StyleIndex = 8U, DataType = CellValues.SharedString };
                 cell43.Append(new CellValue { Text = sstb.SharedString(viewModel.Condition) });
 
-                // Use
-                var cell44 = new Cell { CellReference = "I" + rowIndex, StyleIndex = 8U, DataType = CellValues.SharedString };
-                cell44.Append(new CellValue { Text = sstb.SharedString(viewModel.Use) });
-
                 // OAR
                 var cell46 = new Cell { CellReference = "K" + rowIndex, StyleIndex = 23U };
                 cell46.Append(new CellValue { Text = viewModel.OverallRate().ToString() });
@@ -461,7 +449,7 @@ namespace Cloudcre.Service.Report.Summary
                 // OR B-P
                 var cell48 = new Cell { CellReference = "M" + rowIndex, StyleIndex = 8U, DataType = CellValues.SharedString };
                 cell48.Append(new CellValue { Text = sstb.SharedString(viewModel.OfficialRecordBookAndPage) });
-                row3.Append(cell38, cell40, cell41, cell43, cell44, cell46, cell48);
+                row3.Append(cell38, cell41, cell43, cell46, cell48);
 
 
                 // row 4

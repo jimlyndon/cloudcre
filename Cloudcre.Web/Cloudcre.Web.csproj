@@ -178,6 +178,11 @@
     <Folder Include="UserManagement\Role\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Bootstrap\css\bootstrap.css" />
+    <Content Include="Content\Bootstrap\css\bootstrap.min.css" />
+    <Content Include="Content\Bootstrap\css\site.css" />
+    <Content Include="Content\Bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\Bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Content\css\icons.css" />
     <Content Include="Content\css\reset.css" />
     <Content Include="Content\css\workspace.css" />
@@ -253,6 +258,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Libs\Backbone\backbone-0.5.0.js" />
+    <Content Include="Scripts\Libs\Bootstrap\bootstrap.min.js" />
     <Content Include="Scripts\Libs\CrockfordJson2\json2.js" />
     <Content Include="Scripts\Libs\DataTables\jquery.dataTables.min.js" />
     <Content Include="Scripts\Libs\DigitalBushMaskedInput\jquery.maskedinput-1.2.2.min.js" />
@@ -357,6 +363,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="Views\Shared\_Layout2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cloudcre.Infrastructure\Cloudcre.Infrastructure.csproj">

@@ -52,4 +52,15 @@ namespace Cloudcre.Service.Report.Summary
             return null;
         }
     }
+
+    public static class MultipleFamilyViewModelHelper
+    {
+        public static decimal? NetOperatingIncomePerUnitAverageSquareFoot(this MultipleFamilyViewModel viewModel)
+        {
+            if (viewModel.NetOperatingIncome.HasValue && viewModel.AverageSquareFootPerUnit.HasValue)
+                return viewModel.NetOperatingIncome / viewModel.AverageSquareFootPerUnit;
+
+            return null;
+        }
+    }
 }

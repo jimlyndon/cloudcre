@@ -1,4 +1,6 @@
-﻿namespace Cloudcre.Model
+﻿using System;
+
+namespace Cloudcre.Model
 {
     public abstract class BuildingProperty : Property
     {
@@ -13,7 +15,7 @@
             get
             {
                 if (Price.HasValue && BuildingTotalSquareFoot.HasValue)
-                    return Price / BuildingTotalSquareFoot;
+                    return decimal.Round((Price.Value / BuildingTotalSquareFoot.Value), 2, MidpointRounding.AwayFromZero);
 
                 return null;
             }

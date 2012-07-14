@@ -93,14 +93,14 @@ namespace Cloudcre.Web.HtmlHelpers
 
         private static void ToFormattedList<T>(IEnumerable<T> collection, Func<T, HelperResult> template, TextWriter writer, ListModel model)
         {
-            writer.Write(model.FirstTag);
+            //writer.Write(model.FirstTag);
             foreach (T item in collection)
             {
                 writer.Write(model.InnerFirstTag);
                 writer.Write(template(item));
                 writer.Write(model.InnerLastTag);
             }
-            writer.Write(model.LastTag);
+            //writer.Write(model.LastTag);
         }
 
         /// <summary>

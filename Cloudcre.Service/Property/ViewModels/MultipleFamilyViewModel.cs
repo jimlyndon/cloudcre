@@ -26,6 +26,10 @@ namespace Cloudcre.Service.Property.ViewModels
             get { return PropertyType.MultipleFamily; }
         }
 
+        [DisplayName("NOI/Unit-SF")]
+        [DataType(DataType.Currency, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ValidationMsgValidValue")]
+        public decimal? NetOperatingIncomePerUnit { get; set; }
+
         [RegularExpression(@"^(\d+)$", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ValidationMsgValidNumber")]
         public int? Units { get; set; }
     }

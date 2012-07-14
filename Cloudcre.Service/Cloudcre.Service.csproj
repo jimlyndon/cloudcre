@@ -93,6 +93,7 @@
     <Compile Include="Property\ViewModels\PropertyViewModel.cs" />
     <Compile Include="Property\ViewModels\ResidentialLandViewModel.cs" />
     <Compile Include="Property\ViewModels\RetailViewModel.cs" />
+    <Compile Include="Report\Summary\MultipleFamilySummaryReport.cs" />
     <Compile Include="Report\Summary\OfficeSummaryReport.cs" />
     <Compile Include="Report\Summary\PropertyViewModelHelper.cs" />
     <Compile Include="Report\Summary\RetailSummaryReport.cs" />

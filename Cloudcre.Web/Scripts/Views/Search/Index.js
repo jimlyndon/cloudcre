@@ -30,13 +30,13 @@ $.extend(window.cloudcre, {
         // select list option values
             propertyTypeOptionValues = ko.observableArray(function () {
                 var values = [];
-                $.each($("li", "#AddProperties"), function (idx, obj) {
+                $.each($("li", ".property-list"), function (idx, obj) {
                     values.push($(obj).text());
                 });
                 return values;
             } ()),
         // current property-type that has been selected
-            propertyTypeSelected = ko.observable("Multiple Family"),
+            propertyTypeSelected = ko.observable(),
         // property records from most recent search request
             propertySearchResults = ko.observable(),
         // property records that have been queued for current selected property-type
@@ -70,7 +70,7 @@ $.extend(window.cloudcre, {
                 var type = sProp.PropertyTypeDescription.split(' ').join('');
                 window.open(window.cloudcre.routing.url[type].edit + "/" + id + "/" + convertToSlug(name));
             },
-        // remvoe a property from the system
+        // remove a property from the system
             deleteProperty = function (sProp) {
                 var id = sProp.Id;
                 var name = sProp.Name;
@@ -122,7 +122,7 @@ $.extend(window.cloudcre, {
         // TODO: remove this function after report available for all properties
             tempCond = function () {
                 var prop = this.propertyTypeSelected().split(' ').join('').toLowerCase();
-                if (prop == "office" || prop == "retail")
+                if (prop == "office" || prop == "retail" || prop == "multiplefamily")
                     return this.queuedProperties()().length > 0;
 
                 return false;
@@ -404,108 +404,6 @@ $(function () {
 });
 
 
-// The view model is an abstract description of the state of the UI, but without any knowledge of the UI technology (HTML)
-//var cookieQueued = jQuery.parseJSON($.cookie('ws')) ? jQuery.parseJSON($.cookie('ws')).QueuedItems : [];
-//var viewModel = {
-//    //queued: ko.observableArray(cookieQueued),
-//    remove: function (item) {
-//        this.queued.remove(item);
-//        $('.select-button').each(function () {
-//            var $this = $(this),
-//                id = $this.data("id");
-//            if (id === item.Id) {
-//                $this.removeClass("ui-selected");
-//                $this.text("Add to queue");
-//            }
-//        });
-//    },
-//    updateSearchResults: function () {
-//        $("button.select-button").click(function (e, ui) {
-//            var $this = $(this),
-//                array = viewModel.queued(),
-//                id = $this.data("id"),
-//                name = $this.data("name"),
-//                parcelid = $this.data("parcelid");
-
-//             unselect
-//            if ($this.hasClass("ui-selected")) {
-//                $this.removeClass("ui-selected");
-//                $(array).each(function (index, item) {
-//                    if (item.Id === id) {
-//                        array.splice(index, 1);
-//                        $this.text("Add to Queue");
-//                    }
-//                });
-//                viewModel.queued.remove({ "Id": id, "Name": name, "ParcelId": parcelid });
-//            }
-//             select
-//            else {
-//                var add = true;
-//                $(array).each(function (index, item) {
-//                    if (item.Id === id) {
-//                        add = false;
-//                    }
-//                });
-//                if (add) {
-//                    $this.addClass("ui-selected");
-//                    viewModel.queued.push({ "Id": id, "Name": name, "ParcelId": parcelid });
-//                    $this.text("Remove from Queue");
-//                }
-//            }
-//        });
-
-//         set inital state for each property based on what's in the queue
-//        $('.select-button').each(function () {
-//            var $this = $(this),
-//                id = $this.data("id"),
-//                array = viewModel.queued();
-//            $(array).each(function (index, item) {
-//                if (item.Id === id) {
-//                    $this.addClass("ui-selected");
-//                    $this.text("Remove From queue");
-//                }
-//            });
-//        });
-
-//        $("input.edit-button").click(function (e) {
-//            e.preventDefault();
-//            //$("#dialog").dialog("open");
-//            var id = $(this).data("id");
-//            var name = $(this).data("name");
-//            var type = $(this).data("type");
-//            window.open(window.cloudcre.routing.url[type].edit + "/" + id + "/" + convertToSlug(name));
-//            //window.TemplateDataService.getProperty(null, "StepOne" + "?id=" + id);
-//        });
-
-//        $("input.delete-button").click(function (e) {
-//            e.preventDefault();
-//            var id = $(this).data("id");
-//            var name = $(this).data("name");
-//            var type = $(this).data("type");
-//            $("#delete-dialog-msg").text("Are you sure you want to delete the property, \"" + name + "\" ?");
-//            $("#delete-dialog").dialog("option", "buttons", {
-//                Ok: function () {
-//                    DisableButton('Ok');
-//                    DisableButton('Cancel');
-//                    var data = { Id: id };
-//                    $.post(window.cloudcre.routing.url[type].remove, data || {}, function () {
-//                        $("#delete-dialog-msg").text("Property, \"" + name + "\", successfully removed");
-//                    });
-//                    fireDisplay();
-//                    var $that = $(this);
-//                    window.setTimeout(function () {
-//                        $that.dialog("close");
-//                    }, 3000);
-//                },
-//                Cancel: function () {
-//                    $(this).dialog("close");
-//                }
-//            });
-//            $("#delete-dialog").dialog("open");
-//        });
-//    }
-//};
-
 // dialog helpers
 function DisableButton(button) {
     if ($.isArray(button)) {
@@ -536,6 +434,38 @@ function split(val) {
 function extractLast(term) {
     return split(term).pop();
 }
+
+function ToJsDate(initialValue) {
+    function regExDate(str) {
+
+        function formatDate(d) {
+            var currDate = d.getDate();
+            var currMonth = d.getMonth() + 1; //months are zero based
+            var currYear = d.getFullYear();
+            return (currMonth + "/" + currDate + "/" + currYear);
+        }
+
+        //        var epoch = (new RegExp('/Date\\((-?[0-9]+)\\)/')).exec(str);
+        //        return new Date(parseInt(epoch[1])).toDateString();
+
+        if (!str)
+            return "";
+
+        if (str.substring(0, 6) == "/Date(") {  // MS Ajax date: /Date(19834141)/       
+            str = str.match(/Date\((.*?)\)/)[1];
+            return formatDate(new Date(parseInt(str)));
+        }
+
+        return str;
+        //    else { // ISO Date 2007-12-31T23:59:59Z                                     
+        //        var matches = str.split( /[-,:,T,Z]/);        
+        //        matches[1] = (parseInt(matches[1],0)-1).toString();
+        //        return formatDate(new Date(Date.UTC(matches.join(","))));
+        //    }
+    }
+
+    return regExDate(initialValue);
+};
 
 // model helpers
 $.extend($.whitney, {
@@ -568,6 +498,10 @@ $.extend($.whitney, {
 
                         // bind view model for queue
                         //ko.applyBindings(window.cloudcre.viewModel, $("#map-side-bar")[0]);
+                        $.each(data.Properties, function (idx, obj) {
+                            obj.Price = '$' + (obj.Price.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            obj.SaleDate = ToJsDate(obj.SaleDate);
+                        });
                         window.cloudcre.viewModel.propertySearchResults(data);
                         //ko.applyBindings(window.cloudcre.viewModel);
 
@@ -584,6 +518,7 @@ $.extend($.whitney, {
                                     navigationControlOptions: {
                                         style: google.maps.NavigationControlStyle.DEFAULT
                                     },
+                                    scrollwheel: false,
                                     mapTypeId: google.maps.MapTypeId.HYBRID,
                                     zoom: 7
                                 },
@@ -624,8 +559,8 @@ $.extend($.whitney, {
                         }
 
                         // TODO: permanently remove paging?
-//                        $("#pageLinksTop").html($.whitney.Property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
-//                        $("#pageLinksBottom").html($.whitney.Property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
+                        //                        $("#pageLinksTop").html($.whitney.Property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
+                        //                        $("#pageLinksBottom").html($.whitney.Property.buildPageLinksFor(data.CurrentPage, data.TotalNumberOfPages, data.NumberOfTitlesFound));
 
                         disallowUpdates = false;
 

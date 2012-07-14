@@ -73,14 +73,42 @@ namespace Cloudcre.Service.Property
 
     public class MultipleFamilyService : BuildingPropertyService<MultipleFamily, Guid, MultipleFamilyViewModel>, IMultipleFamilyService
     {
+        private readonly IMultipleFamilyRepository _repository;
+
         public MultipleFamilyService(IMultipleFamilyRepository repository, IUnitOfWork unitOfWork)
             : base(repository, unitOfWork)
         {
+            _repository = repository;
         }
 
         public override GetReportResponse SummaryReport(GetReportRequest request)
         {
-            throw new NotImplementedException();
+            var response = new GetReportResponse();
+
+            if (request.Ids == null)
+            {
+                response.Success = false;
+                return response;
+            }
+
+            var properties = from propertyRepo in _repository.FindAll()
+                             join ids in request.Ids on propertyRepo.Id equals ids
+                             select propertyRepo;
+
+            var propertViewModels = properties.ConvertToViewModels<MultipleFamily, MultipleFamilyViewModel>();
+
+            var stream = new MemoryStream();
+            var workbook = new MultipleFamilySummaryReport();
+            workbook.CreatePackage(stream, propertViewModels);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            response.Report = stream;
+            DateTime currentTime = DateTime.Now;
+            response.ReportName = string.Format("{0}-{1}.xlsx", "Multiple Family Bldg Sales",
+                                                string.Format("{0:yyyyMMdd}", currentTime));
+            response.Success = true;
+
+            return response;
         }
     }
 

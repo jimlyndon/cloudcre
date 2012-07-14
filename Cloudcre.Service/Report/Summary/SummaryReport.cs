@@ -189,30 +189,7 @@ namespace Cloudcre.Service.Report.Summary
             sheetView1.Append(selection1);
 
             sheetViews1.Append(sheetView1);
-            var sheetFormatProperties1 = new SheetFormatProperties { DefaultRowHeight = 12.75D, DyDescent = 0.2D };
-
-            var columns1 = new Columns();
-            var column1 = new Column { Min = 1U, Max = 1U, Width = 0.85546875D, CustomWidth = true };
-            var column2 = new Column { Min = 2U, Max = 2U, Width = 3.42578125D, CustomWidth = true };
-            var column3 = new Column { Min = 3U, Max = 3U, Width = 28.7109375D, CustomWidth = true };
-            var column4 = new Column { Min = 4U, Max = 4U, Width = 0.85546875D, CustomWidth = true };
-            var column5 = new Column { Min = 5U, Max = 5U, Width = 8.42578125D, CustomWidth = true };
-            var column6 = new Column { Min = 6U, Max = 6U, Width = 10.7109375D, CustomWidth = true };
-            var column7 = new Column { Min = 7U, Max = 7U, Width = 0.85546875D, CustomWidth = true };
-            var column8 = new Column { Min = 8U, Max = 8U, Width = 15.140625D, CustomWidth = true };
-            var column9 = new Column { Min = 9U, Max = 9U, Width = 14.7109375D, CustomWidth = true };
-            var column10 = new Column { Min = 10U, Max = 10U, Width = 0.85546875D, CustomWidth = true };
-            var column11 = new Column { Min = 11U, Max = 11U, Width = 14.85546875D, Style = 1U, CustomWidth = true };
-            var column12 = new Column { Min = 12U, Max = 12U, Width = 1.140625D, CustomWidth = true };
-            var column13 = new Column { Min = 13U, Max = 13U, Width = 17D, CustomWidth = true };
-            var column14 = new Column { Min = 14U, Max = 14U, Width = 24.5703125D, CustomWidth = true };
-            var column15 = new Column { Min = 15U, Max = 15U, Width = 10.140625D, Style = 1U, CustomWidth = true };
-            var column16 = new Column { Min = 16U, Max = 16U, Width = 0.85546875D, CustomWidth = true };
-            var column17 = new Column { Min = 17U, Max = 17U, Width = 74.85546875D, CustomWidth = true };
-            var column18 = new Column { Min = 18U, Max = 18U, Width = 0.85546875D, CustomWidth = true };
-
-            columns1.Append(column1, column2, column3, column4, column5, column6, column7, column8, column9, column10,
-                            column11, column12, column13, column14, column15, column16, column17, column18);
+            var sheetFormatProperties1 = new SheetFormatProperties { DefaultRowHeight = 12.75D, DyDescent = 0.2D };            
 
             var sheetData1 = new SheetData();
             var mergeCells1 = new MergeCells { Count = 19U };
@@ -221,7 +198,7 @@ namespace Cloudcre.Service.Report.Summary
             var comparables = properties.Where(x => x.SaleStatus() != PropertyViewModelHelper.PropertySaleStatus.Listed).ToList();
 
             // create primary header
-            BuildHeaderPrimary(sheetData1, sharedStringTablePart);
+            IEnumerable<MergeCell> headerMCells = BuildHeaderPrimary(sheetData1, sharedStringTablePart);
 
             // comparables for current year
             IEnumerable<T> propertiesYtd =
@@ -277,16 +254,16 @@ namespace Cloudcre.Service.Report.Summary
             // footer/legend
             BuildLegend(sheetData1, sharedStringTablePart);
 
-            var sheetProtection1 = new SheetProtection { SelectLockedCells = true, SelectUnlockedCells = true };
+            mergeCells1.Append(headerMCells);
+            //var mergeCell1 = new MergeCell { Reference = "B2:Q2" };
+            //var mergeCell2 = new MergeCell { Reference = "B3:Q3" };
+            //var mergeCell3 = new MergeCell { Reference = "E5:F5" };
+            //var mergeCell4 = new MergeCell { Reference = "H5:I5" };
+            //var mergeCell5 = new MergeCell { Reference = "M5:O5" };
 
-            
-            var mergeCell1 = new MergeCell { Reference = "B2:Q2" };
-            var mergeCell2 = new MergeCell { Reference = "B3:Q3" };
-            var mergeCell3 = new MergeCell { Reference = "E5:F5" };
-            var mergeCell4 = new MergeCell { Reference = "H5:I5" };
-            var mergeCell5 = new MergeCell { Reference = "M5:O5" };
+            //mergeCells1.Append(mergeCell1, mergeCell2, mergeCell3, mergeCell4, mergeCell5);
 
-            mergeCells1.Append(mergeCell1, mergeCell2, mergeCell3, mergeCell4, mergeCell5);
+            var sheetProtection1 = new SheetProtection { SelectLockedCells = true, SelectUnlockedCells = true };         
 
             var pageMargins1 = new PageMargins
             {
@@ -310,7 +287,7 @@ namespace Cloudcre.Service.Report.Summary
             worksheet1.Append(sheetDimension1);
             worksheet1.Append(sheetViews1);
             worksheet1.Append(sheetFormatProperties1);
-            worksheet1.Append(columns1);
+            worksheet1.Append(BuildColumns());
             worksheet1.Append(sheetData1);
             worksheet1.Append(sheetProtection1);
             worksheet1.Append(mergeCells1);
@@ -331,7 +308,9 @@ namespace Cloudcre.Service.Report.Summary
             return BuildProperties(sheetData1, sharedStringTablePart, listings);
         }
 
-        protected abstract void BuildHeaderPrimary(SheetData sheetData1, SharedStringTablePart sharedStringTablePart);
+        protected abstract Columns BuildColumns();
+
+        protected abstract IEnumerable<MergeCell> BuildHeaderPrimary(SheetData sheetData, SharedStringTablePart sharedStringTablePart);
 
         protected abstract MergeCells BuildProperties(SheetData sheetData1, SharedStringTablePart sstb, IEnumerable<T> viewModels);
 
