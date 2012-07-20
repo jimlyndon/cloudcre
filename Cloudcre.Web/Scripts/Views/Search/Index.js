@@ -165,7 +165,9 @@ $.extend(window.cloudcre, {
             editProperty: editProperty,
             deleteProperty: deleteProperty,
             summaryReport: summaryReport,
-            tempCond: tempCond
+            tempCond: tempCond,
+            selecteMarkUp: "<i class='icon-plus icon-white'></i> Select",
+            removeMarkUp: "<i class='icon-plus icon-white'></i> Remove"
         };
     })()
 });

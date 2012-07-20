@@ -22,42 +22,48 @@
 			  </li>
             </ul>
           </div><!--/.well -->
-			<form class="well">
+            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { Id = "search-form-top", @class = "well" }))
+            {
                 <label>Location search (type 'city', 'county' or 'zip')</label>
                 <div id="search_box_container"></div>
-				@*<input type="text" class="span3 form-search" placeholder="Try typing 'city', 'county' or 'zip'">*@
-				<label class="checkbox">
-				  <input type="checkbox"> Include current map location
-				</label>
-				<button type="submit" class="btn">Search</button>
-			</form>
-			<form class="well form-search">
-			  <input id="keywords-search-box" type="text" class="input-medium search-query" placeholder="keyword search">
-			  <button type="submit" class="btn">Search</button>
-			</form>
-			<form class="well">
+                <label class="checkbox">
+                    @Html.CheckBox("mapsearch", false)Include current map location
+                </label>
+                <button type="submit" class="btn">Search</button>
+            }
+            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { Id = "search-form-top", @class = "well form-search" }))
+            {
+                <input id="keywords-search-box" type="text" class="input-medium search-query" placeholder="keyword search" />
+                <button type="submit" class="btn">Search</button>
+            }
+            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { Id = "search-form-top", @class = "well" }))
+            {
+                decimal? sqftMin = (Model.SqftMin.HasValue) ? Math.Floor(Model.SqftMin.Value / 100.00m) * 100 : default(decimal);
+                decimal? sqftMax = (Model.SqftMax.HasValue) ? Math.Ceiling(Model.SqftMax.Value / 100.00m) * 100 : default(decimal);
 			  <label>Building size search
 				<span class="help-inline">(In square footage)</span>
 			  </label>
-			  <input type="text" class="input-small" placeholder="min">
-			  <input type="text" class="input-small" placeholder="max">
-			  <button type="submit" class="btn">Search</button>
-			</form>
-			<form class="well">
+                <input name="sqftmin" id="sqftmin-box" type="text" class="input-small" maxlength="20" value="@sqftMin" placeholder="min" />
+                <input name="sqftmax" id="sqftmax-box" type="text" class="input-small" maxlength="20" value="@sqftMax" placeholder="max" />
+			    <button type="submit" class="btn">Search</button>
+                <div>
+                    <div id="slider-range"></div>
+                </div>
+            }
+            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { Id = "search-form-top", @class = "well" }))
+            {
 			  <label>Sale range search
 				<span class="help-inline">(mm/dd/yyyy)</span>
 			  </label>
-			  <input type="text" class="input-small" placeholder="Start date">
-			  <input type="text" class="input-small" placeholder="End date">
+                <input id="mindate-box" name="mindate-box" type="text" class="input-small" placeholder="Start date" />
+                <input id="maxdate-box" name="maxdate-box" type="text" class="input-small" placeholder="End date" />
 			  <button type="submit" class="btn">Search</button>
-			</form>
+            }
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="nav-header">Queue</li>
-              <li class="active"><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
+              <a href="/" style="display: none" data-bind="click: summaryReport, visible: tempCond()">Download Sumary Report</a>
+              <div id="queued" data-bind='template: { name: "queueTemplate", foreach: queuedProperties()}'> </div>
             </ul>
           </div><!--/.well -->
         </div><!--/span-->
@@ -65,201 +71,109 @@
           <div class="row-well">
             <div id="map"></div>
           </div>
-@*			<div class="pagination">
-			  <ul>
-				<li><a href="#">Prev</a></li>
-				<li class="active">
-				  <a href="#">1</a>
-				</li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">Next</a></li>
-			  </ul>
-			</div>*@
+          @*<div class="row-well">
+              // uncomment to enable property create option.  Also must uncomment/enable the controller route
+              <a href="#" data-bind="click: function() { window.open(window.cloudcre.routing.url[window.cloudcre.viewModel.propertyTypeSelected().split(' ').join('')].create) }">Create new <span class="searchPropType"></span></a>               
+          </div>*@
 			<div id="map-side-bar" data-bind='template: { name: "productItemTemplate", data: propertySearchResults }' />
-			
-@*			<div class="pagination">
-			  <ul>
-				<li><a href="#">Prev</a></li>
-				<li class="active">
-				  <a href="#">1</a>
-				</li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">Next</a></li>
-			  </ul>
-			</div>*@
         </div><!--/span-->
       </div><!--/row-->
-
       <hr>
-
-      <footer>
-        <p>&copy; Company 2012</p>
+      <footer>        
       </footer>
-
     </div><!--/.fluid-container-->
-
-
-
-
-<table class="searchmap-tbl">
-    <tr>
-        @*<td>
-            <div id="map"></div>
-        </td>*@
-        <td>
-            <div class="search-options left">
-                <h2>
-                    Search Options
-                </h2>
-                <br />
-                @using (Html.BeginForm("Index", "Search", FormMethod.Post, new {Id = "search-form-top"}))
-                {
-                    <div>
-@*                        <div>
-                            Property Type <select id="PropertyType" data-bind="options: propertyTypeOptionValues, value: propertyTypeSelected, valueUpdate: 'change'"></select>
-                        </div>*@
-                    </div>
-                    <br />
-                    <div>
-                        <div>
-                            Location (try typing 'county', 'city' or 'zip')
-                        </div>
-                        @*<div id="search_box_container"></div>*@
-                    </div>
-                    <br />
-                    <div>
-                        <div>
-                            Keyword(s)
-                        </div>
-                        <div>
-                           @* <input class="search-input" name="keywords-search-box" type="text" id="keywords-search-box" maxlength="255" />*@
-                        </div>
-                    </div>
-                    <br />
-                    decimal? sqftMin = (Model.SqftMin.HasValue) ? Math.Floor(Model.SqftMin.Value/100.00m)*100 : default(decimal);
-                    decimal? sqftMax = (Model.SqftMax.HasValue) ? Math.Ceiling(Model.SqftMax.Value/100.00m)*100 : default(decimal);
-                    <div>Building SqFt - 
-                        Min <input name="sqftmin" type="text" size="10" id="sqftmin-box" maxlength="20" value="@sqftMin" />
-                        Max <input name="sqftmax" type="text" size="10" id="sqftmax-box" maxlength="20" value="@sqftMax" />
-                    </div>
-                    <div>
-                        <div id="slider-range"></div>
-                    </div>
-                    <br />
-                    <div>
-                        <div>
-                            Sale Date Range (mm/dd/yyyy)
-                        </div>
-                        <div>
-                            From <input name="mindate-box" type="text" id="mindate-box" maxlength="255" />
-                                to <input name="maxdate-box" type="text" id="maxdate-box" maxlength="255" />
-                        </div>
-                    </div>
-                    <br />
-                    <div>
-                        @Html.CheckBox("mapsearch", false)Include current map location in search query
-                    </div>
-                    <br />
-                    <div>
-                        <input type='submit' class="search-button" value="Search" />
-                    </div>
-                }
-            </div>
-            <div class="search-options left">
-                <h2>Active Queue</h2>
-                <a href="/" style="display: none" data-bind="click: summaryReport, visible: tempCond()">Download Sumary Report</a>
-                <div id="queued" data-bind='template: { name: "queueTemplate", foreach: queuedProperties()}'> </div>
-            </div>
-        </td>
-    </tr>
-</table>
 <div style="clear: both;"></div>
 <div id="delete-dialog" title="Permanently remove a property">
     <div id="delete-dialog-msg"></div>
 </div>
-<span class="item-displayoptions-pages">
-    <span id="pageLinksTop" data-bind="text: numberOfPropertyResults">        
-        @*@Html.BuildPageLinksFrom(Model.CurrentPage, Model.TotalNumberOfPages, x => "JavaScript:displayPage("+ x +")") of @Model.TotalNumberOfPages pages, with @Model.NumberOfTitlesFound property record(s) in total*@
-    </span>
-</span>
-
 <div style="clear: both;"></div>
 
 @section scripts {
     @MvcHtmlString.Create(Bundle.JavaScript().Add("~/Scripts/Views/Search/Index.js").Render("~/Scripts/ccre_search#.js"))
     <script type="text/html" id="productItemTemplate">
         {{each Properties}}
-            <div class="row-well map-location" data-id="${$index + 1}" data-point="{ lat: ${Latitude}, lng: ${Longitude} }" data-category="'apartment'">
-				<div class="row-fluid">
-					<div class="span3">
-						<div class="row-fluid">
-							<div class="span10">
-								<a href="#" class="thumbnail">
-								  <img src="http://dummyimage.com/120x80" alt="">
-								</a>
-							</div>
-						</div><!--/row-->
-						<div class="row-fluid">
-							<div class="span12">
-								<div class="btn-toolbar">
-									<div class="btn-group">
-										<a class="btn btn-info" href="#"><i class="icon-plus icon-white"></i> Select</a>
-										<a class="btn btn-info" href="#"><i class="icon-pencil icon-white"></i> Edit</a>
-										<a class="btn btn-info" href="#"><i class="icon-trash icon-white"></i> Delete</a>
-									</div>
-								</div>
-							</div>
-						</div><!--/row-->
-					</div><!--/span-->
-					<div class="span9">
-						<div class="row-fluid">
-							<div class="span12 map-link">
-								<h3>${Name}</h3>
-							</div>
-						</div><!--/row-->
-						<div class="row-fluid">
-							<div class="span3">
-							  <p>
-								<div style="font-weight: bold">${ParcelId}</div>
-								<div>${Address.AddressLine1} ${Address.AddressLine2}</div>
-								<div>${Address.City}</div>
-								<div>${Address.County} ${Address.StateProvinceRegion} ${Address.Zip}</div>
-							  </p>
-							</div>
-							<div class="span2">
-							  <p>
-								<div>Site Sq Ft: ${SiteTotalSquareFoot}</div>
-								<div>Units: ${Units}</div>
-								<div>Zoning: ${Zoning}</div>
-								<div>Parking: ${Parking}</div>
-							  </p>
-							</div><!--/span-->
-							<div class="span2">
-							  <p>
-								<div>Bldg Sq Ft: ${BuildingTotalSquareFoot}</div>
-								<div>Cond: ${Condition}</div>
-								<div>Qual: ${Quality}</div>
-								<div>Stories: ${Stories}</div>
-							  </p>
-							</div><!--/span-->
-							<div class="span2">
-							  <p>
-								<div>${Price} | ${CostPerBuildingSquareFoot}/SF</div>
-								<div>Sale ${SaleDate}</div>
-								<div>OR B-P: ${OfficialRecordBookAndPage}</div>
-							  </p>
-							</div><!--/span-->
-							<div class="span3">
-							  <p><div><span style="font-weight: bold">Comments: </span>${Comments}</div></p>
-							</div><!--/span-->
-						</div><!--/row-->
-					</div><!--/span-->				
-				</div><!--/row-->
-			</div><!--/row-well-->
+        <div class="row-well map-location" data-id="${$index + 1}" data-point="{ lat: ${Latitude}, lng: ${Longitude} }" data-category="'apartment'">
+            <div class="row-fluid">
+                <div class="span3">
+                    <div class="row-fluid">
+                        <div class="span10">
+                            <a href="#" class="thumbnail">
+                                <img src="http://dummyimage.com/120x80" alt="">
+                            </a>
+                        </div>
+                    </div><!--/row-->
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <a class="btn btn-info" data-bind="click: function() { $parent.addOrRemovePropertyFromQueue($value) }, html: $parent.isQueued($value) ? $parent.removeMarkUp : $parent.selecteMarkUp" data-id="${Id}" data-name="${Name}" data-parcelid="${ParcelId}" href="#"><i class="icon-plus icon-white"></i></a>
+                                    <a disabled="disabled" class="btn btn-info" href="#"><i class="icon-pencil icon-white"></i> Edit</a>
+                                    <a disabled="disabled" class="btn btn-info" href="#"><i class="icon-trash icon-white"></i> Delete</a>
+                                    @* 
+                                    //Uncomment to activate edit/delete - also must turn on controller actions
+                                    <a class="btn btn-info" data-bind="click: function() { $parent.editProperty($value) }" href="#"><i class="icon-pencil icon-white"></i> Edit</a>
+	                                <a class="btn btn-info" data-bind="click: function() { $parent.deleteProperty($value) }" href="#"><i class="icon-trash icon-white"></i> Delete</a>
+                                    *@
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--/row-->
+                </div><!--/span-->
+                <div class="span9">
+                    <div class="row-fluid">
+                        <div class="span12 map-link">
+                            <h3><a href="#" class="map-link">${Name}</a></h3>
+                            <div class="info-box">
+                                <div style="font-weight: bold" class="info-box-name">${Name}</div>
+                                <div>
+                                    <div class="info-box-price">Sold on ${regExDate(SaleDate)}</div> 
+                                    Parcel Id: ${ParcelId}<br />
+                                    Building SqFt: ${BuildingTotalSquareFoot}<br />
+                                    ${Address.AddressLine1}<br />
+                                    ${Address.City} ${Address.StateProvinceRegion} ${Address.Zip}
+                                </div>
+                            </div>
+						</div>
+					</div><!--/row-->
+					<div class="row-fluid">
+						<div class="span3">
+							<p>
+							<div style="font-weight: bold">${ParcelId}</div>
+							<div>${Address.AddressLine1} ${Address.AddressLine2}</div>
+							<div>${Address.City}</div>
+							<div>${Address.County} ${Address.StateProvinceRegion} ${Address.Zip}</div>
+							</p>
+						</div>
+						<div class="span2">
+							<p>
+							<div>Site Sq Ft: ${SiteTotalSquareFoot}</div>
+							<div>Units: ${Units}</div>
+							<div>Zoning: ${Zoning}</div>
+							<div>Parking: ${Parking}</div>
+							</p>
+						</div><!--/span-->
+						<div class="span2">
+							<p>
+							<div>Bldg Sq Ft: ${BuildingTotalSquareFoot}</div>
+							<div>Cond: ${Condition}</div>
+							<div>Qual: ${Quality}</div>
+							<div>Stories: ${Stories}</div>
+							</p>
+						</div><!--/span-->
+						<div class="span2">
+							<p>
+							<div>${Price} | ${CostPerBuildingSquareFoot}/SF</div>
+							<div>Sale ${SaleDate}</div>
+							<div>OR B-P: ${OfficialRecordBookAndPage}</div>
+							</p>
+						</div><!--/span-->
+						<div class="span3">
+							<p><div><span style="font-weight: bold">Comments: </span>${Comments}</div></p>
+						</div><!--/span-->
+					</div><!--/row-->
+				</div><!--/span-->				
+			</div><!--/row-->
+		</div><!--/row-well-->
         {{/each}}
     </script>
     <script type="text/html" id="queueTemplate">
@@ -336,8 +250,8 @@
         });
 
         @{
-            decimal? sqftMin2 = (Model.SqftMin.HasValue) ? Math.Floor(Model.SqftMin.Value/100.00m)*100 : default(decimal);
-            decimal? sqftMax2 = (Model.SqftMax.HasValue) ? Math.Ceiling(Model.SqftMax.Value/100.00m)*100 : default(decimal);
+            decimal? sqftMin2 = (Model.SqftMin.HasValue) ? Math.Floor(Model.SqftMin.Value / 100.00m) * 100 : default(decimal);
+            decimal? sqftMax2 = (Model.SqftMax.HasValue) ? Math.Ceiling(Model.SqftMax.Value / 100.00m) * 100 : default(decimal);
         }
 
         $.whitney.Property.managers.siteSqFtSlider.options({
@@ -345,14 +259,12 @@
             sqftFloor: @sqftMax2
         });
         
-
         // property selection
         $('.dropdown-toggle').dropdown();
 		$('.dropdown-menu').click(function(event){
 			var selectItem = $(event.target).data('select-id');
-			$(".searchPropType").text($(event.target).text());
+		    $(".searchPropType").text($(event.target).text());
 		    window.cloudcre.viewModel.propertyTypeSelected($(event.target).text());
 		}).find('a:first').trigger('click');
-
     </script>
 }

@@ -44,29 +44,7 @@
             @RenderSection("siteHeader")
         }
         else 
-        {
-@*            <header>
-                <div id="top-bar">
-                    <div class="center-header">
-                        <div class="header-inner">
-                            <div id="actionbar">
-                                @Context.User.Identity.Name&nbsp;|
-                                @Html.ActionLink("Sign Out", "LogOff", "Account", null, new { rel = "nofollow" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <div id="header-bar">
-                <div class="center-header">
-                    <div class="header-inner">
-                        <div id="top">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            *@
-            
+        {           
             
             <div class="navbar navbar-fixed-top">
               <div class="navbar-inner">
@@ -79,9 +57,9 @@
                   <a class="brand" href="#">Cloud CRE</a>
                   <div class="nav-collapse">
                     <ul class="nav">
-                      <li class="active"><a href="#">Home</a></li>
+@*                      <li class="active"><a href="#">Home</a></li>
                       <li><a href="#about">About</a></li>
-                      <li><a href="#contact">Contact</a></li>
+                      <li><a href="#contact">Contact</a></li>*@
                     </ul>
                     <p class="navbar-text pull-right">@Context.User.Identity.Name&nbsp;|@Html.ActionLink("Sign Out", "LogOff", "Account", null, new { rel = "nofollow" })</p>
                   </div><!--/.nav-collapse -->

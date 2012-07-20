@@ -14,8 +14,9 @@ namespace Cloudcre.Web
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new AuthorizeAndTransferAttribute());
-            filters.Add(new RequireHttpsExceptLocalhostAttribute());
+            // uncomment next two lines to force login and for https use
+            //filters.Add(new AuthorizeAndTransferAttribute());
+            //filters.Add(new RequireHttpsExceptLocalhostAttribute());
             filters.Add(new HandleErrorAttribute());
         }
 

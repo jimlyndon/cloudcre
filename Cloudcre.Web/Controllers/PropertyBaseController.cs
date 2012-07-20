@@ -28,45 +28,47 @@ namespace Cloudcre.Web.Controllers
             _configurationProvider = configurationProvider;
         }
 
-        [HttpPost]
-        public ActionResult Create(TVm viewModel)
-        {
-            return CreateOrEdit(viewModel);
-        }
+        // uncomment to allow creation or editing of properties
+        //[HttpPost]
+        //public ActionResult Create(TVm viewModel)
+        //{
+        //    return CreateOrEdit(viewModel);
+        //}
+        //
+        //[HttpPost]
+        //public ActionResult Edit(TVm viewModel)
+        //{
+        //    return CreateOrEdit(viewModel);
+        //}
+        //
+        //private ActionResult CreateOrEdit(TVm viewModel)
+        //{
+        //    if (ModelState.IsValid )
+        //    {
+        //        var request = new AddPropertyRequest<TVm> { ViewModel = viewModel };
+        //        AddPropertyResponse response = _service.AddProperty(request);
+        //    }
+        //
+        //    return Json(new { });
+        //}
 
-        [HttpPost]
-        public ActionResult Edit(TVm viewModel)
-        {
-            return CreateOrEdit(viewModel);
-        }
+        // uncomment to enable deletion of properties
+        //[HttpPost]
+        //public ActionResult Delete(TId id)
+        //{
+        //    RemovePropertyResponse response = _service.RemoveProperty(new RemovePropertyRequest<TId>
+        //    {
+        //        Id = id
+        //    });
 
-        private ActionResult CreateOrEdit(TVm viewModel)
-        {
-            if (ModelState.IsValid )
-            {
-                var request = new AddPropertyRequest<TVm> { ViewModel = viewModel };
-                AddPropertyResponse response = _service.AddProperty(request);
-            }
+        //    if (!response.Success)
+        //    {
+        //        TempData["message"] = response.Message;
+        //    }
 
-            return Json(new { });
-        }
-
-        [HttpPost]
-        public ActionResult Delete(TId id)
-        {
-            RemovePropertyResponse response = _service.RemoveProperty(new RemovePropertyRequest<TId>
-            {
-                Id = id
-            });
-
-            if (!response.Success)
-            {
-                TempData["message"] = response.Message;
-            }
-
-            //return new HttpStatusCodeResult(200);
-            return new EmptyResult();
-        }
+        //    //return new HttpStatusCodeResult(200);
+        //    return new EmptyResult();
+        //}
 
         [HttpPost]
         public ActionResult Summary(IEnumerable<Guid> ids)
