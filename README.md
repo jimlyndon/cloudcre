@@ -10,10 +10,12 @@ jquery, knockout.js for data binding, twitter's boostrap, google's mapping api,
 OpenXml for dynamic excel report building, and a several of other open source tools
 and libraries.
 </p>
-<p>
-- to run:
--- clone the repo, build the solution (make sure nuget pulls the dependencies), deploy the schema (mysql)
--- to enable user login see .asax and uncomment the account controller
--- to enable creation/edit of properties uncomment routes in propertybase controller
--- also, Cloudcre.Utilities contain test data loading and lucene indexing utility console apps
-</p>
+<hr>
+<ul>
+<li>clone the repo</li>
+<li>build the solution (make sure nuget pulls the dependencies)</li>
+<li>deploy the schema (mysql)</li>
+<li>to enable user login see .asax and uncomment the account controller</li>
+<li>to enable creation/edit of properties uncomment routes in propertybase controller</li>
+<li>also, Cloudcre.Utilities contain test data loading and lucene indexing utility console appso</li>
+</ul>
