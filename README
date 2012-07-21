@@ -8,7 +8,7 @@
 
 -----------------------------------------
 
-- full fledge commercial real estate reporting and searching application using 
+- fully featured commercial real estate reporting and searching application using 
   asp.net mvc/razor, lucene backed nHibernate search for indexing, jquery, knockout.js 
   for data binding, twitter's boostrap, google's mapping api, OpenXml for dynamic excel 
   report building, and a several of other open source tools and libraries.
