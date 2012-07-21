@@ -1,17 +1,11 @@
-  ___| | ___  _   _  __| | ___ _ __ ___ 
- / __| |/ _ \| | | |/ _` |/ __| '__/ _ \
-| (__| | (_) | |_| | (_| | (__| | |  __/
- \___|_|\___/ \__,_|\__,_|\___|_|  \___|
-
-  See https://github.com/jimlyndon/cloudcre/wiki/Cloud-CRE
-  See www.cloudcre.com
-
------------------------------------------
-
 <h2>Cloud CRE</h2>
 <p>
-A full featured commercial real estate appraisal reporting and comparable search 
-application using asp.net mvc/razor, lucene backed nHibernate search for indexing, 
+  See https://github.com/jimlyndon/cloudcre/wiki/Cloud-CRE
+  See www.cloudcre.com
+</p>
+<p>
+A full-featured commercial real estate appraisal reporting and comparable search 
+application. Uses asp.net mvc/razor, lucene backed nHibernate search for indexing, 
 jquery, knockout.js for data binding, twitter's boostrap, google's mapping api, 
 OpenXml for dynamic excel report building, and a several of other open source tools
 and libraries.
