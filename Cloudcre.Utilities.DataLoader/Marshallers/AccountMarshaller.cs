@@ -7,7 +7,7 @@ using Cloudcre.Repository.NHibernate.Repositories;
 using Cloudcre.Utilities.Console;
 using NHibernate.Search;
 
-namespace Cloudcre.Test.DataLoader.Marshallers
+namespace Cloudcre.Utilities.DataLoader.Marshallers
 {
     public class AccountMarshaller : CsvMarshaller
     {

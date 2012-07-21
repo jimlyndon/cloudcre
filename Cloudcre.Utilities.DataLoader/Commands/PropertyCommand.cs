@@ -1,19 +1,18 @@
-﻿using Cloudcre.Test.DataLoader.Marshallers;
+﻿using System.Configuration;
 using Cloudcre.Utilities.Console;
+using Cloudcre.Utilities.DataLoader.Marshallers;
 
-namespace Cloudcre.Test.DataLoader.Commands
+namespace Cloudcre.Utilities.DataLoader.Commands
 {
     public class PropertyCommand : EnvironmentCommand
     {
-        private const string DataPath = @"C:\Whitney\whitneycomp\TestData\propertyrecorddata.csv";
-
         /// <summary>
         /// Command to load property data
         /// </summary>
         /// <example>
         /// Example usage:
         /// 
-        /// Cloudcre.Test.DataLoader.exe load-properties -e development
+        /// Cloudcre.Utilities.DataLoader.exe load-properties -e development
         ///
         /// </example>
         public PropertyCommand()
@@ -25,7 +24,7 @@ namespace Cloudcre.Test.DataLoader.Commands
         {
             var marshaller = new PropertyMarshaller(EnvironmentType);
 
-            marshaller.Load(DataPath);
+            marshaller.Load(ConfigurationManager.AppSettings["PropertyDataLoaderPath"]);
         }
     }
 }

@@ -22,7 +22,7 @@
 			  </li>
             </ul>
           </div><!--/.well -->
-            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { Id = "search-form-top", @class = "well" }))
+            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "well search-form" }))
             {
                 <label>Location search (type 'city', 'county' or 'zip')</label>
                 <div id="search_box_container"></div>
@@ -31,12 +31,12 @@
                 </label>
                 <button type="submit" class="btn">Search</button>
             }
-            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { Id = "search-form-top", @class = "well form-search" }))
+            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "well form-search search-form" }))
             {
                 <input id="keywords-search-box" type="text" class="input-medium search-query" placeholder="keyword search" />
                 <button type="submit" class="btn">Search</button>
             }
-            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { Id = "search-form-top", @class = "well" }))
+            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "well search-form" }))
             {
                 decimal? sqftMin = (Model.SqftMin.HasValue) ? Math.Floor(Model.SqftMin.Value / 100.00m) * 100 : default(decimal);
                 decimal? sqftMax = (Model.SqftMax.HasValue) ? Math.Ceiling(Model.SqftMax.Value / 100.00m) * 100 : default(decimal);
@@ -50,7 +50,7 @@
                     <div id="slider-range"></div>
                 </div>
             }
-            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { Id = "search-form-top", @class = "well" }))
+            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "well search-form" }))
             {
 			  <label>Sale range search
 				<span class="help-inline">(mm/dd/yyyy)</span>

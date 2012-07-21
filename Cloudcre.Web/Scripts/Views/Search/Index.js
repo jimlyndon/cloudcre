@@ -338,7 +338,7 @@ $(function () {
         fireDisplay(to);
     });
 
-    $('#search-form-top').submit(function () {
+    $('.search-form').submit(function () {
         displayPage();
         return false;
     });

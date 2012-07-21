@@ -1,19 +1,18 @@
-﻿using Cloudcre.Test.DataLoader.Marshallers;
+﻿using System.Configuration;
 using Cloudcre.Utilities.Console;
+using Cloudcre.Utilities.DataLoader.Marshallers;
 
-namespace Cloudcre.Test.DataLoader.Commands
+namespace Cloudcre.Utilities.DataLoader.Commands
 {
     public class AccountCommand : EnvironmentCommand
     {
-        private const string DataPath = @"C:\Whitney\whitneycomp\TestData\useraccountdata.csv";
-
         /// <summary>
         /// Command to load account data
         /// </summary>
         /// <example>
         /// Example usage:
         /// 
-        /// Cloudcre.Test.DataLoader.exe load-accounts -e development
+        /// Cloudcre.Utilities.DataLoader.exe load-accounts -e development
         ///
         /// </example>
         public AccountCommand()
@@ -25,7 +24,7 @@ namespace Cloudcre.Test.DataLoader.Commands
         {
             var marshaller = new AccountMarshaller(EnvironmentType);
 
-            marshaller.Load(DataPath);
+            marshaller.Load(ConfigurationManager.AppSettings["AccountDataLoaderPath"]);
         }
     }
 }

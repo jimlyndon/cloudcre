@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.IO;
 
-namespace Cloudcre.Test.DataLoader.Marshallers
+namespace Cloudcre.Utilities.DataLoader.Marshallers
 {
     public abstract class CsvMarshaller
     {

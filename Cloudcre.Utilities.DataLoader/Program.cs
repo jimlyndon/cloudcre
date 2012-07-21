@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ManyConsole;
 
-namespace Cloudcre.Test.DataLoader
+namespace Cloudcre.Utilities.DataLoader
 {
     class Program
     {
@@ -18,7 +17,7 @@ namespace Cloudcre.Test.DataLoader
             commands = commands.Concat(new[] { consoleRunner });
 
             // run the command for the console input
-            ConsoleCommandDispatcher.DispatchCommand(commands, args, Console.Out);
+            ConsoleCommandDispatcher.DispatchCommand(commands, args, System.Console.Out);
         }
 
         static IEnumerable<ConsoleCommand> GetCommands()
