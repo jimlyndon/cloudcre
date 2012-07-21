@@ -7,8 +7,8 @@
   See www.cloudcre.com
 
 -----------------------------------------
-# Cloud CRE
-<h2 id="why">Cloud CRE</h2>
+
+<h2>Cloud CRE</h2>
 <p>
 A full featured commercial real estate appraisal reporting and comparable search 
 application using asp.net mvc/razor, lucene backed nHibernate search for indexing, 
