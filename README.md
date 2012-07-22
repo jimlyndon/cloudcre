@@ -17,5 +17,5 @@ and libraries.
 <li>deploy the schema (mysql)</li>
 <li>to enable user login see .asax and uncomment the account controller</li>
 <li>to enable creation/edit of properties uncomment routes in propertybase controller</li>
-<li>also, Cloudcre.Utilities contain test data loading and lucene indexing utility console appso</li>
+<li>also, Cloudcre.Utilities contain test data loading and lucene indexing utility console apps</li>
 </ul>
